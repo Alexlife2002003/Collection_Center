@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "960114528232",
+    "project_id": "collectorscenter-fbfdc",
+    "storage_bucket": "collectorscenter-fbfdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960114528232:android:24c56f22c0ef1c3f185e5d",
+        "android_client_info": {
+          "package_name": "com.example.collectors_center"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPiTzUxsL4mexAyxGF__ymh7ovBro4IpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
