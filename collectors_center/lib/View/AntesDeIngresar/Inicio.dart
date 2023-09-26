@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Alexia                         //
+//   Fecha:                              25/09/23                                                               //
+//   Descripción:                    Pantalla donde puedes decidir entre registrarte o iniciar sesión                     //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 
 class Inicio extends StatefulWidget {
@@ -10,6 +18,113 @@ class Inicio extends StatefulWidget {
 class _InicioState extends State<Inicio> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenheight = MediaQuery.of(context).size.height;
+    void navigateToAcceder() {}
+
+    void navigateToRegistrarse() {
+      goToRegistrarse(context);
+    }
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset(
+            'lib/assets/images/library-bg.png',
+            fit: BoxFit.cover,
+            width: screenheight,
+            height: screenheight,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: screenheight / 11),
+              Image.asset(
+                'lib/assets/images/logo.png',
+                width: screenWidth - 20,
+              ),
+              Container(
+                width: screenWidth - 50,
+                height: 10,
+                color: myColor,
+                margin: EdgeInsets.symmetric(vertical: 20),
+              ),
+              Container(
+                width: screenWidth - 10,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: GestureDetector(
+                          onTap: navigateToAcceder,
+                          child: Material(
+                            elevation: 5,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              width: 146,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: myColor,
+                                borderRadius: BorderRadius.circular(16),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Acceder',
+                                  style: TextStyle(
+                                      color: brown,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: GestureDetector(
+                          onTap: navigateToRegistrarse,
+                          child: Material(
+                            elevation: 5,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              width: 146,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: brown,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                      color: Colors.white, width: 2)),
+                              child: Center(
+                                  child: Text(
+                                'Registrarse',
+                                style: TextStyle(
+                                  color: myColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: screenheight / 10,
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
