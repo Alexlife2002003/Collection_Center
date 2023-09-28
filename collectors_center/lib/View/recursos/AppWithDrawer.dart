@@ -4,6 +4,7 @@
 //   Descripción:                    Cajón de la iquierda de la pantalla y appbar                     //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
@@ -24,7 +25,18 @@ class AppWithDrawer extends StatelessWidget {
         backgroundColor: peach,
         elevation: 0,
         iconTheme: IconThemeData(color: brown),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                // Navegar a la página del usuario cuando se presiona el icono
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Perfil(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.person))
+        ],
       ),
       drawer: Drawer(
         backgroundColor: brown,
