@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 
-Color myColor = Color(0xFFFEC794);
-Color brown = Color(0xFF40342A);
-Color peach = Color(0xFFFFE4CC);
+Color myColor = const Color(0xFFFEC794);
+Color brown = const Color(0xFF40342A);
+Color peach = const Color(0xFFFFE4CC);
+Color red = const Color.fromARGB(209, 244, 32, 32);

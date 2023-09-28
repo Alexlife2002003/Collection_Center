@@ -1,16 +1,17 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                         //
-//   Fecha:                              25/09/23                                                               //
-//   Descripción:                    Cajón de la iquierda de la pantalla y appbar                     //
+//   Nombre:                          Alexia                                                                //
+//   Fecha:                              25/09/23                                                           //
+//   Descripción:                    Cajón de la iquierda de la pantalla y appbar                           //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 
 class AppWithDrawer extends StatelessWidget {
   final Widget content;
 
-  AppWithDrawer({required this.content});
+  const AppWithDrawer({required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,19 @@ class AppWithDrawer extends StatelessWidget {
         backgroundColor: peach,
         elevation: 0,
         iconTheme: IconThemeData(color: brown),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Navegar a la página del usuario cuando se presiona el icono
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const Perfil(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.person),
+          ),
+        ],
       ),
       drawer: Drawer(
         backgroundColor: brown,
@@ -33,7 +46,7 @@ class AppWithDrawer extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: brown,
                 ),
-                child: Text(
+                child: const Text(
                   'Collectors Center',
                   style: TextStyle(
                     color: Color(0xFFFFEDBD),
@@ -42,19 +55,19 @@ class AppWithDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ListTile(
-              title: Text('Articulos',
+              title: const Text('Artículos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
                 // Handle item 1 tap
               },
             ),
             ListTile(
-              title: Text(
-                'Categorias',
+              title: const Text(
+                'Categorías',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),
               onTap: () {

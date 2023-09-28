@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                         //
-//   Fecha:                              25/09/23                                                               //
-//   Descripción:                    Pantalla de bienvida despues de registrarse o iniciar sesión                     //
+//   Nombre:                          Alexia                                                                //
+//   Fecha:                           25/09/23                                                              //
+//   Descripción:                     Pantalla de bienvida despues de registrarse o iniciar sesión          //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';

@@ -1,25 +1,23 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
-//   Fecha:                              25/09/23                                                           //
-//   Descripción:                    Vista de registro de nuevos usuarios                                   //
+//   Nombre:                          Armando                                                               //
+//   Fecha:                           26/09/23                                                              //
+//   Descripción:                     Vista de inicio de sesión de usuarios ya registrados                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 
-class Registrarse extends StatefulWidget {
-  const Registrarse({super.key});
+class Ingresar extends StatefulWidget {
+  const Ingresar({super.key});
 
   @override
-  State<Registrarse> createState() => _RegistrarseState();
+  State<Ingresar> createState() => _IngresarState();
 }
 
-class _RegistrarseState extends State<Registrarse> {
-  final _nombreUsuarioController = TextEditingController();
+class _IngresarState extends State<Ingresar> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
   //Crea todos los textfields para recibir los datos
   Widget buildInputField(String hintText, TextEditingController controller,
@@ -59,8 +57,6 @@ class _RegistrarseState extends State<Registrarse> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _nombreUsuarioController.dispose();
     super.dispose();
   }
 
@@ -73,14 +69,9 @@ class _RegistrarseState extends State<Registrarse> {
       regresarAnterior(context);
     }
 
-    ///Se comunica con el presentador para registrarse
-    void registrarse() {
-      registrarUsuario(
-          context,
-          _nombreUsuarioController.text,
-          _emailController.text,
-          _passwordController.text,
-          _confirmPasswordController.text);
+    ///Se comunica con el presentador para ingresar a la aplicación
+    void ingresar() {
+      ingresarUsuario(context, _emailController.text, _passwordController.text);
     }
 
     return Scaffold(
@@ -108,12 +99,7 @@ class _RegistrarseState extends State<Registrarse> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
-                ),
-                buildInputField('Nombre de Usuario', _nombreUsuarioController,
-                    false, TextInputType.text, screenWidth),
-                const SizedBox(
-                  height: 15,
+                  height: 100,
                 ),
                 buildInputField('e-mail', _emailController, false,
                     TextInputType.emailAddress, screenWidth),
@@ -123,17 +109,12 @@ class _RegistrarseState extends State<Registrarse> {
                 buildInputField('Password', _passwordController, true,
                     TextInputType.text, screenWidth),
                 const SizedBox(
-                  height: 15,
-                ),
-                buildInputField('Confirm password', _confirmPasswordController,
-                    true, TextInputType.text, screenWidth),
-                const SizedBox(
-                  height: 35,
+                  height: 110,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: registrarse,
+                    onTap: ingresar,
                     child: Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(12),
@@ -146,7 +127,7 @@ class _RegistrarseState extends State<Registrarse> {
                             border: Border.all(color: Colors.white, width: 2)),
                         child: Center(
                             child: Text(
-                          'Registrar',
+                          'Ingresar',
                           style: TextStyle(
                             color: brown,
                             fontWeight: FontWeight.bold,

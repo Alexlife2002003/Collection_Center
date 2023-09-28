@@ -1,8 +1,8 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                         //
-//   Fecha:                              25/09/23                                                               //
-//   Descripción:                    Pantalla donde puedes decidir entre registrarte o iniciar sesión                     //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Alexia                                                                 //
+//   Fecha:                           25/09/23                                                               //
+//   Descripción:                     Pantalla donde puedes decidir entre registrarte o iniciar sesión       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -20,7 +20,10 @@ class _InicioState extends State<Inicio> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
-    void navigateToAcceder() {}
+
+    void navigateToAcceder() {
+      goToIngresar(context);
+    }
 
     void navigateToRegistrarse() {
       goToRegistrarse(context);
@@ -46,9 +49,13 @@ class _InicioState extends State<Inicio> {
               ),
               Container(
                 width: screenWidth - 50,
-                height: 10,
-                color: myColor,
-                margin: EdgeInsets.symmetric(vertical: 20),
+                height: 6,
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: myColor,
+                  borderRadius: BorderRadius.circular(
+                      10), // Ajusta el valor para cambiar la cantidad de redondeo
+                ),
               ),
               Container(
                 width: screenWidth - 10,
@@ -67,7 +74,7 @@ class _InicioState extends State<Inicio> {
                               height: 50,
                               decoration: BoxDecoration(
                                 color: myColor,
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(12),
                                 border:
                                     Border.all(color: Colors.white, width: 2),
                               ),
@@ -77,7 +84,7 @@ class _InicioState extends State<Inicio> {
                                   style: TextStyle(
                                       color: brown,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12),
+                                      fontSize: 18),
                                 ),
                               ),
                             ),
@@ -98,7 +105,7 @@ class _InicioState extends State<Inicio> {
                               height: 50,
                               decoration: BoxDecoration(
                                   color: brown,
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                       color: Colors.white, width: 2)),
                               child: Center(
@@ -107,7 +114,7 @@ class _InicioState extends State<Inicio> {
                                 style: TextStyle(
                                   color: myColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 12,
+                                  fontSize: 18,
                                 ),
                               )),
                             ),
