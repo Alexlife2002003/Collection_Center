@@ -122,26 +122,24 @@ Future<void> ingresarUsuario(
     return;
   }
   try {
-    final userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: correo,
       password: password,
     );
-
-    if (userCredential.user != null) {
-      // El inicio de sesión fue exitoso
-      goToBienvenido(context);
-    } else {
-      mostrarToast("Inicio de sesión fallido");
-    }
+    goToBienvenido(context);
   } on FirebaseAuthException catch (e) {
-    print("Este es el error: " + e.code);
-    if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-      print("este es el error: " + e.code);
-      mostrarToast("Credenciales incorrectas");
-    } else if (e.code == 'user-disabled') {
-      print("este es el error: " + e.code);
-      mostrarToast("La cuenta ha sido desactivada");
+    if (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
+        e.code == 'user-not-found' ||
+        e.code == 'wrong-password') {
+      Fluttertoast.showToast(
+        msg: 'La contraseña o email es incorrecto',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 }

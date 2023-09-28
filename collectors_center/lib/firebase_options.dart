@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBRC3lPlFxB1BsCFU4zAwAA3CxrpyJUpYs',
-    appId: '1:960114528232:web:3f3b3ba36eb4e133185e5d',
-    messagingSenderId: '960114528232',
-    projectId: 'collectorscenter-fbfdc',
-    authDomain: 'collectorscenter-fbfdc.firebaseapp.com',
-    storageBucket: 'collectorscenter-fbfdc.appspot.com',
-    measurementId: 'G-4ML2G5XGQS',
+    apiKey: 'AIzaSyBZ5j0DMcPwOl7MZEFeqzmoR06g1VnV3so',
+    appId: '1:1052709621623:web:3acb9aca8012902fd59b72',
+    messagingSenderId: '1052709621623',
+    projectId: 'collectioncenter-c9abe',
+    authDomain: 'collectioncenter-c9abe.firebaseapp.com',
+    storageBucket: 'collectioncenter-c9abe.appspot.com',
+    measurementId: 'G-D9E3SPQN20',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCPiTzUxsL4mexAyxGF__ymh7ovBro4IpA',
-    appId: '1:960114528232:android:24c56f22c0ef1c3f185e5d',
-    messagingSenderId: '960114528232',
-    projectId: 'collectorscenter-fbfdc',
-    storageBucket: 'collectorscenter-fbfdc.appspot.com',
+    apiKey: 'AIzaSyCIPcMGfEGkJKL_1IW9QJ9W2K0jTIivuuM',
+    appId: '1:1052709621623:android:d8d044e2d96b1118d59b72',
+    messagingSenderId: '1052709621623',
+    projectId: 'collectioncenter-c9abe',
+    storageBucket: 'collectioncenter-c9abe.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyANZWqYP5Opj1oNC4GBYR-xpRj4uU15kgE',
-    appId: '1:960114528232:ios:b1d5d05df8f4168c185e5d',
-    messagingSenderId: '960114528232',
-    projectId: 'collectorscenter-fbfdc',
-    storageBucket: 'collectorscenter-fbfdc.appspot.com',
+    apiKey: 'AIzaSyB_K_Dj8oXL5ATjFymuZejp9vuZbKCrngc',
+    appId: '1:1052709621623:ios:f6753bebe10886bad59b72',
+    messagingSenderId: '1052709621623',
+    projectId: 'collectioncenter-c9abe',
+    storageBucket: 'collectioncenter-c9abe.appspot.com',
     iosBundleId: 'com.example.collectorsCenter',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyANZWqYP5Opj1oNC4GBYR-xpRj4uU15kgE',
-    appId: '1:960114528232:ios:70eae32232fa39e6185e5d',
-    messagingSenderId: '960114528232',
-    projectId: 'collectorscenter-fbfdc',
-    storageBucket: 'collectorscenter-fbfdc.appspot.com',
+    apiKey: 'AIzaSyB_K_Dj8oXL5ATjFymuZejp9vuZbKCrngc',
+    appId: '1:1052709621623:ios:57627a2064bd0d8ed59b72',
+    messagingSenderId: '1052709621623',
+    projectId: 'collectioncenter-c9abe',
+    storageBucket: 'collectioncenter-c9abe.appspot.com',
     iosBundleId: 'com.example.collectorsCenter.RunnerTests',
   );
 }
