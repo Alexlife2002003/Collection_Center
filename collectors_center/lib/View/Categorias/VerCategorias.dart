@@ -23,7 +23,7 @@ class _verCategoriasState extends State<verCategorias> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
     void borrar(String categoria) {
-      borrarCategorias(context, categoria);
+      borrarCategorias(context, categoria.trim());
     }
 
     return AppWithDrawer(

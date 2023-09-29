@@ -14,7 +14,7 @@ class agregarCategorias extends StatefulWidget {
 class _agregarCategoriasState extends State<agregarCategorias> {
   final _nombreCategoriaController = TextEditingController();
   void agregar() {
-    agregarCategoriaBase(context, _nombreCategoriaController.text);
+    agregarCategoriaBase(context, _nombreCategoriaController.text.trim());
   }
 
   void cancelar() {

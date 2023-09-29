@@ -77,10 +77,10 @@ class _RegistrarseState extends State<Registrarse> {
     void registrarse() {
       registrarUsuario(
           context,
-          _nombreUsuarioController.text,
+          _nombreUsuarioController.text.trim(),
           _emailController.text,
-          _passwordController.text,
-          _confirmPasswordController.text);
+          _passwordController.text.trim(),
+          _confirmPasswordController.text.trim());
     }
 
     return Scaffold(
