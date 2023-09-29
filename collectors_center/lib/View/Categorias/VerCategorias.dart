@@ -38,7 +38,7 @@ class _verCategoriasState extends State<verCategorias> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Icons and Buttons
                 Row(
@@ -46,7 +46,7 @@ class _verCategoriasState extends State<verCategorias> {
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.delete,
                         size: 60,
                       ),
@@ -58,7 +58,7 @@ class _verCategoriasState extends State<verCategorias> {
                       onPressed: () {
                         agregarCategoria(context);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_circle_outline,
                         size: 60,
                       ),

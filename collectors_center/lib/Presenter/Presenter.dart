@@ -23,7 +23,7 @@ import 'package:connectivity/connectivity.dart';
 void goToVerCategorias(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => verCategorias()), //modify
+    MaterialPageRoute(builder: (context) => const verCategorias()),
   );
 }
 

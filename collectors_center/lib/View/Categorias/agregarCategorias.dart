@@ -48,7 +48,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Padding(
@@ -65,7 +65,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
                       controller: _nombreCategoriaController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Nombre',
                         hintStyle: TextStyle(
@@ -84,19 +84,19 @@ class _agregarCategoriasState extends State<agregarCategorias> {
               Container(
                 width: screenWidth - 200,
                 child: ElevatedButton(
-                  style: ButtonStyle(
+                  style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                   onPressed: agregar,
-                  child: Text('Guardar'),
+                  child: const Text('Guardar'),
                 ),
               ),
               Container(
                 width: screenWidth - 200,
                 child: ElevatedButton(
-                  style: ButtonStyle(
+                  style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.red)),
                   onPressed: cancelar,
-                  child: Text('Cancelar'),
+                  child: const Text('Cancelar'),
                 ),
               ),
             ],

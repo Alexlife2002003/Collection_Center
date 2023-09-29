@@ -12,7 +12,7 @@ import 'package:collectors_center/Presenter/Presenter.dart';
 class AppWithDrawer extends StatelessWidget {
   final Widget content;
 
-  AppWithDrawer({required this.content});
+  const AppWithDrawer({required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +31,11 @@ class AppWithDrawer extends StatelessWidget {
                 // Navegar a la página del usuario cuando se presiona el icono
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Perfil(),
+                    builder: (context) => const Perfil(),
                   ),
                 );
               },
-              icon: Icon(Icons.person))
+              icon: const Icon(Icons.person))
         ],
       ),
       drawer: Drawer(
@@ -50,7 +50,7 @@ class AppWithDrawer extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: brown,
                 ),
-                child: Text(
+                child: const Text(
                   'Collectors Center',
                   style: TextStyle(
                     color: Color(0xFFFFEDBD),
@@ -59,18 +59,18 @@ class AppWithDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ListTile(
-              title: Text('Articulos',
+              title: const Text('Articulos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
                 // Handle item 1 tap
               },
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Categorias',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),

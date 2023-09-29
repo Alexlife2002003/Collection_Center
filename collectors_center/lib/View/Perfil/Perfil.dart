@@ -82,6 +82,7 @@ class _PerfilState extends State<Perfil> {
       body: Stack(
         children: [
           Container(
+              height: screenheight,
               color: peach,
               child: SingleChildScrollView(
                 child: Column(
