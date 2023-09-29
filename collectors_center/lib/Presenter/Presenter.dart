@@ -277,7 +277,8 @@ Future<void> cerrarSesion(BuildContext context) async {
   }
   try {
     await FirebaseAuth.instance.signOut();
-    goToInicio(context); // Llama a la función para ir a la pantalla de inicio
+    // Llama a la función para ir a la pantalla de inicio
+    goToInicio(context);
   } catch (e) {
     print("Error al cerrar la sesión: $e");
     // Manejar errores, si es necesario
