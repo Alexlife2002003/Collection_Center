@@ -6,9 +6,89 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 //////////////////////////////////
 //  Navegacion dentro de la app encargado de categorias //
 //////////////////////////////////
+
+Future<void> borrarCategorias(BuildContext context, String categoria) async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // Reference to the user's "Categories" subcollection
+      CollectionReference categoriesCollection = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Categories');
+
+      // Query for the document with a specific "Name" field value
+      QuerySnapshot querySnapshot =
+          await categoriesCollection.where('Name', isEqualTo: categoria).get();
+
+      // Check if any documents match the query
+      if (querySnapshot.docs.isNotEmpty) {
+        // Get the first matching category document
+        final categoryDoc = querySnapshot.docs.first;
+
+        // Reference to the "Objects" subcollection within the category document
+        CollectionReference objectsCollection =
+            categoryDoc.reference.collection('Objects');
+
+        // Query all documents within the "Objects" subcollection
+        QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
+
+        // Delete each document and associated image
+        for (final objectDoc in objectsQuerySnapshot.docs) {
+          // Delete the image associated with the document
+          final imageUrl = objectDoc.get('Image_url');
+
+          FirebaseStorage.instance.refFromURL(imageUrl).delete();
+
+          // Delete the object document
+          await objectDoc.reference.delete();
+        }
+
+        // Delete the category document after deleting associated objects
+        await categoryDoc.reference.delete();
+
+        Fluttertoast.showToast(
+          msg: "La categoría ha sido eliminada correctamente",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+
+        goToVerCategorias(context);
+      } else {
+        // Handle the case where no matching document was found
+        Fluttertoast.showToast(
+          msg: "La categoría no se ha eliminado",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "La categoría no se ha eliminado",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+}
 
 void goToVerCategorias(BuildContext context) {
   Navigator.push(

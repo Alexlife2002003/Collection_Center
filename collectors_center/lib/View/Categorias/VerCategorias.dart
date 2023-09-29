@@ -22,7 +22,10 @@ class _verCategoriasState extends State<verCategorias> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
-    void borrar(String categoria) {}
+    void borrar(String categoria) {
+      borrarCategorias(context, categoria);
+    }
+
     return AppWithDrawer(
       content: Scaffold(
         backgroundColor: peach,
@@ -42,7 +45,7 @@ class _verCategoriasState extends State<verCategorias> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Icons and Buttons
                 Row(
@@ -66,7 +69,7 @@ class _verCategoriasState extends State<verCategorias> {
                       onPressed: () {
                         agregarCategoria(context);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_circle_outline,
                         size: 60,
                       ),
@@ -74,7 +77,7 @@ class _verCategoriasState extends State<verCategorias> {
                   ],
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // List of Categories
                 Expanded(
@@ -82,7 +85,7 @@ class _verCategoriasState extends State<verCategorias> {
                     future: ver(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else {
@@ -102,7 +105,7 @@ class _verCategoriasState extends State<verCategorias> {
                                 }
                               },
                               child: Container(
-                                margin: EdgeInsets.all(12),
+                                margin: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: myColor,
                                   borderRadius: BorderRadius.circular(16),
@@ -122,7 +125,7 @@ class _verCategoriasState extends State<verCategorias> {
                                     ListTile(
                                       title: Text(
                                         category,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                         textAlign: TextAlign.center,
