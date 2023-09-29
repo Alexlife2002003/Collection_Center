@@ -1,7 +1,8 @@
+import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
 
 class verCategorias extends StatefulWidget {
   const verCategorias({Key? key}) : super(key: key);
@@ -15,10 +16,13 @@ class _verCategoriasState extends State<verCategorias> {
     return fetchCategories();
   }
 
+  bool isEdit = false; // Add this variable to track edit mode
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
+    void borrarCategorias(String categoria) {}
     return AppWithDrawer(
       content: Scaffold(
         backgroundColor: peach,
@@ -38,16 +42,20 @@ class _verCategoriasState extends State<verCategorias> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // Icons and Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.delete,
+                      onPressed: () {
+                        setState(() {
+                          isEdit = !isEdit; // Toggle edit mode
+                        });
+                      },
+                      icon: Icon(
+                        isEdit ? Icons.check_circle_outlined : Icons.delete,
                         size: 60,
                       ),
                     ),
@@ -58,7 +66,7 @@ class _verCategoriasState extends State<verCategorias> {
                       onPressed: () {
                         agregarCategoria(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.add_circle_outline,
                         size: 60,
                       ),
@@ -85,7 +93,15 @@ class _verCategoriasState extends State<verCategorias> {
                           itemBuilder: (context, index) {
                             final category = categories[index];
                             return GestureDetector(
-                              //onTap: ,
+                              onTap: () {
+                                if (isEdit) {
+                                  borrarCategorias(
+                                      categories[index].toString());
+                                  setState(() {
+                                    isEdit = !isEdit;
+                                  });
+                                }
+                              },
                               child: Container(
                                 margin: EdgeInsets.all(12),
                                 decoration: BoxDecoration(
@@ -99,7 +115,7 @@ class _verCategoriasState extends State<verCategorias> {
                                       top: 0,
                                       right: 0,
                                       child: Icon(
-                                        Icons.edit_note,
+                                        isEdit ? Icons.delete : Icons.edit_note,
                                         color: Colors.black,
                                         size: 40,
                                       ),
