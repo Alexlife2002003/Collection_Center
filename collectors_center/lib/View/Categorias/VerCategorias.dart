@@ -22,7 +22,7 @@ class _verCategoriasState extends State<verCategorias> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
-    void borrarCategorias(String categoria) {}
+    void borrar(String categoria) {}
     return AppWithDrawer(
       content: Scaffold(
         backgroundColor: peach,
@@ -95,8 +95,7 @@ class _verCategoriasState extends State<verCategorias> {
                             return GestureDetector(
                               onTap: () {
                                 if (isEdit) {
-                                  borrarCategorias(
-                                      categories[index].toString());
+                                  borrar(categories[index].toString());
                                   setState(() {
                                     isEdit = !isEdit;
                                   });

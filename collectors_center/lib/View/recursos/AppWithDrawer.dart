@@ -4,6 +4,7 @@
 //   Descripción:                    Cajón de la iquierda de la pantalla y appbar                     //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
