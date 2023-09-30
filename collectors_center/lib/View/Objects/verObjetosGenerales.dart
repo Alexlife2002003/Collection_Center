@@ -9,6 +9,7 @@ import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class verObjetosGenerales extends StatefulWidget {
   const verObjetosGenerales({Key? key}) : super(key: key);
@@ -147,8 +148,8 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             return Text('Error loading image');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return Image.network(
-                              imageUrl,
+                            return CachedNetworkImage(
+                              imageUrl: imageUrl,
                               fit: BoxFit.cover,
                               width: 188,
                               height: 188,
@@ -191,8 +192,8 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             return Text('Error loading image');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return Image.network(
-                              imageUrl,
+                            return CachedNetworkImage(
+                              imageUrl: imageUrl,
                               fit: BoxFit.cover,
                               width: 188,
                               height: 188,
