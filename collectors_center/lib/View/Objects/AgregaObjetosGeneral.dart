@@ -200,43 +200,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                   ),
                 ),
                 SizedBox(height: 25),
-                // Dropdown for selecting a category
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    width: screenWidth - 150,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: myColor,
-                      border: Border.all(color: Colors.white, width: .2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: DropdownButton<String>(
-                      value: selectedCategory,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedCategory = newValue!;
-                        });
-                      },
-                      items: categories.map<DropdownMenuItem<String>>(
-                        (String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFF503A27),
-                                fontSize: 20,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ),
-                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
@@ -293,6 +257,46 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                // Dropdown for selecting a category
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    width: screenWidth - 150,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: myColor,
+                      border: Border.all(color: Colors.white, width: .2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedCategory,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCategory = newValue!;
+                        });
+                      },
+                      items: categories.map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF503A27),
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
+                      ).toList(),
                     ),
                   ),
                 ),
