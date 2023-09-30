@@ -5,6 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
+import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,11 @@ class AppWithDrawer extends StatelessWidget {
               title: const Text('Articulos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
-                // Handle item 1 tap
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const verObjetosGenerales(),
+                  ),
+                );
               },
             ),
             ListTile(

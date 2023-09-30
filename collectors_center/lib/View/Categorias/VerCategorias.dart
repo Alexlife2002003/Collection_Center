@@ -1,4 +1,6 @@
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
+import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
+import 'package:collectors_center/Presenter/Presenter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
@@ -102,6 +104,9 @@ class _verCategoriasState extends State<verCategorias> {
                                   setState(() {
                                     isEdit = !isEdit;
                                   });
+                                } else {
+                                  goToVerObjectsCategorias(
+                                      context, categories[index].toString());
                                 }
                               },
                               child: Container(
@@ -117,7 +122,8 @@ class _verCategoriasState extends State<verCategorias> {
                                       top: 0,
                                       right: 0,
                                       child: Icon(
-                                        isEdit ? Icons.delete : Icons.edit_note,
+                                        isEdit ? Icons.delete : null,
+                                        // isEdit ? Icons.delete : Icons.edit_note,
                                         color: Colors.black,
                                         size: 40,
                                       ),
