@@ -1,15 +1,13 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
-//   Fecha:                              25/09/23                                                           //
-//   Descripción:                    Permite ver objetos de forma general                     //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
-import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
-import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
+import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
+import 'dart:io';
+
+const double iconSize = 60;
+const String imageUrlKey = 'Image URL';
 
 class verObjetosGenerales extends StatefulWidget {
   const verObjetosGenerales({Key? key}) : super(key: key);
@@ -21,6 +19,8 @@ class verObjetosGenerales extends StatefulWidget {
 class _verObjetosGeneralesState extends State<verObjetosGenerales> {
   final FirebaseStorage storage = FirebaseStorage.instance;
   List<Map<String, dynamic>> _objectList = [];
+  bool _isLoading = true;
+  String _error = '';
 
   @override
   void initState() {
@@ -34,9 +34,14 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
 
       setState(() {
         _objectList = objects;
+        _isLoading = false;
+        _error = '';
       });
     } catch (error) {
-      print("Error fetching objects: $error");
+      setState(() {
+        _isLoading = false;
+        _error = 'Error fetching objects: $error';
+      });
     }
   }
 
@@ -74,7 +79,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                           onPressed: () {},
                           icon: Icon(
                             Icons.delete,
-                            size: 60,
+                            size: iconSize,
                           ),
                         ),
                         SizedBox(
@@ -86,7 +91,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                           },
                           icon: Icon(
                             Icons.add_circle_outline,
-                            size: 60,
+                            size: iconSize,
                           ),
                         ),
                       ],
@@ -97,22 +102,26 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                   ],
                 ),
               ),
-              _objectList.isEmpty
+              _isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          for (int i = 0; i < _objectList.length; i += 2)
-                            _buildObjectRow(
-                                _objectList[i],
-                                i + 1 < _objectList.length
-                                    ? _objectList[i + 1]
-                                    : null),
-                        ],
-                      ),
-                    ),
+                  : _error.isNotEmpty
+                      ? Center(
+                          child: Text(_error),
+                        )
+                      : SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              for (int i = 0; i < _objectList.length; i += 2)
+                                _buildObjectRow(
+                                    _objectList[i],
+                                    i + 1 < _objectList.length
+                                        ? _objectList[i + 1]
+                                        : null),
+                            ],
+                          ),
+                        ),
             ],
           ),
         ),
@@ -122,8 +131,8 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
 
   Widget _buildObjectRow(
       Map<String, dynamic> object1, Map<String, dynamic>? object2) {
-    final String imageUrl1 = object1['Image URL'];
-    final String? imageUrl2 = object2?['Image URL'];
+    final String? imageUrl1 = object1[imageUrlKey];
+    final String? imageUrl2 = object2?[imageUrlKey];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -139,17 +148,21 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                     Container(
                       color: peach,
                       child: FutureBuilder(
-                        future: storage.ref().child(imageUrl1).getDownloadURL(),
+                        future: imageUrl1 != null
+                            ? storage.ref().child(imageUrl1).getDownloadURL()
+                            : null,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             return Text('Error loading image');
+                          } else if (!snapshot.hasData) {
+                            return Text('No image available');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return CachedNetworkImage(
-                              imageUrl: imageUrl,
+                            return Image.network(
+                              imageUrl,
                               fit: BoxFit.cover,
                               width: 188,
                               height: 188,
@@ -183,17 +196,21 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                     Container(
                       color: peach,
                       child: FutureBuilder(
-                        future: storage.ref().child(imageUrl2).getDownloadURL(),
+                        future: imageUrl2 != null
+                            ? storage.ref().child(imageUrl2).getDownloadURL()
+                            : null,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             return Text('Error loading image');
+                          } else if (!snapshot.hasData) {
+                            return Text('No image available');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return CachedNetworkImage(
-                              imageUrl: imageUrl,
+                            return Image.network(
+                              imageUrl,
                               fit: BoxFit.cover,
                               width: 188,
                               height: 188,

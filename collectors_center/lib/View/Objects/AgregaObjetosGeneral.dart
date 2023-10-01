@@ -1,9 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
-//   Fecha:                              25/09/23                                                           //
-//   Descripción:                    Permite agregar objetos desde una pantalla general                   //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import 'dart:io';
 
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
@@ -31,11 +25,10 @@ void dispose() {}
 class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
   PickedFile? _selectedImage;
   String filepath = "";
-  File? uplaodImage;
+  File? uploadImage;
 
   final _nombreArticuloController = TextEditingController();
   final _descripcionController = TextEditingController();
-  // Initialize to an empty string
   String selectedCategory = '';
   List<String> categories = [];
 
@@ -65,11 +58,11 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
     setState(() {
       categories = fetchedCategories;
       if (categories.isNotEmpty) {
-        // Initialize to the first category if available
-        selectedCategory = categories[0];
+        selectedCategory =
+            categories[0]; // Initialize to the first category if available
       } else {
-        // If no categories available, set it to 'General'
-        selectedCategory = 'General';
+        selectedCategory =
+            'General'; // If no categories available, set it to 'General'
       }
     });
   }
@@ -82,7 +75,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
       setState(() {
         _selectedImage = PickedFile(pickedFile.path);
         filepath = pickedFile.path;
-        uplaodImage = File(pickedFile.path);
+        uploadImage = File(pickedFile.path);
       });
     }
   }
@@ -104,7 +97,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
           FirebaseStorage.instance.ref().child('images/$randomFileName.jpg');
 
       // Upload the image to Firebase Storage
-      final UploadTask uploadTask = storageReference.putFile(uplaodImage!);
+      final UploadTask uploadTask = storageReference.putFile(uploadImage!);
 
       // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
@@ -114,14 +107,13 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
-            // Use selectedCategory
-            selectedCategory);
+            selectedCategory); // Use selectedCategory
 
         // Close the progress dialog
         Navigator.of(context).pop();
 
-        // Use selectedCategory
-        goToVerObjectsCategorias(context, selectedCategory);
+        goToVerObjectsCategorias(
+            context, selectedCategory); // Use selectedCategory
       });
     } catch (e) {
       Fluttertoast.showToast(
@@ -154,11 +146,11 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return AppWithDrawer(
       content: Scaffold(
         body: Container(
-          height: screenheight,
+          height: screenHeight,
           width: screenWidth,
           color: peach,
           child: SingleChildScrollView(
@@ -192,10 +184,11 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                           fit: BoxFit.cover,
                         )
                       else
-                        Icon(
-                          Icons.add_a_photo,
-                          size: 120,
-                        ),
+                        Image.asset(
+                          'lib/assets/images/add_image.png',
+                          width: 200,
+                          height: 200,
+                        )
                     ],
                   ),
                 ),
@@ -213,18 +206,20 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _nombreArticuloController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Nombre',
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFF503A27),
-                            fontSize: 20,
+                      child: Center(
+                        child: TextField(
+                          controller: _nombreArticuloController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Nombre',
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFF503A27),
+                              fontSize: 20,
+                            ),
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -244,18 +239,20 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _descripcionController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Descripcion',
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFF503A27),
-                            fontSize: 20,
+                      child: Center(
+                        child: TextField(
+                          controller: _descripcionController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Descripcion',
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFF503A27),
+                              fontSize: 20,
+                            ),
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -301,7 +298,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                   ),
                 ),
                 SizedBox(
-                  height: (screenheight / 33),
+                  height: (screenHeight / 33),
                 ),
                 Container(
                   width: screenWidth - 200,

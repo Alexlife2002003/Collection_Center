@@ -47,6 +47,7 @@ dev_dependencies:
   firebase_storage:
   image_picker:
   cached_network_image:
+  image:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -71,6 +72,7 @@ flutter:
     - lib/assets/images/logo.png
     - lib/assets/images/library-bg.png
     - lib/assets/images/Usuario.png
+    - lib/assets/images/add_image.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

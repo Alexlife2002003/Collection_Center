@@ -17,7 +17,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void goToVerObjectsCategorias(BuildContext context, String name) {
-  Navigator.push(
+  Navigator.pushReplacement(
     context,
     MaterialPageRoute(
         builder: (context) => verObjectsCategoria(categoria: name)),
@@ -124,51 +124,56 @@ void agregarObjetoCategoria(
 }
 
 Future<List<Map<String, dynamic>>> fetchAllObjects() async {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  try {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
 
-  User? user = auth.currentUser;
-  if (user != null) {
-    String uid = user.uid;
-    DocumentReference usersDoc = firestore.collection('Users').doc(uid);
-    CollectionReference categoriasCollection =
-        usersDoc.collection('Categories');
+    User? user = auth.currentUser;
+    if (user != null) {
+      String uid = user.uid;
+      DocumentReference usersDoc = firestore.collection('Users').doc(uid);
+      CollectionReference categoriasCollection =
+          usersDoc.collection('Categories');
 
-    // Query all categories
-    QuerySnapshot categoriesQuery = await categoriasCollection.get();
+      // Query all categories
+      QuerySnapshot categoriesQuery = await categoriasCollection.get();
 
-    // List to store objects from all categories
-    List<Map<String, dynamic>> allObjects = [];
+      // List to store objects from all categories
+      List<Map<String, dynamic>> allObjects = [];
 
-    for (QueryDocumentSnapshot categoryDoc in categoriesQuery.docs) {
-      CollectionReference categoriaSubcollection =
-          categoriasCollection.doc(categoryDoc.id).collection('Objects');
+      for (QueryDocumentSnapshot categoryDoc in categoriesQuery.docs) {
+        CollectionReference categoriaSubcollection =
+            categoriasCollection.doc(categoryDoc.id).collection('Objects');
 
-      // Query the objects in the subcollection for this category
-      QuerySnapshot objectsQuery = await categoriaSubcollection.get();
+        // Query the objects in the subcollection for this category
+        QuerySnapshot objectsQuery = await categoriaSubcollection.get();
 
-      // Process the objects and add them to the list
-      for (QueryDocumentSnapshot doc in objectsQuery.docs) {
-        Map<String, dynamic> objectData = doc.data() as Map<String, dynamic>;
-        String name = objectData['Name'];
-        String imageUrl = objectData['Image_url'];
-        String description = objectData['Description'];
+        // Process the objects and add them to the list
+        for (QueryDocumentSnapshot doc in objectsQuery.docs) {
+          Map<String, dynamic> objectData = doc.data() as Map<String, dynamic>;
+          String name = objectData['Name'];
+          String imageUrl = objectData['Image_url'];
+          String description = objectData['Description'];
 
-        // Build a map representation of the object and add it to the list
-        Map<String, dynamic> objectInfo = {
-          'Category': categoryDoc['Name'],
-          'Name': name,
-          'Image URL': imageUrl,
-          'Description': description,
-        };
-        allObjects.add(objectInfo);
+          // Build a map representation of the object and add it to the list
+          Map<String, dynamic> objectInfo = {
+            'Category': categoryDoc['Name'],
+            'Name': name,
+            'Image URL': imageUrl,
+            'Description': description,
+          };
+          allObjects.add(objectInfo);
+        }
       }
-    }
 
-    return allObjects; // Return the list of objects as a Future
-  } else {
-    // User not logged in
-    return []; // Return an empty list
+      return allObjects; // Return the list of objects as a Future
+    } else {
+      // User not logged in
+      throw Exception('User is not logged in.');
+    }
+  } catch (error) {
+    print('Error fetching objects: $error');
+    throw error; // Rethrow the error for higher-level handling
   }
 }
 

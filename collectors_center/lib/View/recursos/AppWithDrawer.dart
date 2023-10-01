@@ -68,7 +68,7 @@ class AppWithDrawer extends StatelessWidget {
               title: const Text('Articulos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => const verObjetosGenerales(),
                   ),

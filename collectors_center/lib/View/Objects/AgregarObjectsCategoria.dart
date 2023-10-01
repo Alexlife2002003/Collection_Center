@@ -1,11 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
-//   Fecha:                              29/09/23                                                           //
-//   Descripción:                    Permite agregar objetos a las categorias                    //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import 'dart:io';
-
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
@@ -14,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image/image.dart' as img; // Import the image package
 
 class agregarObjectsCategoria extends StatefulWidget {
   final String categoria;
@@ -30,7 +24,7 @@ void dispose() {}
 class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
   PickedFile? _selectedImage;
   String filepath = "";
-  File? uplaodImage;
+  File? uploadImage;
 
   final _nombreArticuloController = TextEditingController();
   final _descripcionController = TextEditingController();
@@ -40,12 +34,35 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      final File compressedImage = await _compressImage(File(pickedFile.path));
       setState(() {
-        _selectedImage = PickedFile(pickedFile.path);
-        filepath = pickedFile.path;
-        uplaodImage = File(pickedFile.path);
+        _selectedImage = PickedFile(compressedImage.path);
+        filepath = compressedImage.path;
+        uploadImage = compressedImage;
       });
     }
+  }
+
+  Future<File> _compressImage(File originalImage) async {
+    final img.Image image = img.decodeImage(await originalImage.readAsBytes())!;
+
+    // Define the maximum dimensions for the compressed image
+    const int maxWidth = 800;
+    const int maxHeight = 800;
+
+    // Resize the image while maintaining aspect ratio
+    img.Image resizedImage =
+        img.copyResize(image, width: maxWidth, height: maxHeight);
+
+    // Encode the resized image to JPEG format with a specified quality (adjust quality as needed)
+    final List<int> compressedImageData =
+        img.encodeJpg(resizedImage, quality: 80);
+
+    // Create a new File with the compressed image data
+    final File compressedFile = File(originalImage.path)
+      ..writeAsBytesSync(compressedImageData);
+
+    return compressedFile;
   }
 
   Future<void> subirStorage() async {
@@ -65,7 +82,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
           FirebaseStorage.instance.ref().child('images/$randomFileName.jpg');
 
       // Upload the image to Firebase Storage
-      final UploadTask uploadTask = storageReference.putFile(uplaodImage!);
+      final UploadTask uploadTask = storageReference.putFile(uploadImage!);
 
       // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
@@ -109,129 +126,137 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return AppWithDrawer(
       content: Scaffold(
         body: Container(
-          height: screenheight,
+          height: screenHeight,
           width: screenWidth,
           color: peach,
           child: SingleChildScrollView(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  'Nuevo\nartículo',
-                  style: TextStyle(
-                      fontSize: 42, color: brown, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              GestureDetector(
-                onTap: _pickImage,
-                child: Column(
-                  children: [
-                    if (_selectedImage != null)
-                      Image.file(
-                        File(_selectedImage!.path),
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      )
-                    else
-                      Icon(
-                        Icons.add_a_photo,
-                        size: 120,
-                      ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  width: screenWidth - 150,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: myColor,
-                    border: Border.all(color: Colors.white, width: .2),
-                    borderRadius: BorderRadius.circular(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    'Nuevo\nartículo',
+                    style: TextStyle(
+                        fontSize: 42,
+                        color: brown,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      controller: _nombreArticuloController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Nombre',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFF503A27),
-                            fontSize: 20),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Column(
+                    children: [
+                      if (_selectedImage != null)
+                        Image.file(
+                          File(_selectedImage!.path),
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        )
+                      else
+                        Image.asset(
+                          'lib/assets/images/add_image.png',
+                          width: 200,
+                          height: 200,
+                        )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    width: screenWidth - 150,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: myColor,
+                      border: Border.all(color: Colors.white, width: .2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Center(
+                        child: TextField(
+                          controller: _nombreArticuloController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Nombre',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF503A27),
+                                fontSize: 20),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  width: screenWidth - 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: myColor,
-                    border: Border.all(color: Colors.white, width: .2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextField(
-                      controller: _descripcionController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Descripcion',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFF503A27),
-                            fontSize: 20),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    width: screenWidth - 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: myColor,
+                      border: Border.all(color: Colors.white, width: .2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Center(
+                        child: TextField(
+                          controller: _descripcionController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Descripcion',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF503A27),
+                                fontSize: 20),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: (screenheight / 33),
-              ),
-              Container(
-                width: screenWidth - 200,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                  onPressed: agregar,
-                  child: const Text('Guardar'),
+                SizedBox(
+                  height: (screenHeight / 33),
                 ),
-              ),
-              Container(
-                width: screenWidth - 200,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                  onPressed: cancelar,
-                  child: const Text('Cancelar'),
+                Container(
+                  width: screenWidth - 200,
+                  child: ElevatedButton(
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    onPressed: agregar,
+                    child: const Text('Guardar'),
+                  ),
                 ),
-              ),
-            ],
-          )),
+                Container(
+                  width: screenWidth - 200,
+                  child: ElevatedButton(
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.red)),
+                    onPressed: cancelar,
+                    child: const Text('Cancelar'),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
