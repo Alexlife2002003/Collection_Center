@@ -161,8 +161,8 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             return Text('No image available');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return Image.network(
-                              imageUrl,
+                            return CachedNetworkImage(
+                              imageUrl: imageUrl,
                               fit: BoxFit.cover,
                               width: 188,
                               height: 188,
@@ -209,8 +209,8 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             return Text('No image available');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return Image.network(
-                              imageUrl,
+                            return CachedNetworkImage(
+                              imageUrl: imageUrl,
                               fit: BoxFit.cover,
                               width: 188,
                               height: 188,
