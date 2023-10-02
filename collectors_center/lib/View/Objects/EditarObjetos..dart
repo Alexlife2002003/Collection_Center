@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image/image.dart' as img;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 
 class EditarObjetos extends StatefulWidget {
   final String url;
@@ -36,7 +37,11 @@ class _EditarObjetosState extends State<EditarObjetos> {
   final _descripcionController = TextEditingController();
 
   void cancelar() {
-    regresarAnterior(context);
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => verObjectsCategoria(categoria: category)),
+  );
   }
 
   void setImageInfo() async {

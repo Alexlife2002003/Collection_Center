@@ -364,7 +364,7 @@ Future<void> deleteByCategoryNoMessage(
 Future<void> deleteByGeneral(BuildContext context, String imageUrl) async {
   await deleteImageByImageUrl(imageUrl);
 
-  Navigator.of(context).pushReplacement(
+  Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => const verObjetosGenerales(),
     ),
@@ -375,7 +375,7 @@ Future<void> deleteByGeneralNoMessage(
     BuildContext context, String imageUrl) async {
   await deleteImageByImageUrlNoMessage(imageUrl);
 
-  Navigator.of(context).pushReplacement(
+  Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => const verObjetosGenerales(),
     ),
