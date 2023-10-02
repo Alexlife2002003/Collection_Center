@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image/image.dart' as img;
 
 class agregarObjectsGeneral extends StatefulWidget {
   final String categoria;
@@ -68,16 +69,49 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
   }
 
   Future<void> _pickImage() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
+    Navigator.pop(context);
 
     if (pickedFile != null) {
+      final File compressedImage = await _compressImage(File(pickedFile.path));
       setState(() {
-        _selectedImage = PickedFile(pickedFile.path);
-        filepath = pickedFile.path;
-        uploadImage = File(pickedFile.path);
+        _selectedImage = PickedFile(compressedImage.path);
+        filepath = compressedImage.path;
+        uploadImage = compressedImage;
       });
     }
+  }
+
+  Future<File> _compressImage(File originalImage) async {
+    final img.Image image = img.decodeImage(await originalImage.readAsBytes())!;
+
+    // Define the maximum dimensions for the compressed image
+    const int maxWidth = 800;
+    const int maxHeight = 800;
+
+    // Resize the image while maintaining aspect ratio
+    img.Image resizedImage =
+        img.copyResize(image, width: maxWidth, height: maxHeight);
+
+    // Encode the resized image to JPEG format with a specified quality (adjust quality as needed)
+    final List<int> compressedImageData =
+        img.encodeJpg(resizedImage, quality: 80);
+
+    // Create a new File with the compressed image data
+    final File compressedFile = File(originalImage.path)
+      ..writeAsBytesSync(compressedImageData);
+
+    return compressedFile;
   }
 
   Future<void> subirStorage() async {
@@ -129,7 +163,11 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
     }
   }
 
-  void agregar() {
+  void agregar() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
     subirStorage();
   }
 

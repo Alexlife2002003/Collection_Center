@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
@@ -24,37 +25,28 @@ class _PerfilState extends State<Perfil> {
   bool _editingEnabled = false; // Estado para controlar la edición
 
   //Crea todos los textfields para recibir los datos
-  Widget buildInputField(String hintText, TextEditingController controller,
-      bool obscureText, TextInputType inputType, double screenWidth) {
+  Widget buildInputField(
+      String hintText,
+      String? valor,
+      TextEditingController controller,
+      bool obscureText,
+      TextInputType inputType,
+      double screenWidth) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Container(
-        width: screenWidth - 50,
-        height: 61,
-        decoration: BoxDecoration(
-          color: myColor.withOpacity(.8),
-          border: Border.all(color: Colors.white, width: 1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: TextField(
-            controller: controller,
-            obscureText: obscureText,
-            keyboardType: inputType,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: hintText,
-              hintStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(211, 64, 52, 42),
-                  fontSize: 24),
-            ),
-            textAlign: TextAlign.left,
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Container(
+          width: screenWidth - 50,
+          height: 70,
+          decoration: BoxDecoration(
+            color: myColor.withOpacity(.8),
+            border: Border.all(color: Colors.white, width: 1),
+            borderRadius: BorderRadius.circular(12),
           ),
-        ),
-      ),
-    );
+          child: Text(
+            hintText + " " + valor!,
+            style: TextStyle(color: brown, fontSize: 26),
+          ),
+        ));
   }
 
   @override
@@ -101,26 +93,37 @@ class _PerfilState extends State<Perfil> {
                     const SizedBox(
                       height: 10,
                     ),
-                    buildInputField('Nombre', _nombreUsuarioController, false,
-                        TextInputType.text, screenWidth),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    buildInputField('e-mail', _emailController, false,
-                        TextInputType.emailAddress, screenWidth),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    buildInputField('ID: ', _idnumber, true, TextInputType.text,
+                    buildInputField(
+                        ' Usuario: ',
+                        FirebaseAuth.instance.currentUser?.displayName
+                            .toString(),
+                        _nombreUsuarioController,
+                        false,
+                        TextInputType.text,
                         screenWidth),
                     const SizedBox(
                       height: 15,
                     ),
-                    buildInputField('Password', _passwordController, true,
-                        TextInputType.text, screenWidth),
+                    buildInputField(
+                        ' e-mail: ',
+                        FirebaseAuth.instance.currentUser?.email.toString(),
+                        _emailController,
+                        false,
+                        TextInputType.emailAddress,
+                        screenWidth),
                     const SizedBox(
-                      height: 35,
+                      height: 15,
                     ),
+                    //buildInputField('ID: ', _idnumber, true, TextInputType.text,
+                    //    screenWidth),
+                    //const SizedBox(
+                    //  height: 15,
+                    //),
+                    //buildInputField('Password', _passwordController, true,
+                    //    TextInputType.text, screenWidth),
+                    //const SizedBox(
+                    //  height: 35,
+                    //),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: GestureDetector(

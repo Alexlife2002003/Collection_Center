@@ -1,15 +1,29 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
-//   Fecha:                              29/09/23                                                           //
-//   Descripción:                    Permite ver objetos desde las categorias                     //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
+import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+String imageUrlKey = 'Image URL';
+
+class MyObject {
+  String imageUrl;
+  bool isSelected;
+
+  MyObject({
+    required this.imageUrl,
+    this.isSelected = false,
+  });
+
+  factory MyObject.fromMap(Map<String, dynamic> map) {
+    return MyObject(
+      imageUrl: map[imageUrlKey],
+    );
+  }
+}
 
 class verObjectsCategoria extends StatefulWidget {
   final String categoria;
@@ -22,7 +36,9 @@ class verObjectsCategoria extends StatefulWidget {
 
 class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   final FirebaseStorage storage = FirebaseStorage.instance;
-  List<Map<String, dynamic>> _objectList = [];
+  List<MyObject> _objectList = [];
+  List<MyObject> _selectedObjects = [];
+  bool deleteActivated = false;
 
   @override
   void initState() {
@@ -35,12 +51,61 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
       final List<Map<String, dynamic>> objects =
           await fetchObjectsByCategory(widget.categoria);
 
+      final List<MyObject> myObjects = objects.map((object) {
+        return MyObject.fromMap(object);
+      }).toList();
+
       setState(() {
-        _objectList = objects;
+        _objectList = myObjects;
       });
     } catch (error) {
       print("Error fetching objects: $error");
     }
+  }
+
+  void _toggleSelection(MyObject myObject) {
+    setState(() {
+      myObject.isSelected = !myObject.isSelected;
+      if (myObject.isSelected) {
+        _selectedObjects.add(myObject);
+      } else {
+        _selectedObjects.remove(myObject);
+      }
+    });
+  }
+
+  void _deleteSelectedObjects() {
+    final storageRef = FirebaseStorage.instance.ref();
+    try {
+      for (MyObject selectedObject in _selectedObjects) {
+        deleteByCategoryNoMessage(
+            context, selectedObject.imageUrl, widget.categoria);
+      }
+      Fluttertoast.showToast(
+        msg: "Los artículos han sido eliminados",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Los artículos no han sido eliminados",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    setState(() {
+      _objectList.removeWhere((object) => object.isSelected);
+
+      _selectedObjects.clear();
+    });
   }
 
   @override
@@ -74,9 +139,21 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (deleteActivated) {
+                              setState(() {
+                                deleteActivated = !deleteActivated;
+                              });
+
+                              _deleteSelectedObjects();
+                            } else {
+                              setState(() {
+                                deleteActivated = !deleteActivated;
+                              });
+                            }
+                          },
                           icon: Icon(
-                            Icons.delete,
+                            deleteActivated ? Icons.check : Icons.delete,
                             size: 60,
                           ),
                         ),
@@ -126,7 +203,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
               ),
               _objectList.isEmpty
                   ? Center(
-                      child: CircularProgressIndicator(),
+                      child: Container(
+                        color: peach,
+                      ),
                     )
                   : SingleChildScrollView(
                       child: Column(
@@ -147,10 +226,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     );
   }
 
-  Widget _buildObjectRow(
-      Map<String, dynamic> object1, Map<String, dynamic>? object2) {
-    final String imageUrl1 = object1['Image URL'];
-    final String? imageUrl2 = object2?['Image URL'];
+  Widget _buildObjectRow(MyObject object1, MyObject? object2) {
+    final String imageUrl1 = object1.imageUrl;
+    final String? imageUrl2 = object2?.imageUrl;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -175,11 +253,34 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                             return Text('Error loading image');
                           } else {
                             final imageUrl = snapshot.data.toString();
-                            return CachedNetworkImage(
-                              imageUrl: imageUrl,
-                              fit: BoxFit.cover,
-                              width: 188,
-                              height: 188,
+                            return GestureDetector(
+                              onTap: () {
+                                if (deleteActivated) {
+                                  _toggleSelection(object1);
+                                } else {
+                                  goToEditarObjeto(
+                                      context, imageUrl, imageUrl1);
+                                }
+                              },
+                              child: Stack(
+                                children: [
+                                  CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    fit: BoxFit.cover,
+                                    width: 188,
+                                    height: 188,
+                                  ),
+                                  if (object1.isSelected)
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Icon(
+                                        Icons.check_circle,
+                                        color: Colors.green,
+                                        size: 24,
+                                      ),
+                                    ),
+                                ],
+                              ),
                             );
                           }
                         },
@@ -203,33 +304,60 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
           if (imageUrl2 != null) SizedBox(width: 8),
           if (imageUrl2 != null)
             Expanded(
-              child: Card(
-                elevation: 3,
-                child: Stack(
-                  children: [
-                    Container(
-                      color: peach,
-                      child: FutureBuilder(
-                        future: storage.ref().child(imageUrl2).getDownloadURL(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error loading image');
-                          } else {
-                            final imageUrl = snapshot.data.toString();
-                            return CachedNetworkImage(
-                              imageUrl: imageUrl,
-                              fit: BoxFit.cover,
-                              width: 188,
-                              height: 188,
-                            );
-                          }
-                        },
+              child: Container(
+                color: peach,
+                child: Card(
+                  elevation: 3,
+                  child: Stack(
+                    children: [
+                      Container(
+                        color: peach,
+                        child: FutureBuilder(
+                          future:
+                              storage.ref().child(imageUrl2).getDownloadURL(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error loading image');
+                            } else {
+                              final imageUrl = snapshot.data.toString();
+                              return GestureDetector(
+                                onTap: () {
+                                  if (deleteActivated) {
+                                    _toggleSelection(object2!);
+                                  } else {
+                                    goToEditarObjeto(
+                                        context, imageUrl, imageUrl1);
+                                  }
+                                },
+                                child: Stack(
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: imageUrl,
+                                      fit: BoxFit.cover,
+                                      width: 188,
+                                      height: 188,
+                                    ),
+                                    if (object2!.isSelected)
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 24,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

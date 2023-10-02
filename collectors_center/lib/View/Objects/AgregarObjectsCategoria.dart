@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image/image.dart' as img; // Import the image package
+import 'package:image/image.dart' as img;
 
 class agregarObjectsCategoria extends StatefulWidget {
   final String categoria;
@@ -30,9 +30,18 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
   final _descripcionController = TextEditingController();
 
   Future<void> _pickImage() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-
+    Navigator.pop(context);
     if (pickedFile != null) {
       final File compressedImage = await _compressImage(File(pickedFile.path));
       setState(() {
@@ -115,7 +124,11 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
     }
   }
 
-  void agregar() {
+  void agregar() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
     subirStorage();
   }
 

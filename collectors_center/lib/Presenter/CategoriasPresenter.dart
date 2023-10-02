@@ -15,36 +15,47 @@ import 'package:firebase_storage/firebase_storage.dart';
 Future<void> borrarCategorias(BuildContext context, String categoria) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
-
+    final storageRef = FirebaseStorage.instance.ref();
     if (user != null) {
       // Reference to the user's "Categories" subcollection
       CollectionReference categoriesCollection = FirebaseFirestore.instance
           .collection('Users')
           .doc(user.uid)
           .collection('Categories');
-
+      print("categ: user exists");
       // Query for the document with a specific "Name" field value
       QuerySnapshot querySnapshot =
           await categoriesCollection.where('Name', isEqualTo: categoria).get();
-
+      print("categ: gets equal category");
       // Check if any documents match the query
       if (querySnapshot.docs.isNotEmpty) {
         // Get the first matching category document
         final categoryDoc = querySnapshot.docs.first;
-
+        print("categ: get doc");
         // Reference to the "Objects" subcollection within the category document
         CollectionReference objectsCollection =
             categoryDoc.reference.collection('Objects');
-
+        print("categ: opens subcollection");
         // Query all documents within the "Objects" subcollection
         QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
-
+        print("categ: get subcollection");
         // Delete each document and associated image
         for (final objectDoc in objectsQuerySnapshot.docs) {
-          // Delete the image associated with the document
-          final imageUrl = objectDoc.get('Image_url');
-
-          FirebaseStorage.instance.refFromURL(imageUrl).delete();
+          try {
+            final imageUrl = objectDoc['Image_url'];
+            final categRef = storageRef.child(imageUrl);
+            await categRef.delete();
+          } catch (e) {
+            Fluttertoast.showToast(
+              msg: "La categoría no se ha eliminado",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          }
 
           // Delete the object document
           await objectDoc.reference.delete();
@@ -198,4 +209,63 @@ Future<List<String>> fetchCategories() async {
   }
 
   return categories;
+}
+
+Future<Map<String, String>> getImageInfoByImageUrl(
+    BuildContext context, String imageUrl) async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Reference to the user's "Categories" subcollection
+      CollectionReference categoriesCollection = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Categories');
+
+      // Query all category documents
+      QuerySnapshot categoriesQuerySnapshot = await categoriesCollection.get();
+
+      // Loop through the category documents
+      for (final categoryDoc in categoriesQuerySnapshot.docs) {
+        // Reference to the "Objects" subcollection within the category document
+        CollectionReference objectsCollection =
+            categoryDoc.reference.collection('Objects');
+
+        // Query all documents within the "Objects" subcollection
+        QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
+
+        // Loop through the objects in the category
+        for (final objectDoc in objectsQuerySnapshot.docs) {
+          // Check if the image URL matches the desired URL
+          if (objectDoc['Image_url'] == imageUrl) {
+            // Extract image information (Name and Description)
+            final imageName = objectDoc['Name'];
+            final imageDescription = objectDoc['Description'];
+
+            // Return the image information as a Map
+            return {
+              'imageName': imageName,
+              'imageDescription': imageDescription,
+            };
+          }
+        }
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "Error al buscar la imagen",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
+  // Return an empty Map if no matching image URL was found or there's an error
+  return {
+    'imageName': '',
+    'imageDescription': '',
+  };
 }

@@ -56,7 +56,7 @@ void goToIngresar(BuildContext context) {
 
 // Te regresa a la pantalla anterior
 void regresarAnterior(BuildContext context) {
-  Navigator.of(context).pop();
+  Navigator.pop(context);
 }
 
 // Te lleva a la pantalla de bienvenido
@@ -191,4 +191,5 @@ void createUserDatabase(String UID, String usuario, String correo) {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference usersDetails = firestore.collection('Users');
   usersDetails.doc(UID).set({'User': usuario, 'Email': correo});
+  FirebaseAuth.instance.currentUser?.updateDisplayName(usuario);
 }

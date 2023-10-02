@@ -8,7 +8,10 @@ import 'dart:math';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/Objects/AgregaObjetosGeneral.dart';
 import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
+import 'package:collectors_center/View/Objects/EditarObjetos..dart';
+import 'package:collectors_center/View/Objects/EditarObjetosGenerales.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
+import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,8 +19,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+void goToEditarObjetoGeneral(
+    BuildContext context, String url, String firebase) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => EditarObjetosGenerales(
+              url: url,
+              firebaseURL: firebase,
+            )),
+  );
+}
+
+void goToEditarObjeto(BuildContext context, String url, String firebase) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => EditarObjetos(
+              url: url,
+              firebaseURL: firebase,
+            )),
+  );
+}
+
 void goToVerObjectsCategorias(BuildContext context, String name) {
-  Navigator.pushReplacement(
+  Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) => verObjectsCategoria(categoria: name)),
@@ -218,14 +244,270 @@ Future<List<Map<String, dynamic>>> fetchObjectsByCategory(
         };
         objectList.add(objectInfo);
       }
-      print("printing passion $objectList");
-      return objectList; // Return the list of objects as a Future
+
+      return objectList;
     } else {
       // Category doesn't exist
-      return []; // Return an empty list
+      return [];
     }
   } else {
     // User not logged in
-    return []; // Return an empty list
+    return [];
+  }
+}
+
+Future<Map<String, String>> getImageInfoByImageUrl(
+    BuildContext context, String imageUrl) async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    final storageRef = FirebaseStorage.instance.ref();
+    if (user != null) {
+      // Reference to the user's "Users" collection
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      // Query for the user's document
+      DocumentSnapshot userDocSnapshot =
+          await usersCollection.doc(user.uid).get();
+
+      if (userDocSnapshot.exists) {
+        // Reference to the "Categories" subcollection within the user's document
+        CollectionReference categoriesCollection =
+            userDocSnapshot.reference.collection('Categories');
+
+        // Query all category documents
+        QuerySnapshot categoriesQuerySnapshot =
+            await categoriesCollection.get();
+
+        // Loop through the category documents
+        for (final categoryDoc in categoriesQuerySnapshot.docs) {
+          // Reference to the "Objects" subcollection within the category document
+          CollectionReference objectsCollection =
+              categoryDoc.reference.collection('Objects');
+          final categoryName = categoryDoc['Name'];
+
+          // Query all documents within the "Objects" subcollection
+          QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
+          final imageref = storageRef.child(imageUrl);
+          // Loop through the objects in the category
+          for (final objectDoc in objectsQuerySnapshot.docs) {
+            print(objectDoc.data().toString());
+            print(imageUrl);
+            print("ref:" + imageref.toString());
+            // Check if the image URL matches the desired URL
+            if (objectDoc['Image_url'] == imageUrl) {
+              // Extract image information (Name and Description)
+              final imageName = objectDoc['Name'];
+              final imageDescription = objectDoc['Description'];
+
+              // Return the image information as a Map
+              return {
+                'imageName': imageName,
+                'imageDescription': imageDescription,
+                'imageCategory': categoryName
+              };
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "Error al buscar la imagen",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
+  // Return an empty Map if no matching image URL was found or there's an error
+  return {'imageName': '', 'imageDescription': '', 'imageCategory': ''};
+}
+
+Future<void> deleteByCategory(
+    BuildContext context, String imageUrl, String category) async {
+  await deleteImageByImageUrl(imageUrl);
+
+  goToVerObjectsCategorias(context, category);
+}
+
+Future<void> deleteByCategoryNoMessage(
+    BuildContext context, String imageUrl, String category) async {
+  try {
+    await deleteImageByImageUrlNoMessage(imageUrl);
+    Fluttertoast.showToast(
+      msg: "Los artículos han sido eliminados",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  } on Exception catch (e) {
+    Fluttertoast.showToast(
+      msg: "Los artículos no han sido eliminados",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+  goToVerObjectsCategorias(context, category);
+}
+
+Future<void> deleteByGeneral(BuildContext context, String imageUrl) async {
+  await deleteImageByImageUrl(imageUrl);
+
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (context) => const verObjetosGenerales(),
+    ),
+  );
+}
+
+Future<void> deleteByGeneralNoMessage(
+    BuildContext context, String imageUrl) async {
+  await deleteImageByImageUrlNoMessage(imageUrl);
+
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (context) => const verObjetosGenerales(),
+    ),
+  );
+}
+
+Future<void> deleteImageByImageUrl(String imageUrl) async {
+  bool internet = await conexionInternt();
+  final storageRef = FirebaseStorage.instance.ref();
+  if (internet == false) {
+    return;
+  }
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Reference to the user's "Users" collection
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      // Query for the user's document
+      DocumentSnapshot userDocSnapshot =
+          await usersCollection.doc(user.uid).get();
+
+      if (userDocSnapshot.exists) {
+        // Reference to the "Categories" subcollection within the user's document
+        CollectionReference categoriesCollection =
+            userDocSnapshot.reference.collection('Categories');
+
+        // Query all category documents
+        QuerySnapshot categoriesQuerySnapshot =
+            await categoriesCollection.get();
+
+        // Loop through the category documents
+        for (final categoryDoc in categoriesQuerySnapshot.docs) {
+          // Reference to the "Objects" subcollection within the category document
+          CollectionReference objectsCollection =
+              categoryDoc.reference.collection('Objects');
+
+          // Query all documents within the "Objects" subcollection
+          QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
+
+          // Loop through the objects in the category
+          for (final objectDoc in objectsQuerySnapshot.docs) {
+            // Check if the image URL matches the desired URL
+            if (objectDoc['Image_url'] == imageUrl) {
+              // Delete the document if a match is found
+
+              await objectDoc.reference.delete();
+              final imageref = storageRef.child(imageUrl);
+              await imageref.delete();
+              // Return after deletion or handle as needed
+              Fluttertoast.showToast(
+                msg: "“El artículo ha sido eliminado correctamente",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+              return;
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "“El artículo no se ha eliminado",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+}
+
+Future<void> deleteImageByImageUrlNoMessage(String imageUrl) async {
+  bool internet = await conexionInternt();
+  final storageRef = FirebaseStorage.instance.ref();
+  if (internet == false) {
+    return;
+  }
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Reference to the user's "Users" collection
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      // Query for the user's document
+      DocumentSnapshot userDocSnapshot =
+          await usersCollection.doc(user.uid).get();
+
+      if (userDocSnapshot.exists) {
+        // Reference to the "Categories" subcollection within the user's document
+        CollectionReference categoriesCollection =
+            userDocSnapshot.reference.collection('Categories');
+
+        // Query all category documents
+        QuerySnapshot categoriesQuerySnapshot =
+            await categoriesCollection.get();
+
+        // Loop through the category documents
+        for (final categoryDoc in categoriesQuerySnapshot.docs) {
+          // Reference to the "Objects" subcollection within the category document
+          CollectionReference objectsCollection =
+              categoryDoc.reference.collection('Objects');
+
+          // Query all documents within the "Objects" subcollection
+          QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
+
+          // Loop through the objects in the category
+          for (final objectDoc in objectsQuerySnapshot.docs) {
+            // Check if the image URL matches the desired URL
+            if (objectDoc['Image_url'] == imageUrl) {
+              // Delete the document if a match is found
+
+              await objectDoc.reference.delete();
+              final imageref = storageRef.child(imageUrl);
+              await imageref.delete();
+              // Return after deletion or handle as needed
+
+              return;
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    print("");
   }
 }
