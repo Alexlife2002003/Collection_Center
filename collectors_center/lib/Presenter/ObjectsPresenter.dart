@@ -8,7 +8,7 @@ import 'dart:math';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/Objects/AgregaObjetosGeneral.dart';
 import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
-import 'package:collectors_center/View/Objects/EditarObjetos..dart';
+import 'package:collectors_center/View/Objects/EditarObjetos.dart';
 import 'package:collectors_center/View/Objects/EditarObjetosGenerales.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
