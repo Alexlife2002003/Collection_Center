@@ -17,7 +17,11 @@ class _verCategoriasState extends State<verCategorias> {
     return fetchCategories();
   }
 
+<<<<<<< HEAD
   bool isEdit = false;
+=======
+  bool isEdit = false; 
+>>>>>>> d35d0eb88202c6cb8d24811870d9d89203b10366
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,11 @@ class _verCategoriasState extends State<verCategorias> {
                     ),
                   ),
                   const SizedBox(height: 20),
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> d35d0eb88202c6cb8d24811870d9d89203b10366
                   // Icons and Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -83,9 +91,15 @@ class _verCategoriasState extends State<verCategorias> {
                       )
                     ],
                   ),
+<<<<<<< HEAD
 
                   const SizedBox(height: 20),
 
+=======
+    
+                  const SizedBox(height: 20),
+    
+>>>>>>> d35d0eb88202c6cb8d24811870d9d89203b10366
                   // List of Categories
                   Expanded(
                     child: FutureBuilder<List<String>>(
@@ -97,7 +111,11 @@ class _verCategoriasState extends State<verCategorias> {
                           return Center(child: Text('Error: ${snapshot.error}'));
                         } else {
                           List<String> categories = snapshot.data ?? [];
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> d35d0eb88202c6cb8d24811870d9d89203b10366
                           return ListView.builder(
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
@@ -122,6 +140,7 @@ class _verCategoriasState extends State<verCategorias> {
                                   ),
                                   child: Stack(
                                     children: [
+<<<<<<< HEAD
                                       ListTile(
                                         title: Text(
                                           category,
@@ -142,6 +161,26 @@ class _verCategoriasState extends State<verCategorias> {
                                             color: Colors.black,
                                             size: 40,
                                           ),
+=======
+                                      // Add your icon here
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Icon(
+                                          isEdit ? Icons.delete : null,
+                                          // isEdit ? Icons.delete : Icons.edit_note,
+                                          color: Colors.black,
+                                          size: 40,
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          category,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+>>>>>>> d35d0eb88202c6cb8d24811870d9d89203b10366
                                         ),
                                       ),
                                     ],

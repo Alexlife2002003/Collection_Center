@@ -40,10 +40,17 @@ class _EditarObjetosState extends State<EditarObjetos> {
 
   void cancelar() {
     Navigator.push(
+<<<<<<< HEAD
       context,
       MaterialPageRoute(
           builder: (context) => verObjectsCategoria(categoria: category)),
     );
+=======
+    context,
+    MaterialPageRoute(
+        builder: (context) => verObjectsCategoria(categoria: category)),
+  );
+>>>>>>> d35d0eb88202c6cb8d24811870d9d89203b10366
   }
 
   void setImageInfo() async {
