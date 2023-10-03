@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image/image.dart' as img;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 
 class EditarObjetos extends StatefulWidget {
   final String url;
@@ -35,8 +36,14 @@ class _EditarObjetosState extends State<EditarObjetos> {
   final _nombreArticuloController = TextEditingController();
   final _descripcionController = TextEditingController();
 
+  bool isEditing = false;
+
   void cancelar() {
-    regresarAnterior(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => verObjectsCategoria(categoria: category)),
+    );
   }
 
   void setImageInfo() async {
@@ -48,6 +55,9 @@ class _EditarObjetosState extends State<EditarObjetos> {
           ? imageInfo['imageName'].toString()
           : "";
       descripcion = imageInfo['imageDescription'] != null
+          ? imageInfo['imageDescription'].toString()
+          : "";
+      _descripcionController.text = imageInfo['imageDescription'] != null
           ? imageInfo['imageDescription'].toString()
           : "";
       category = imageInfo['imageCategory'] != null
@@ -67,8 +77,6 @@ class _EditarObjetosState extends State<EditarObjetos> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-// Define a variable to store the result
-
     return AppWithDrawer(
       content: Scaffold(
         body: Container(
@@ -84,9 +92,10 @@ class _EditarObjetosState extends State<EditarObjetos> {
                   child: Text(
                     'Editar\nartículo',
                     style: TextStyle(
-                        fontSize: 42,
-                        color: brown,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 42,
+                      color: brown,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -99,14 +108,14 @@ class _EditarObjetosState extends State<EditarObjetos> {
                       imageUrl: widget.url,
                       width: 200,
                       height: 200,
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
-                    width: screenWidth - 150,
+                    width: screenWidth - 50,
                     height: 50,
                     decoration: BoxDecoration(
                       color: myColor,
@@ -116,7 +125,11 @@ class _EditarObjetosState extends State<EditarObjetos> {
                     child: Center(
                       child: Text(
                         name,
-                        style: TextStyle(color: brown, fontSize: 20),
+                        style: TextStyle(
+                          color: brown,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -127,21 +140,72 @@ class _EditarObjetosState extends State<EditarObjetos> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                      width: screenWidth - 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: myColor,
-                        border: Border.all(color: Colors.white, width: .2),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text(
-                          descripcion,
-                          style: TextStyle(color: brown, fontSize: 20),
-                          textAlign: TextAlign.center,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: screenWidth - 50,
+                          decoration: BoxDecoration(
+                            color: myColor,
+                            border: Border.all(color: Colors.white, width: .2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: isEditing
+                                ? TextFormField(
+                                    controller: _descripcionController,
+                                    style:
+                                        TextStyle(color: brown, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Text(
+                                    descripcion,
+                                    style:
+                                        TextStyle(color: brown, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
+                          ),
                         ),
-                      )),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          isEditing ? Icons.check : Icons.edit,
+                          color: Colors.green,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (isEditing) {
+                              descripcion = _descripcionController.text;
+                              editDescriptionByImageUrl(
+                                  context,
+                                  widget.firebaseURL,
+                                  _descripcionController.text);
+                              // You can save the edited description here
+                            }
+
+                            isEditing = !isEditing;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          // Handle deleting the description here
+                          setState(() {
+                            descripcion = "";
+                            isEditing = false;
+                            _descripcionController.text = "";
+                            clearDescriptionByImageUrl(
+                                context, widget.firebaseURL, "");
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: (screenHeight / 33),
@@ -150,7 +214,8 @@ class _EditarObjetosState extends State<EditarObjetos> {
                   width: screenWidth - 200,
                   child: ElevatedButton(
                     style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red)),
+                      backgroundColor: MaterialStatePropertyAll(Colors.red),
+                    ),
                     onPressed: () {
                       deleteByCategory(context, widget.firebaseURL, category);
                     },
@@ -161,7 +226,8 @@ class _EditarObjetosState extends State<EditarObjetos> {
                   width: screenWidth - 200,
                   child: ElevatedButton(
                     style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                      backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                    ),
                     onPressed: cancelar,
                     child: const Text('Regresar'),
                   ),

@@ -235,7 +235,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
-                    width: screenWidth - 150,
+                    width: screenWidth - 50,
                     height: 50,
                     decoration: BoxDecoration(
                       color: myColor,
@@ -268,8 +268,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
-                    width: screenWidth - 150,
-                    height: 150,
+                    width: screenWidth - 50,
                     decoration: BoxDecoration(
                       color: myColor,
                       border: Border.all(color: Colors.white, width: .2),
@@ -280,13 +279,15 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                       child: Center(
                         child: TextField(
                           controller: _descripcionController,
+                          maxLines: null, // Permite múltiples líneas
+                          keyboardType: TextInputType.multiline, // Activa el teclado multilinea
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Descripcion',
+                            hintText: 'Descripción',
                             hintStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFFF503A27),
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                           textAlign: TextAlign.center,
@@ -302,7 +303,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
-                    width: screenWidth - 150,
+                    width: screenWidth - 50,
                     height: 50,
                     decoration: BoxDecoration(
                       color: myColor,
@@ -310,6 +311,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: DropdownButton<String>(
+                      isExpanded: true, // Hace que el DropdownButton se expanda para centrar el texto
                       value: selectedCategory,
                       onChanged: (String? newValue) {
                         setState(() {
@@ -320,14 +322,16 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                         (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFF503A27),
-                                fontSize: 20,
+                            child: Center( // Centra el texto horizontalmente
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFF503A27),
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           );
                         },
@@ -335,6 +339,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     ),
                   ),
                 ),
+
                 SizedBox(
                   height: (screenHeight / 33),
                 ),

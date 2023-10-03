@@ -1,3 +1,4 @@
+import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
@@ -111,115 +112,121 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return AppWithDrawer(
-      content: Scaffold(
-        backgroundColor: peach,
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: peach,
-                width: double.infinity,
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Artículos',
-                      style: TextStyle(
-                        fontSize: 42,
-                        color: Colors.brown,
-                        fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: ()async {
+        goToVerCategorias(context);
+        return true;
+      },
+      child: AppWithDrawer(
+        content: Scaffold(
+          backgroundColor: peach,
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: peach,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Artículos',
+                        style: TextStyle(
+                          fontSize: 42,
+                          color: Colors.brown,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            if (deleteActivated) {
-                              setState(() {
-                                deleteActivated = !deleteActivated;
-                              });
-
-                              _deleteSelectedObjects();
-                            } else {
-                              setState(() {
-                                deleteActivated = !deleteActivated;
-                              });
-                            }
-                          },
-                          icon: Icon(
-                            deleteActivated ? Icons.check : Icons.delete,
-                            size: 60,
-                          ),
-                        ),
-                        SizedBox(
-                          width: screenWidth - 160,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            goToAgregarObjectsCategorias(
-                                context, widget.categoria);
-                          },
-                          icon: Icon(
-                            Icons.add_circle_outline,
-                            size: 60,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: screenWidth - 150,
-                            height: 50,
-                            margin: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: myColor,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              widget.categoria,
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              if (deleteActivated) {
+                                setState(() {
+                                  deleteActivated = !deleteActivated;
+                                });
+    
+                                _deleteSelectedObjects();
+                              } else {
+                                setState(() {
+                                  deleteActivated = !deleteActivated;
+                                });
+                              }
+                            },
+                            icon: Icon(
+                              deleteActivated ? Icons.check : Icons.delete,
+                              size: 60,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              _objectList.isEmpty
-                  ? Center(
-                      child: Container(
-                        color: peach,
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          for (int i = 0; i < _objectList.length; i += 2)
-                            _buildObjectRow(
-                                _objectList[i],
-                                i + 1 < _objectList.length
-                                    ? _objectList[i + 1]
-                                    : null),
+                          SizedBox(
+                            width: screenWidth - 160,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              goToAgregarObjectsCategorias(
+                                  context, widget.categoria);
+                            },
+                            icon: Icon(
+                              Icons.add_circle_outline,
+                              size: 60,
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-            ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: screenWidth - 150,
+                              height: 50,
+                              margin: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: myColor,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Text(
+                                widget.categoria,
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                _objectList.isEmpty
+                    ? Center(
+                        child: Container(
+                          color: peach,
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            for (int i = 0; i < _objectList.length; i += 2)
+                              _buildObjectRow(
+                                  _objectList[i],
+                                  i + 1 < _objectList.length
+                                      ? _objectList[i + 1]
+                                      : null),
+                          ],
+                        ),
+                      ),
+              ],
+            ),
           ),
         ),
       ),

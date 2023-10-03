@@ -26,27 +26,45 @@ class _PerfilState extends State<Perfil> {
 
   //Crea todos los textfields para recibir los datos
   Widget buildInputField(
-      String hintText,
-      String? valor,
-      TextEditingController controller,
-      bool obscureText,
-      TextInputType inputType,
-      double screenWidth) {
+    String label,
+    String? value,
+    TextEditingController controller,
+    bool obscureText,
+    TextInputType inputType,
+    double screenWidth,
+  ) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Container(
-          width: screenWidth - 50,
-          height: 70,
-          decoration: BoxDecoration(
-            color: myColor.withOpacity(.8),
-            border: Border.all(color: Colors.white, width: 1),
-            borderRadius: BorderRadius.circular(12),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(color: brown, fontSize: 22),
           ),
-          child: Text(
-            hintText + " " + valor!,
-            style: TextStyle(color: brown, fontSize: 26),
+          Container(
+            width: screenWidth - 50,
+            height: 70,
+            decoration: BoxDecoration(
+              color: myColor.withOpacity(.8),
+              border: Border.all(color: Colors.white, width: 1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  value ?? '', // Usar ?? '' para evitar un valor nulo
+                  style: TextStyle(color: brown, fontSize: 18),
+                  textAlign: TextAlign.left, // Alinea el texto a la izquierda
+                ),
+              ),
+            ),
           ),
-        ));
+        ],
+      ),
+    );
   }
 
   @override
@@ -94,7 +112,7 @@ class _PerfilState extends State<Perfil> {
                       height: 10,
                     ),
                     buildInputField(
-                        ' Usuario: ',
+                        ' Usuario:',
                         FirebaseAuth.instance.currentUser?.displayName
                             .toString(),
                         _nombreUsuarioController,
@@ -112,7 +130,7 @@ class _PerfilState extends State<Perfil> {
                         TextInputType.emailAddress,
                         screenWidth),
                     const SizedBox(
-                      height: 15,
+                      height: 45,
                     ),
                     //buildInputField('ID: ', _idnumber, true, TextInputType.text,
                     //    screenWidth),
@@ -141,7 +159,7 @@ class _PerfilState extends State<Perfil> {
                                     Border.all(color: Colors.white, width: 2)),
                             child: const Center(
                                 child: Text(
-                              'Logout',
+                              'Cerrar sesión',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

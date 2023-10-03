@@ -120,8 +120,15 @@ Future<void> ingresarUsuario(
     BuildContext context, String correo, String password) async {
   bool internet = await conexionInternt();
   if (internet == false) {
+    mostrarToast('No tienes conexión a Internet. Verifica tu conexión.');
     return;
   }
+
+  if (correo.isEmpty || password.isEmpty) {
+    mostrarToast('Ingresa tu correo electrónico y contraseña.');
+    return;
+  }
+
   try {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: correo,
@@ -132,18 +139,11 @@ Future<void> ingresarUsuario(
     if (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
         e.code == 'user-not-found' ||
         e.code == 'wrong-password') {
-      Fluttertoast.showToast(
-        msg: 'La contraseña o email es incorrecto',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      mostrarToast('La contraseña o el correo electrónico son incorrectos');
     }
   }
 }
+
 
 // Función para mostrar el mensaje con Fluttertoast
 void mostrarToast(String mensaje) {

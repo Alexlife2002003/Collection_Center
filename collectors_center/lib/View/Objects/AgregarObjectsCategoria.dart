@@ -188,7 +188,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
-                    width: screenWidth - 150,
+                    width: screenWidth - 50,
                     height: 50,
                     decoration: BoxDecoration(
                       color: myColor,
@@ -220,8 +220,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
-                    width: screenWidth - 150,
-                    height: 150,
+                    width: screenWidth - 50,
                     decoration: BoxDecoration(
                       color: myColor,
                       border: Border.all(color: Colors.white, width: .2),
@@ -232,13 +231,15 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                       child: Center(
                         child: TextField(
                           controller: _descripcionController,
+                          maxLines: null, // Permite múltiples líneas
+                          keyboardType: TextInputType.multiline, // Activa el teclado multilinea
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Descripcion',
+                            hintText: 'Descripción',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFF503A27),
-                                fontSize: 20),
+                                fontSize: 16),
                           ),
                           textAlign: TextAlign.center,
                         ),
