@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //////////////////////////////////
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
@@ -115,8 +116,7 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 }
 
 // Funcion encargada de ingresar a la sesión del usuario que ya creó anteriormente
-Future<void> ingresarUsuario(
-    BuildContext context, String correo, String password) async {
+Future<void> ingresarUsuario(BuildContext context, String correo, String password) async {
   bool internet = await conexionInternt();
   if (internet == false) {
     mostrarToast('No tienes conexión a Internet. Verifica tu conexión.');
@@ -133,6 +133,11 @@ Future<void> ingresarUsuario(
       email: correo,
       password: password,
     );
+
+    // Guardar el estado de autenticación en Shared Preferences
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', true);
+
     goToBienvenido(context);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
@@ -142,6 +147,7 @@ Future<void> ingresarUsuario(
     }
   }
 }
+
 
 // Función para mostrar el mensaje con Fluttertoast
 void mostrarToast(String mensaje) {

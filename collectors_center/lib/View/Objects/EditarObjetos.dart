@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
+import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EditarObjetos extends StatefulWidget {
   final String url;
@@ -70,6 +72,12 @@ class _EditarObjetosState extends State<EditarObjetos> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
+      return Inicio();
+    }
 
     return AppWithDrawer(
       content: Scaffold(

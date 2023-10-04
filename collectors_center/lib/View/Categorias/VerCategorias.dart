@@ -1,9 +1,11 @@
+import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class verCategorias extends StatefulWidget {
   const verCategorias({Key? key}) : super(key: key);
@@ -24,6 +26,12 @@ class _verCategoriasState extends State<verCategorias> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
 
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
+      return Inicio();
+    }
+    
     void borrar(String categoria) {
       borrarCategorias(context, categoria.trim());
     }

@@ -1,8 +1,10 @@
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class agregarCategorias extends StatefulWidget {
   const agregarCategorias({super.key});
@@ -30,6 +32,13 @@ class _agregarCategoriasState extends State<agregarCategorias> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
+      return Inicio();
+    }
+    
     return AppWithDrawer(
       content: Scaffold(
         body: Container(

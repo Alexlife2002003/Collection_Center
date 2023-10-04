@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image/image.dart' as img;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class agregarObjectsCategoria extends StatefulWidget {
   final String categoria;
@@ -140,6 +142,13 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
+      return Inicio();
+    }
+    
     return AppWithDrawer(
       content: Scaffold(
         body: Container(
