@@ -71,7 +71,8 @@ class _IngresarState extends State<Ingresar> {
 
     ///Se comunica con el presentador para ingresar a la aplicación
     void ingresar() {
-      ingresarUsuario(context, _emailController.text, _passwordController.text);
+      ingresarUsuario(
+          context, _emailController.text.trim(), _passwordController.text);
     }
 
     return Scaffold(
