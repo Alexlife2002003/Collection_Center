@@ -71,7 +71,12 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
     });
   }
 
-  void _deleteSelectedObjects() {
+  void _deleteSelectedObjects() async {
+    bool internet = await conexionInternt();
+    final storageRef = FirebaseStorage.instance.ref();
+    if (internet == false) {
+      return;
+    }
     try {
       for (MyObject selectedObject in _selectedObjects) {
         deleteByGeneralNoMessage(context, selectedObject.imageUrl);

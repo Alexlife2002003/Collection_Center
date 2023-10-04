@@ -1,5 +1,6 @@
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
+import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,12 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     });
   }
 
-  void _deleteSelectedObjects() {
+  void _deleteSelectedObjects() async {
+    bool internet = await conexionInternt();
+    final storageRef = FirebaseStorage.instance.ref();
+    if (internet == false) {
+      return;
+    }
     try {
       for (MyObject selectedObject in _selectedObjects) {
         deleteByCategoryNoMessage(
