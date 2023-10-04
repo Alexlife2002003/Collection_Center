@@ -1,13 +1,8 @@
 import 'dart:io';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image/image.dart' as img;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 
@@ -25,7 +20,6 @@ class EditarObjetos extends StatefulWidget {
 void dispose() {}
 
 class _EditarObjetosState extends State<EditarObjetos> {
-  PickedFile? _selectedImage;
   String filepath = "";
   File? uploadImage;
   Map<String, String> imageInfo = {};
@@ -48,7 +42,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
 
   void setImageInfo() async {
     imageInfo = await getImageInfoByImageUrl(context, widget.firebaseURL);
-    print(imageInfo);
+
     setState(() {
       // Update the state with the fetched data
       name = imageInfo['imageName'] != null
@@ -111,7 +105,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                     ),
                   ],
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
@@ -135,7 +129,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -189,7 +183,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.delete,
                           color: Colors.red,
                         ),

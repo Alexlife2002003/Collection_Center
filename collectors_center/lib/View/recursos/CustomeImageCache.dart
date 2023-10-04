@@ -62,7 +62,7 @@ class _CustomImageCacheState extends State<CustomImageCache> {
         height: 188,
       );
     } else {
-      return CircularProgressIndicator(); // Show a loading indicator while image is being fetched.
+      return const CircularProgressIndicator(); // Show a loading indicator while image is being fetched.
     }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +75,6 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   }
 
   void _deleteSelectedObjects() {
-    final storageRef = FirebaseStorage.instance.ref();
     try {
       for (MyObject selectedObject in _selectedObjects) {
         deleteByCategoryNoMessage(
@@ -113,7 +111,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(
-      onWillPop: ()async {
+      onWillPop: () async {
         goToVerCategorias(context);
         return true;
       },
@@ -126,11 +124,11 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                 Container(
                   color: peach,
                   width: double.infinity,
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Artículos',
                         style: TextStyle(
                           fontSize: 42,
@@ -150,7 +148,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                 setState(() {
                                   deleteActivated = !deleteActivated;
                                 });
-    
+
                                 _deleteSelectedObjects();
                               } else {
                                 setState(() {
@@ -171,7 +169,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                               goToAgregarObjectsCategorias(
                                   context, widget.categoria);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.add_circle_outline,
                               size: 60,
                             ),
@@ -194,7 +192,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                               ),
                               child: Text(
                                 widget.categoria,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -255,9 +253,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
-                            return Text('Error loading image');
+                            return const Text('Error loading image');
                           } else {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
@@ -278,7 +276,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                     height: 188,
                                   ),
                                   if (object1.isSelected)
-                                    Align(
+                                    const Align(
                                       alignment: Alignment.topRight,
                                       child: Icon(
                                         Icons.check_circle,
@@ -299,7 +297,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
             ),
           ),
           if (imageUrl2 == null)
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
           if (imageUrl2 == null)
@@ -308,7 +306,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
               width: 188,
               height: 188,
             ),
-          if (imageUrl2 != null) SizedBox(width: 8),
+          if (imageUrl2 != null) const SizedBox(width: 8),
           if (imageUrl2 != null)
             Expanded(
               child: Container(
@@ -325,9 +323,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
-                              return Text('Error loading image');
+                              return const Text('Error loading image');
                             } else {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
@@ -348,7 +346,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                       height: 188,
                                     ),
                                     if (object2!.isSelected)
-                                      Align(
+                                      const Align(
                                         alignment: Alignment.topRight,
                                         child: Icon(
                                           Icons.check_circle,

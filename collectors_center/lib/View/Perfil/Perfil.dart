@@ -20,9 +20,6 @@ class _PerfilState extends State<Perfil> {
   TextEditingController _nombreUsuarioController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _idnumber = TextEditingController();
-
-  bool _editingEnabled = false; // Estado para controlar la edición
 
   //Crea todos los textfields para recibir los datos
   Widget buildInputField(

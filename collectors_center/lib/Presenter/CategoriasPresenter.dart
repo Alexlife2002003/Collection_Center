@@ -3,7 +3,6 @@ import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Categorias/agregarCategorias.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,23 +21,23 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
           .collection('Users')
           .doc(user.uid)
           .collection('Categories');
-      print("categ: user exists");
+
       // Query for the document with a specific "Name" field value
       QuerySnapshot querySnapshot =
           await categoriesCollection.where('Name', isEqualTo: categoria).get();
-      print("categ: gets equal category");
+
       // Check if any documents match the query
       if (querySnapshot.docs.isNotEmpty) {
         // Get the first matching category document
         final categoryDoc = querySnapshot.docs.first;
-        print("categ: get doc");
+
         // Reference to the "Objects" subcollection within the category document
         CollectionReference objectsCollection =
             categoryDoc.reference.collection('Objects');
-        print("categ: opens subcollection");
+
         // Query all documents within the "Objects" subcollection
         QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
-        print("categ: get subcollection");
+
         // Delete each document and associated image
         for (final objectDoc in objectsQuerySnapshot.docs) {
           try {

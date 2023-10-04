@@ -108,7 +108,6 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
       mostrarToast('Passwords do not match');
     }
   } on FirebaseAuthException catch (e) {
-    print("este es el error: " + e.code);
     if (e.code == 'email-already-in-use') {
       mostrarToast('Email already in use');
     }
@@ -144,7 +143,6 @@ Future<void> ingresarUsuario(
   }
 }
 
-
 // Función para mostrar el mensaje con Fluttertoast
 void mostrarToast(String mensaje) {
   Fluttertoast.showToast(
@@ -169,8 +167,15 @@ Future<void> cerrarSesion(BuildContext context) async {
     // Llama a la función para ir a la pantalla de inicio
     goToInicio(context);
   } catch (e) {
-    print("Error al cerrar la sesión: $e");
-    // Manejar errores, si es necesario
+    Fluttertoast.showToast(
+      msg: "Error al cerrar la sesión",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 }
 

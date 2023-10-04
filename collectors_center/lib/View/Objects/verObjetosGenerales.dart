@@ -72,7 +72,6 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
   }
 
   void _deleteSelectedObjects() {
-    final storageRef = FirebaseStorage.instance.ref();
     try {
       for (MyObject selectedObject in _selectedObjects) {
         deleteByGeneralNoMessage(context, selectedObject.imageUrl);
@@ -121,11 +120,11 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                 Container(
                   color: peach,
                   width: double.infinity,
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Artículos',
                         style: TextStyle(
                           fontSize: 42,
@@ -145,7 +144,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                 setState(() {
                                   deleteActivated = !deleteActivated;
                                 });
-    
+
                                 _deleteSelectedObjects();
                               } else {
                                 setState(() {
@@ -165,7 +164,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             onPressed: () {
                               goToAgregarObjectsGenerales(context);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.add_circle_outline,
                               size: 60,
                             ),
@@ -226,9 +225,9 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
-                            return Text('Error loading image');
+                            return const Text('Error loading image');
                           } else {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
@@ -249,7 +248,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                     height: 188,
                                   ),
                                   if (object1.isSelected)
-                                    Align(
+                                    const Align(
                                       alignment: Alignment.topRight,
                                       child: Icon(
                                         Icons.check_circle,
@@ -270,7 +269,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
             ),
           ),
           if (imageUrl2 == null)
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
           if (imageUrl2 == null)
@@ -279,7 +278,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
               width: 188,
               height: 188,
             ),
-          if (imageUrl2 != null) SizedBox(width: 8),
+          if (imageUrl2 != null) const SizedBox(width: 8),
           if (imageUrl2 != null)
             Expanded(
               child: Container(
@@ -296,9 +295,9 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
-                              return Text('Error loading image');
+                              return const Text('Error loading image');
                             } else {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
@@ -319,7 +318,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                       height: 188,
                                     ),
                                     if (object2!.isSelected)
-                                      Align(
+                                      const Align(
                                         alignment: Alignment.topRight,
                                         child: Icon(
                                           Icons.check_circle,

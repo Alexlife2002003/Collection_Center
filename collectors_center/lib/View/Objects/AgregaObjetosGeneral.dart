@@ -73,7 +73,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
@@ -121,7 +121,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -230,7 +230,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     ],
                   ),
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -262,7 +262,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -280,7 +280,8 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                         child: TextField(
                           controller: _descripcionController,
                           maxLines: null, // Permite múltiples líneas
-                          keyboardType: TextInputType.multiline, // Activa el teclado multilinea
+                          keyboardType: TextInputType
+                              .multiline, // Activa el teclado multilinea
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Descripción',
@@ -296,7 +297,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 // Dropdown for selecting a category
@@ -311,7 +312,8 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: DropdownButton<String>(
-                      isExpanded: true, // Hace que el DropdownButton se expanda para centrar el texto
+                      isExpanded:
+                          true, // Hace que el DropdownButton se expanda para centrar el texto
                       value: selectedCategory,
                       onChanged: (String? newValue) {
                         setState(() {
@@ -322,10 +324,11 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                         (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Center( // Centra el texto horizontalmente
+                            child: Center(
+                              // Centra el texto horizontalmente
                               child: Text(
                                 value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFF503A27),
                                   fontSize: 20,

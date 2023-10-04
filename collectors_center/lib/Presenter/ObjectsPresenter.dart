@@ -13,7 +13,6 @@ import 'package:collectors_center/View/Objects/EditarObjetosGenerales.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -207,7 +206,7 @@ void goToAgregarObjectsGenerales(BuildContext context) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => agregarObjectsGeneral(categoria: "")));
+          builder: (context) => const agregarObjectsGeneral(categoria: "")));
 }
 
 String generateRandomFileName() {
@@ -437,9 +436,6 @@ Future<Map<String, String>> getImageInfoByImageUrl(
           final imageref = storageRef.child(imageUrl);
           // Loop through the objects in the category
           for (final objectDoc in objectsQuerySnapshot.docs) {
-            print(objectDoc.data().toString());
-            print(imageUrl);
-            print("ref:" + imageref.toString());
             // Check if the image URL matches the desired URL
             if (objectDoc['Image_url'] == imageUrl) {
               // Extract image information (Name and Description)

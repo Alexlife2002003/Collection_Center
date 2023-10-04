@@ -34,7 +34,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
@@ -81,7 +81,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -184,7 +184,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                     ],
                   ),
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
@@ -214,7 +214,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -232,7 +232,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                         child: TextField(
                           controller: _descripcionController,
                           maxLines: null, // Permite múltiples líneas
-                          keyboardType: TextInputType.multiline, // Activa el teclado multilinea
+                          keyboardType: TextInputType
+                              .multiline, // Activa el teclado multilinea
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Descripción',

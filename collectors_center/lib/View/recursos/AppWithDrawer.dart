@@ -9,7 +9,6 @@ import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
 
 class AppWithDrawer extends StatelessWidget {
   final Widget content;
