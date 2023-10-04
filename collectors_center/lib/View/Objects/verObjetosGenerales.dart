@@ -311,7 +311,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                     _toggleSelection(object2!);
                                   } else {
                                     goToEditarObjetoGeneral(
-                                        context, imageUrl, imageUrl1);
+                                        context, imageUrl, imageUrl2);
                                   }
                                 },
                                 child: Stack(

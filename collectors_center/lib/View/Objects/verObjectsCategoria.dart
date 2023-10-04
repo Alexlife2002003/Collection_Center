@@ -340,7 +340,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                     _toggleSelection(object2!);
                                   } else {
                                     goToEditarObjeto(
-                                        context, imageUrl, imageUrl1);
+                                        context, imageUrl, imageUrl2);
                                   }
                                 },
                                 child: Stack(
