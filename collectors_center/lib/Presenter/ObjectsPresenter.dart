@@ -19,6 +19,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+// Método encargado de realizar la descripción del artículo.
 Future<void> editDescriptionByImageUrl(
     BuildContext context, String imageUrl, String description) async {
   bool internet = await conexionInternt();
@@ -92,6 +93,7 @@ Future<void> editDescriptionByImageUrl(
   }
 }
 
+// Método encargado de eliminar la descripción de un artículo y dejar vacío el campo de descripción
 Future<void> clearDescriptionByImageUrl(
     BuildContext context, String imageUrl, String description) async {
   bool internet = await conexionInternt();
