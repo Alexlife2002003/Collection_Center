@@ -97,8 +97,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
 
       // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-        // Get the download URL of the uploaded image
-        final imageUrl = await storageReference.getDownloadURL();
+     
         agregarObjetoCategoria(
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
@@ -146,7 +145,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
-      return Inicio();
+      return const Inicio();
     }
     
     return AppWithDrawer(

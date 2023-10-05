@@ -14,12 +14,12 @@ class Bienvenido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+   
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
-      return Inicio();
+      return const Inicio();
     }
     
     return WillPopScope(

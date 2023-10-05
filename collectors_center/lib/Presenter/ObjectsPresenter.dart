@@ -166,6 +166,7 @@ Future<void> clearDescriptionByImageUrl(
   }
 }
 
+// Te lleva a la pantalla de editar objeto desde la pantalla general de objetos
 void goToEditarObjetoGeneral(
     BuildContext context, String url, String firebase) {
   Navigator.push(
@@ -178,6 +179,7 @@ void goToEditarObjetoGeneral(
   );
 }
 
+// Te lleva a la pantalla de editar objeto desde la pantalla general de objetos dentro de categorías
 void goToEditarObjeto(BuildContext context, String url, String firebase) {
   Navigator.push(
     context,
@@ -189,6 +191,7 @@ void goToEditarObjeto(BuildContext context, String url, String firebase) {
   );
 }
 
+// Te lleva a ver los objetos desde adentro de su categoría
 void goToVerObjectsCategorias(BuildContext context, String name) {
   Navigator.push(
     context,
@@ -197,6 +200,7 @@ void goToVerObjectsCategorias(BuildContext context, String name) {
   );
 }
 
+//Te permite agregar objetos desde adentro de categorías
 void goToAgregarObjectsCategorias(BuildContext context, String name) {
   Navigator.push(
       context,
@@ -204,6 +208,7 @@ void goToAgregarObjectsCategorias(BuildContext context, String name) {
           builder: (context) => agregarObjectsCategoria(categoria: name)));
 }
 
+//Permite agregar objetos desde objetos generales
 void goToAgregarObjectsGenerales(BuildContext context) {
   Navigator.push(
       context,
@@ -211,12 +216,15 @@ void goToAgregarObjectsGenerales(BuildContext context) {
           builder: (context) => const agregarObjectsGeneral(categoria: "")));
 }
 
+//Crea un nombre random
 String generateRandomFileName() {
   final random = Random.secure();
   return DateTime.now().millisecondsSinceEpoch.toString() +
       random.nextInt(999999).toString();
 }
 
+
+//Funcionalidad de agregar objeto a categoría
 void agregarObjetoCategoria(
     String url, String name, String descripcion, String categoria) async {
   bool internet = await conexionInternt();
@@ -296,6 +304,7 @@ void agregarObjetoCategoria(
   }
 }
 
+// Te permite obtener todos los objetos sin importar su categoría
 Future<List<Map<String, dynamic>>> fetchAllObjects() async {
   try {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -350,6 +359,7 @@ Future<List<Map<String, dynamic>>> fetchAllObjects() async {
   }
 }
 
+// Permite obtener los objetos por categoría
 Future<List<Map<String, dynamic>>> fetchObjectsByCategory(
     String categoryName) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -403,11 +413,11 @@ Future<List<Map<String, dynamic>>> fetchObjectsByCategory(
   }
 }
 
+// Permite obtener informacion de la imagen a traves del url
 Future<Map<String, String>> getImageInfoByImageUrl(
     BuildContext context, String imageUrl) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
-    final storageRef = FirebaseStorage.instance.ref();
     if (user != null) {
       // Reference to the user's "Users" collection
       CollectionReference usersCollection =
@@ -435,7 +445,6 @@ Future<Map<String, String>> getImageInfoByImageUrl(
 
           // Query all documents within the "Objects" subcollection
           QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
-          final imageref = storageRef.child(imageUrl);
           // Loop through the objects in the category
           for (final objectDoc in objectsQuerySnapshot.docs) {
             // Check if the image URL matches the desired URL
@@ -471,6 +480,7 @@ Future<Map<String, String>> getImageInfoByImageUrl(
   return {'imageName': '', 'imageDescription': '', 'imageCategory': ''};
 }
 
+// Permite borrar los objetos por categoría
 Future<void> deleteByCategory(
     BuildContext context, String imageUrl, String category) async {
   await deleteImageByImageUrl(imageUrl);
@@ -478,6 +488,7 @@ Future<void> deleteByCategory(
   goToVerObjectsCategorias(context, category);
 }
 
+//Se usa para borrar mas de un objeto
 Future<void> deleteByCategoryNoMessage(
     BuildContext context, String imageUrl, String category) async {
   await deleteImageByImageUrlNoMessage(imageUrl);
@@ -485,6 +496,7 @@ Future<void> deleteByCategoryNoMessage(
   goToVerObjectsCategorias(context, category);
 }
 
+//PErmite borrar desde general
 Future<void> deleteByGeneral(BuildContext context, String imageUrl) async {
   await deleteImageByImageUrl(imageUrl);
 
@@ -495,6 +507,7 @@ Future<void> deleteByGeneral(BuildContext context, String imageUrl) async {
   );
 }
 
+// permite borrar varios objetos del general
 Future<void> deleteByGeneralNoMessage(
     BuildContext context, String imageUrl) async {
   await deleteImageByImageUrlNoMessage(imageUrl);
@@ -506,6 +519,7 @@ Future<void> deleteByGeneralNoMessage(
   );
 }
 
+//borra imagen en base a url
 Future<void> deleteImageByImageUrl(String imageUrl) async {
   bool internet = await conexionInternt();
   final storageRef = FirebaseStorage.instance.ref();
@@ -579,6 +593,7 @@ Future<void> deleteImageByImageUrl(String imageUrl) async {
   }
 }
 
+//borra varias imagenes en base a url
 Future<void> deleteImageByImageUrlNoMessage(String imageUrl) async {
   bool internet = await conexionInternt();
   final storageRef = FirebaseStorage.instance.ref();

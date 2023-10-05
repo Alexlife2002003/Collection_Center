@@ -72,7 +72,7 @@ class _EditarObjetosGeneralesState extends State<EditarObjetosGenerales> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
-      return Inicio();
+      return const Inicio();
     }
     
     return AppWithDrawer(

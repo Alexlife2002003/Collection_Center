@@ -20,6 +20,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
 
+
+//Revisa si se cuenta con una conexión a intenret
 Future<bool> conexionInternt() async {
   var connectivityResult = await Connectivity().checkConnectivity();
 

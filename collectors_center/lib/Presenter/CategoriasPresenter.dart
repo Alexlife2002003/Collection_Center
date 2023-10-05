@@ -10,7 +10,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 //////////////////////////////////
 //  Navegacion dentro de la app encargado de categorias //
 //////////////////////////////////
+///
 
+
+//Se encarga de borrar categorías
 Future<void> borrarCategorias(BuildContext context, String categoria) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
@@ -100,6 +103,7 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
   }
 }
 
+// Te lleva a la pantalla de mostrar las categorías
 void goToVerCategorias(BuildContext context) {
   Navigator.push(
     context,
@@ -107,11 +111,13 @@ void goToVerCategorias(BuildContext context) {
   );
 }
 
+// Te lleva a la pantalla de agregar Categorias
 void agregarCategoria(BuildContext context) {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const agregarCategorias()));
 }
 
+//Permite agregar categorías
 void agregarCategoriaBase(BuildContext context, String categoria) async {
   bool internet = await conexionInternt();
   if (internet == false) {
@@ -184,6 +190,7 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
   }
 }
 
+// Te permite obtener las categorías
 Future<List<String>> fetchCategories() async {
   List<String> categories = [];
 
@@ -210,6 +217,7 @@ Future<List<String>> fetchCategories() async {
   return categories;
 }
 
+// Te permite obtener la información de la imágen en base a la Url de la imágen
 Future<Map<String, String>> getImageInfoByImageUrl(
     BuildContext context, String imageUrl) async {
   try {

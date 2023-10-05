@@ -10,6 +10,7 @@ import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AppWithDrawer extends StatelessWidget {
   final Widget content;
@@ -33,11 +34,11 @@ class AppWithDrawer extends StatelessWidget {
               // Navegar a la página del usuario cuando se presiona el icono
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => Perfil(),
+                  builder: (context) => const Perfil(),
                 ),
               );
             },
-            icon: Icon(Icons.person),
+            icon:const  Icon(Icons.person),
           ),
         ],
       ),
@@ -64,7 +65,7 @@ class AppWithDrawer extends StatelessWidget {
                       (route) => false,
                     );
                   },
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center, 
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -86,18 +87,31 @@ class AppWithDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Artículos',
+              title: const Text('Artículos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
+                
+                if(fetchCategories() == []){
+                   Fluttertoast.showToast(
+                msg: "No se han creado categorías",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+                }else{
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => verObjetosGenerales(),
+                    builder: (context) =>const verObjetosGenerales(),
                   ),
                 );
+                }
               },
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Categorías',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),

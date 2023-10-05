@@ -29,7 +29,7 @@ class _verCategoriasState extends State<verCategorias> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
-      return Inicio();
+      return const Inicio();
     }
     
     void borrar(String categoria) {

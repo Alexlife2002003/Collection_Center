@@ -75,7 +75,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
 
   void _deleteSelectedObjects() async {
     bool internet = await conexionInternt();
-    final storageRef = FirebaseStorage.instance.ref();
+   
     if (internet == false) {
       return;
     }
@@ -117,7 +117,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
-      return Inicio();
+      return const Inicio();
     }
     
     return WillPopScope(
