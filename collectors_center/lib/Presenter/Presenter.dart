@@ -89,11 +89,6 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     return;
   }
 
-  if (password.length < 6) {
-    mostrarToast('Ingresa los datos faltantes.');
-    return;
-  }
-
   try {
     // Check if the username is already taken in Firestore
     final QuerySnapshot usernameCheck = await FirebaseFirestore.instance
