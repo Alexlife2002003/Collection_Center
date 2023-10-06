@@ -81,6 +81,14 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     return;
   }
 
+  if (correo.isEmpty ||
+      usuario.isEmpty ||
+      password.isEmpty ||
+      confirmPassword.isEmpty) {
+    mostrarToast('Ingresa los datos faltantes.');
+    return;
+  }
+
   try {
     // Check if the username is already taken in Firestore
     final QuerySnapshot usernameCheck = await FirebaseFirestore.instance
