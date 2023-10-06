@@ -22,6 +22,12 @@ class _verCategoriasState extends State<verCategorias> {
   bool isEdit = false;
 
   @override
+  void initState() {
+    super.initState();
+    conexionInternt();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
@@ -31,7 +37,7 @@ class _verCategoriasState extends State<verCategorias> {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
       return const Inicio();
     }
-    
+
     void borrar(String categoria) {
       borrarCategorias(context, categoria.trim());
     }
@@ -99,10 +105,13 @@ class _verCategoriasState extends State<verCategorias> {
                     child: FutureBuilder<List<String>>(
                       future: ver(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
                         } else {
                           List<String> categories = snapshot.data ?? [];
 

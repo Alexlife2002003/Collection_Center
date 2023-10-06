@@ -12,7 +12,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 //////////////////////////////////
 ///
 
-
 //Se encarga de borrar categorías
 Future<void> borrarCategorias(BuildContext context, String categoria) async {
   try {
@@ -51,7 +50,7 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
             Fluttertoast.showToast(
               msg: "La categoría no se ha eliminado",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.red,
               textColor: Colors.white,
@@ -69,7 +68,7 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
         Fluttertoast.showToast(
           msg: "La categoría ha sido eliminada correctamente",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
@@ -82,7 +81,7 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
         Fluttertoast.showToast(
           msg: "La categoría no se ha eliminado",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
@@ -94,7 +93,7 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
     Fluttertoast.showToast(
       msg: "La categoría no se ha eliminado",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -127,7 +126,7 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
     Fluttertoast.showToast(
       msg: "Ingrese un nombre",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -159,7 +158,7 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
       Fluttertoast.showToast(
         msg: "Categoría agregada exitosamente",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.green,
         textColor: Colors.white,
@@ -170,7 +169,7 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
       Fluttertoast.showToast(
         msg: "La categoria ya existe",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -181,7 +180,7 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
     Fluttertoast.showToast(
       msg: "No estas logeado",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -262,7 +261,7 @@ Future<Map<String, String>> getImageInfoByImageUrl(
     Fluttertoast.showToast(
       msg: "Error al buscar la imagen",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,

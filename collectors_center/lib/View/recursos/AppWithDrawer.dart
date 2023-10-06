@@ -38,7 +38,7 @@ class AppWithDrawer extends StatelessWidget {
                 ),
               );
             },
-            icon:const  Icon(Icons.person),
+            icon: const Icon(Icons.person),
           ),
         ],
       ),
@@ -66,7 +66,7 @@ class AppWithDrawer extends StatelessWidget {
                     );
                   },
                   child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center, 
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
@@ -90,23 +90,22 @@ class AppWithDrawer extends StatelessWidget {
               title: const Text('Artículos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
-                
-                if(fetchCategories() == []){
-                   Fluttertoast.showToast(
-                msg: "No se han creado categorías",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
-                }else{
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>const verObjetosGenerales(),
-                  ),
-                );
+                if (fetchCategories() == []) {
+                  Fluttertoast.showToast(
+                    msg: "No se han creado categorías",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                } else {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const verObjetosGenerales(),
+                    ),
+                  );
                 }
               },
             ),

@@ -38,7 +38,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
       return const Inicio();
     }
-    
+
     return AppWithDrawer(
       content: Scaffold(
         body: Container(

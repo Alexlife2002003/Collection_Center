@@ -46,6 +46,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   @override
   void initState() {
     super.initState();
+    conexionInternt();
     _fetchObjects();
   }
 
@@ -84,23 +85,25 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     }
     try {
       for (MyObject selectedObject in _selectedObjects) {
-        deleteByCategoryNoMessage(
-            context, selectedObject.imageUrl, widget.categoria);
+        if (_selectedObjects.isNotEmpty) {
+          deleteByCategoryNoMessage(
+              context, selectedObject.imageUrl, widget.categoria);
+        }
+        Fluttertoast.showToast(
+          msg: "Los artículos han sido eliminados",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
-      Fluttertoast.showToast(
-        msg: "Los artículos han sido eliminados",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Los artículos no han sido eliminados",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -117,7 +120,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión

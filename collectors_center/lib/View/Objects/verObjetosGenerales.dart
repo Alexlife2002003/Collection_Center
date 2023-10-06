@@ -43,6 +43,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
   @override
   void initState() {
     super.initState();
+    conexionInternt();
     _fetchObjects();
   }
 
@@ -75,28 +76,30 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
 
   void _deleteSelectedObjects() async {
     bool internet = await conexionInternt();
-   
+
     if (internet == false) {
       return;
     }
     try {
-      for (MyObject selectedObject in _selectedObjects) {
-        deleteByGeneralNoMessage(context, selectedObject.imageUrl);
+      if (_selectedObjects.isNotEmpty) {
+        for (MyObject selectedObject in _selectedObjects) {
+          deleteByGeneralNoMessage(context, selectedObject.imageUrl);
+        }
+        Fluttertoast.showToast(
+          msg: "Los artículos han sido eliminados",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
-      Fluttertoast.showToast(
-        msg: "Los artículos han sido eliminados",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Los artículos no han sido eliminados",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -119,7 +122,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
       return const Inicio();
     }
-    
+
     return WillPopScope(
       onWillPop: () async {
         goToBienvenido(context);

@@ -97,7 +97,6 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
 
       // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-     
         agregarObjetoCategoria(
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
@@ -115,7 +114,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
       Fluttertoast.showToast(
         msg: "Error al subir la imagen",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: red,
         textColor: Colors.white,
@@ -147,7 +146,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
       // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
       return const Inicio();
     }
-    
+
     return AppWithDrawer(
       content: Scaffold(
         body: Container(

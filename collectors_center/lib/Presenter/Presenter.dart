@@ -20,7 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
 
-
 //Revisa si se cuenta con una conexión a intenret
 Future<bool> conexionInternt() async {
   var connectivityResult = await Connectivity().checkConnectivity();
@@ -30,7 +29,7 @@ Future<bool> conexionInternt() async {
     Fluttertoast.showToast(
       msg: "No internet connection",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -118,7 +117,8 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 }
 
 // Funcion encargada de ingresar a la sesión del usuario que ya creó anteriormente
-Future<void> ingresarUsuario(BuildContext context, String correo, String password) async {
+Future<void> ingresarUsuario(
+    BuildContext context, String correo, String password) async {
   bool internet = await conexionInternt();
   if (internet == false) {
     mostrarToast('No tienes conexión a Internet. Verifica tu conexión.');
@@ -150,13 +150,12 @@ Future<void> ingresarUsuario(BuildContext context, String correo, String passwor
   }
 }
 
-
 // Función para mostrar el mensaje con Fluttertoast
 void mostrarToast(String mensaje) {
   Fluttertoast.showToast(
     msg: mensaje,
     toastLength: Toast.LENGTH_SHORT,
-    gravity: ToastGravity.CENTER,
+    gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
     backgroundColor: Colors.red,
     textColor: Colors.white,
@@ -178,7 +177,7 @@ Future<void> cerrarSesion(BuildContext context) async {
     Fluttertoast.showToast(
       msg: "Error al cerrar la sesión",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,

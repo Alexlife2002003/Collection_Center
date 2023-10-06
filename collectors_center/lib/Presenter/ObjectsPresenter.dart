@@ -223,7 +223,6 @@ String generateRandomFileName() {
       random.nextInt(999999).toString();
 }
 
-
 //Funcionalidad de agregar objeto a categoría
 void agregarObjetoCategoria(
     String url, String name, String descripcion, String categoria) async {
@@ -274,7 +273,7 @@ void agregarObjetoCategoria(
       Fluttertoast.showToast(
         msg: "Articulo agregado exitosamente",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.green,
         textColor: Colors.white,
@@ -284,7 +283,7 @@ void agregarObjetoCategoria(
       Fluttertoast.showToast(
         msg: "No se pudo agregar el articulo",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -295,7 +294,7 @@ void agregarObjetoCategoria(
     Fluttertoast.showToast(
       msg: "No estas logeado",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -468,7 +467,7 @@ Future<Map<String, String>> getImageInfoByImageUrl(
     Fluttertoast.showToast(
       msg: "Error al buscar la imagen",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -568,7 +567,7 @@ Future<void> deleteImageByImageUrl(String imageUrl) async {
               Fluttertoast.showToast(
                 msg: "“El artículo ha sido eliminado correctamente",
                 toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
+                gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.green,
                 textColor: Colors.white,
@@ -584,7 +583,7 @@ Future<void> deleteImageByImageUrl(String imageUrl) async {
     Fluttertoast.showToast(
       msg: "“El artículo no se ha eliminado",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
