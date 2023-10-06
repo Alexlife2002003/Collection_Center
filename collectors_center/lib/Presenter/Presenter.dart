@@ -89,6 +89,11 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     return;
   }
 
+  if (password.length < 6) {
+    mostrarToast('Ingresa los datos faltantes.');
+    return;
+  }
+
   try {
     // Check if the username is already taken in Firestore
     final QuerySnapshot usernameCheck = await FirebaseFirestore.instance
@@ -105,17 +110,21 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     }
 
     if (password == confirmPassword) {
-      final userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: correo,
-        password: password,
-      );
+      if (password.length < 6) {
+        mostrarToast('Contraseña debe tener 6 caracteres o mas');
+      } else {
+        final userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: correo,
+          password: password,
+        );
 
-      // Create the user in Firestore
-      createUserDatabase(userCredential.user!.uid, usuario, correo);
-      goToBienvenido(context);
+        // Create the user in Firestore
+        createUserDatabase(userCredential.user!.uid, usuario, correo);
+        goToBienvenido(context);
+      }
     } else {
-      mostrarToast('Passwords do not match');
+      mostrarToast('Las contraseñas no son iguales');
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'email-already-in-use') {
