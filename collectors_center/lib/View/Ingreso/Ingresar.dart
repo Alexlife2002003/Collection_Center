@@ -106,12 +106,12 @@ class _IngresarState extends State<Ingresar> {
                 const SizedBox(
                   height: 100,
                 ),
-                buildInputField('e-mail', _emailController, false,
+                buildInputField('Correo Electrónico', _emailController, false,
                     TextInputType.emailAddress, screenWidth),
                 const SizedBox(
                   height: 15,
                 ),
-                buildInputField('Password', _passwordController, true,
+                buildInputField('Contraseña', _passwordController, true,
                     TextInputType.text, screenWidth),
                 const SizedBox(
                   height: 110,

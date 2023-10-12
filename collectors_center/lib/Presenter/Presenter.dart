@@ -26,7 +26,7 @@ Future<bool> conexionInternt() async {
   if (connectivityResult == ConnectivityResult.none) {
     // No internet connection
     Fluttertoast.showToast(
-      msg: "No internet connection",
+      msg: "Sin conexión a Internet",
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
@@ -129,7 +129,7 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 
     if (usernameCheck.docs.isNotEmpty) {
       // Username is already taken
-      mostrarToast('User already in use');
+      mostrarToast('Usuario ya se encuentra en uso ');
       return;
     }
 
@@ -155,7 +155,7 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'email-already-in-use') {
-      mostrarToast('Email already in use');
+      mostrarToast('Correo ya se encuentra en uso');
     }
   }
 }

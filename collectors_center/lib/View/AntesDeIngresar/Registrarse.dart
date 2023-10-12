@@ -119,18 +119,22 @@ class _RegistrarseState extends State<Registrarse> {
                 const SizedBox(
                   height: 15,
                 ),
-                buildInputField('e-mail', _emailController, false,
+                buildInputField('Correo Electrónico', _emailController, false,
                     TextInputType.emailAddress, screenWidth),
                 const SizedBox(
                   height: 15,
                 ),
-                buildInputField('Password', _passwordController, true,
+                buildInputField('Contraseña', _passwordController, true,
                     TextInputType.text, screenWidth),
                 const SizedBox(
                   height: 15,
                 ),
-                buildInputField('Confirm password', _confirmPasswordController,
-                    true, TextInputType.text, screenWidth),
+                buildInputField(
+                    'Confirmar contraseña',
+                    _confirmPasswordController,
+                    true,
+                    TextInputType.text,
+                    screenWidth),
                 const SizedBox(
                   height: 35,
                 ),
