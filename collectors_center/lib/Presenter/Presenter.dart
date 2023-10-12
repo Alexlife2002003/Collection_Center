@@ -19,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 //////////////////////////////////
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
-
 //Revisa si se cuenta con una conexión a intenret
 Future<bool> conexionInternt() async {
   var connectivityResult = await Connectivity().checkConnectivity();
@@ -73,7 +72,20 @@ void goToBienvenido(BuildContext context) {
 // Acciones de registro, inicio de sesión y fin de sesión   //
 //////////////////////////////////////////////////////////////
 
-//Logica para registrar usuario
+bool isStrongPassword(String password) {
+  // Check if the password has at least one letter
+  bool hasLetter = password.contains(RegExp(r'[a-zA-Z]'));
+
+  // Check if the password has at least one uppercase letter
+  bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
+
+  // Check if the password has at least one special symbol
+  bool hasSpecialSymbol =
+      password.contains(RegExp(r'[!@#\$%^&*()_+{}\[\]:;<>,.?~\\-]'));
+
+  return hasLetter && hasUppercase && hasSpecialSymbol;
+}
+
 Future<void> registrarUsuario(BuildContext context, String usuario,
     String correo, String password, String confirmPassword) async {
   bool internet = await conexionInternt();
@@ -98,15 +110,16 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 
     if (usernameCheck.docs.isNotEmpty) {
       // Username is already taken
-
       mostrarToast('User already in use');
-
       return;
     }
 
     if (password == confirmPassword) {
       if (password.length < 6) {
-        mostrarToast('Contraseña debe tener 6 caracteres o mas');
+        mostrarToast('Contraseña debe tener 6 caracteres o más');
+      } else if (!isStrongPassword(password)) {
+        mostrarToast(
+            'La contraseña debe contener al menos una letra, una mayúscula y un símbolo especial.');
       } else {
         final userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -154,9 +167,11 @@ Future<void> ingresarUsuario(
 
     goToBienvenido(context);
   } on FirebaseAuthException catch (e) {
+    print(e.code);
     if (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
         e.code == 'user-not-found' ||
-        e.code == 'wrong-password') {
+        e.code == 'wrong-password' ||
+        e.code == 'invalid-email') {
       mostrarToast('La contraseña o el correo electrónico son incorrectos');
     }
   }
@@ -166,7 +181,7 @@ Future<void> ingresarUsuario(
 void mostrarToast(String mensaje) {
   Fluttertoast.showToast(
     msg: mensaje,
-    toastLength: Toast.LENGTH_SHORT,
+    toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
     backgroundColor: Colors.red,
@@ -186,15 +201,7 @@ Future<void> cerrarSesion(BuildContext context) async {
     // Llama a la función para ir a la pantalla de inicio
     goToInicio(context);
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "Error al cerrar la sesión",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    mostrarToast("Error al cerrar la sesión");
   }
 }
 

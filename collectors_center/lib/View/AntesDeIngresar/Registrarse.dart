@@ -26,30 +26,34 @@ class _RegistrarseState extends State<Registrarse> {
       bool obscureText, TextInputType inputType, double screenWidth) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Container(
-        width: screenWidth - 50,
-        height: 61,
-        decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(.8),
-          border: Border.all(color: Colors.white, width: 1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: TextField(
-            controller: controller,
-            obscureText: obscureText,
-            keyboardType: inputType,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: hintText,
-              hintStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(143, 64, 52, 42),
-                  fontSize: 24),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: TextField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: inputType,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(12.0),
             ),
-            textAlign: TextAlign.center,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: myColor),
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+
+            labelText: hintText,
+            hintStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 24,
+            ),
+            labelStyle: TextStyle(color: peach),
+            filled: true,
+            fillColor: Colors.grey.withOpacity(.8), // Background color
           ),
+          style: TextStyle(color: Colors.white), // Set the text color to white
+          textAlign: TextAlign.center,
         ),
       ),
     );
