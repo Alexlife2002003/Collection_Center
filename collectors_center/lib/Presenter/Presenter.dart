@@ -86,6 +86,20 @@ bool isStrongPassword(String password) {
   return hasLetter && hasUppercase && hasSpecialSymbol;
 }
 
+bool isValidEmail(String email) {
+  // A more robust regular expression for validating email addresses.
+  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[a-z]{2,})$');
+
+  // Additional check to exclude email addresses like "5@5.5".
+  final validEmail = emailRegex.hasMatch(email);
+
+  // Check if the email has the "@uaz.edu.mx" or "@cetis113.edu.mx" domain.
+  final isUazEmail = email.endsWith("@uaz.edu.mx");
+  final isCetisEmail = email.endsWith("@cetis113.edu.mx");
+
+  return validEmail || isUazEmail || isCetisEmail;
+}
+
 Future<void> registrarUsuario(BuildContext context, String usuario,
     String correo, String password, String confirmPassword) async {
   bool internet = await conexionInternt();
@@ -98,6 +112,11 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
       password.isEmpty ||
       confirmPassword.isEmpty) {
     mostrarToast('Ingresa los datos faltantes.');
+    return;
+  }
+
+  if (!isValidEmail(correo)) {
+    mostrarToast('Ingresa un correo válido');
     return;
   }
 
