@@ -13,11 +13,9 @@ String imageUrlKey = 'Image URL';
 
 class MyObject {
   String imageUrl;
-  bool isSelected;
 
   MyObject({
     required this.imageUrl,
-    this.isSelected = false,
   });
 
   factory MyObject.fromMap(Map<String, dynamic> map) {
@@ -250,7 +248,10 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                           } else {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                goToEditarObjetoGeneral(
+                                    context, imageUrl, imageUrl1);
+                              },
                               child: Stack(
                                 children: [
                                   CachedNetworkImage(
@@ -259,15 +260,6 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                     width: 188,
                                     height: 188,
                                   ),
-                                  if (object1.isSelected)
-                                    const Align(
-                                      alignment: Alignment.topRight,
-                                      child: Icon(
-                                        Icons.check_circle,
-                                        color: Colors.green,
-                                        size: 24,
-                                      ),
-                                    ),
                                 ],
                               ),
                             );
@@ -313,7 +305,10 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             } else {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  goToEditarObjetoGeneral(
+                                      context, imageUrl, imageUrl2);
+                                },
                                 child: Stack(
                                   children: [
                                     CachedNetworkImage(
@@ -322,15 +317,6 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                       width: 188,
                                       height: 188,
                                     ),
-                                    if (object2!.isSelected)
-                                      const Align(
-                                        alignment: Alignment.topRight,
-                                        child: Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 24,
-                                        ),
-                                      ),
                                   ],
                                 ),
                               );

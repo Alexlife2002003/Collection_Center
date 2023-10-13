@@ -166,22 +166,6 @@ class _EditarObjetosState extends State<EditarObjetos> {
                             padding: const EdgeInsets.all(10),
                             child: Row(
                               children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    // Handle deleting the description here
-                                    setState(() {
-                                      descripcion = "";
-                                      isEditing = false;
-                                      _descripcionController.text = "";
-                                      clearDescriptionByImageUrl(
-                                          context, widget.firebaseURL, "");
-                                    });
-                                  },
-                                ),
                                 Expanded(
                                   child: isEditing
                                       ? TextFormField(
@@ -200,26 +184,43 @@ class _EditarObjetosState extends State<EditarObjetos> {
                                           textAlign: TextAlign.center,
                                         ),
                                 ),
-                                IconButton(
-                                  icon: Icon(
-                                    isEditing ? Icons.check : Icons.edit,
-                                    color: Colors.green,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      if (isEditing) {
-                                        descripcion =
-                                            _descripcionController.text;
-                                        editDescriptionByImageUrl(
-                                            context,
-                                            widget.firebaseURL,
-                                            _descripcionController.text);
-                                        // You can save the edited description here
-                                      }
-
-                                      isEditing = !isEditing;
-                                    });
-                                  },
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        isEditing ? Icons.check : Icons.edit,
+                                        color: Colors.green,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (isEditing) {
+                                            descripcion =
+                                                _descripcionController.text;
+                                            editDescriptionByImageUrl(
+                                                context,
+                                                widget.firebaseURL,
+                                                _descripcionController.text);
+                                          }
+                                          isEditing = !isEditing;
+                                        });
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          descripcion = "";
+                                          isEditing = false;
+                                          _descripcionController.text = "";
+                                          clearDescriptionByImageUrl(
+                                              context, widget.firebaseURL, "");
+                                        });
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
