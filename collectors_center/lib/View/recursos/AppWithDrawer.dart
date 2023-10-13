@@ -87,7 +87,19 @@ class AppWithDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text('Artículos',
+              title: const Text('Inicio',
+                  style: TextStyle(color: Colors.white, fontSize: 33)),
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => Bienvenido(),
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Ver artículos',
                   style: TextStyle(color: Colors.white, fontSize: 33)),
               onTap: () {
                 if (fetchCategories() == []) {
@@ -111,7 +123,7 @@ class AppWithDrawer extends StatelessWidget {
             ),
             ListTile(
               title: const Text(
-                'Categorías',
+                'Agregar artículos',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),
               onTap: () {

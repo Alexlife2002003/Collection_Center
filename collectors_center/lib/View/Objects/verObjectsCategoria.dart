@@ -112,7 +112,6 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     }
     setState(() {
       _objectList.removeWhere((object) => object.isSelected);
-
       _selectedObjects.clear();
     });
   }
@@ -123,7 +122,6 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
       return const Inicio();
     }
 
@@ -135,113 +133,118 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
       child: AppWithDrawer(
         content: Scaffold(
           backgroundColor: peach,
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: peach,
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Artículos',
-                        style: TextStyle(
-                          fontSize: 42,
-                          color: Colors.brown,
-                          fontWeight: FontWeight.bold,
-                        ),
+          body: Column(
+            children: <Widget>[
+              Container(
+                color: peach,
+                width: double.infinity,
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Artículos',
+                      style: TextStyle(
+                        fontSize: 42,
+                        color: Colors.brown,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (deleteActivated) {
-                                setState(() {
-                                  deleteActivated = !deleteActivated;
-                                });
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            if (deleteActivated) {
+                              setState(() {
+                                deleteActivated = !deleteActivated;
+                              });
 
-                                _deleteSelectedObjects();
-                              } else {
-                                setState(() {
-                                  deleteActivated = !deleteActivated;
-                                });
-                              }
-                            },
-                            icon: Icon(
-                              deleteActivated ? Icons.check : Icons.delete,
-                              size: 60,
+                              _deleteSelectedObjects();
+                            } else {
+                              setState(() {
+                                deleteActivated = !deleteActivated;
+                              });
+                            }
+                          },
+                          icon: Icon(
+                            deleteActivated ? Icons.check : Icons.delete,
+                            size: 60,
+                          ),
+                        ),
+                        SizedBox(
+                          width: screenWidth - 160,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            goToAgregarObjectsCategorias(
+                                context, widget.categoria);
+                          },
+                          icon: Icon(
+                            Icons.add_circle_outline,
+                            size: 60,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: screenWidth - 150,
+                            height: 50,
+                            margin: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: myColor,
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          ),
-                          SizedBox(
-                            width: screenWidth - 160,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              goToAgregarObjectsCategorias(
-                                  context, widget.categoria);
-                            },
-                            icon: const Icon(
-                              Icons.add_circle_outline,
-                              size: 60,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              width: screenWidth - 150,
-                              height: 50,
-                              margin: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: myColor,
-                                borderRadius: BorderRadius.circular(16),
+                            child: Text(
+                              widget.categoria,
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: Text(
-                                widget.categoria,
-                                style: const TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                _objectList.isEmpty
-                    ? Center(
+              ),
+
+              // Object listing
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    if (_objectList.isEmpty)
+                      Center(
                         child: Container(
                           color: peach,
                         ),
                       )
-                    : SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            for (int i = 0; i < _objectList.length; i += 2)
-                              _buildObjectRow(
-                                  _objectList[i],
-                                  i + 1 < _objectList.length
-                                      ? _objectList[i + 1]
-                                      : null),
-                          ],
-                        ),
+                    else
+                      Column(
+                        children: <Widget>[
+                          for (int i = 0; i < _objectList.length; i += 2)
+                            _buildObjectRow(
+                                _objectList[i],
+                                i + 1 < _objectList.length
+                                    ? _objectList[i + 1]
+                                    : null),
+                        ],
                       ),
-              ],
-            ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -270,9 +273,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return CircularProgressIndicator();
                           } else if (snapshot.hasError) {
-                            return const Text('Error loading image');
+                            return Text('Error loading image');
                           } else {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
@@ -293,7 +296,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                     height: 188,
                                   ),
                                   if (object1.isSelected)
-                                    const Align(
+                                    Align(
                                       alignment: Alignment.topRight,
                                       child: Icon(
                                         Icons.check_circle,
@@ -314,7 +317,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
             ),
           ),
           if (imageUrl2 == null)
-            const SizedBox(
+            SizedBox(
               width: 8,
             ),
           if (imageUrl2 == null)
@@ -323,7 +326,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
               width: 188,
               height: 188,
             ),
-          if (imageUrl2 != null) const SizedBox(width: 8),
+          if (imageUrl2 != null) SizedBox(width: 8),
           if (imageUrl2 != null)
             Expanded(
               child: Container(
@@ -340,9 +343,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return CircularProgressIndicator();
                             } else if (snapshot.hasError) {
-                              return const Text('Error loading image');
+                              return Text('Error loading image');
                             } else {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
@@ -363,7 +366,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                       height: 188,
                                     ),
                                     if (object2!.isSelected)
-                                      const Align(
+                                      Align(
                                         alignment: Alignment.topRight,
                                         child: Icon(
                                           Icons.check_circle,

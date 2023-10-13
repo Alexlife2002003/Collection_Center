@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 String imageUrlKey = 'Image URL';
 
@@ -38,13 +38,48 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
   final FirebaseStorage storage = FirebaseStorage.instance;
   List<MyObject> _objectList = [];
   List<MyObject> _selectedObjects = [];
-  bool deleteActivated = false;
+  List<String> categories = [];
+  String selectedCategory = 'Default';
+
+  Future<void> fetchCategories() async {
+    List<String> fetchedCategories = [];
+
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .collection('Categories')
+            .orderBy('timestamp', descending: false)
+            .get();
+
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          String categoryName = document['Name'] as String;
+          fetchedCategories.add(categoryName);
+        }
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+
+    setState(() {
+      categories = fetchedCategories;
+      if (categories.isNotEmpty) {
+        selectedCategory = categories[0];
+        _fetchObjectscat();
+      } else {
+        selectedCategory = 'Sin categorias';
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    conexionInternt();
-    _fetchObjects();
+    fetchCategories();
+    _fetchObjectscat();
   }
 
   Future<void> _fetchObjects() async {
@@ -63,54 +98,21 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
     }
   }
 
-  void _toggleSelection(MyObject myObject) {
-    setState(() {
-      myObject.isSelected = !myObject.isSelected;
-      if (myObject.isSelected) {
-        _selectedObjects.add(myObject);
-      } else {
-        _selectedObjects.remove(myObject);
-      }
-    });
-  }
-
-  void _deleteSelectedObjects() async {
-    bool internet = await conexionInternt();
-
-    if (internet == false) {
-      return;
-    }
+  Future<void> _fetchObjectscat() async {
     try {
-      if (_selectedObjects.isNotEmpty) {
-        for (MyObject selectedObject in _selectedObjects) {
-          deleteByGeneralNoMessage(context, selectedObject.imageUrl);
-        }
-        Fluttertoast.showToast(
-          msg: "Los artículos han sido eliminados",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Los artículos no han sido eliminados",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
-    setState(() {
-      _objectList.removeWhere((object) => object.isSelected);
+      final List<Map<String, dynamic>> objects =
+          await fetchObjectsByCategory(selectedCategory);
 
-      _selectedObjects.clear();
-    });
+      final List<MyObject> myObjects = objects.map((object) {
+        return MyObject.fromMap(object);
+      }).toList();
+
+      setState(() {
+        _objectList = myObjects;
+      });
+    } catch (error) {
+      print("Error fetching objects: $error");
+    }
   }
 
   @override
@@ -119,7 +121,6 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
       return const Inicio();
     }
 
@@ -131,13 +132,13 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
       child: AppWithDrawer(
         content: Scaffold(
           backgroundColor: peach,
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: peach,
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16.0),
+          body: Column(
+            children: <Widget>[
+              Container(
+                color: peach,
+                width: double.infinity,
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -152,68 +153,69 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (deleteActivated) {
-                                setState(() {
-                                  deleteActivated = !deleteActivated;
-                                });
-
-                                _deleteSelectedObjects();
-                              } else {
-                                setState(() {
-                                  deleteActivated = !deleteActivated;
-                                });
-                              }
+                      Container(
+                        width: screenWidth - 30,
+                        height: 60,
+                        margin: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: myColor,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Center(
+                          child: DropdownButton<String>(
+                            value: selectedCategory,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedCategory = newValue!;
+                                _fetchObjectscat();
+                              });
                             },
-                            icon: Icon(
-                              deleteActivated ? Icons.check : Icons.delete,
-                              size: 60,
-                            ),
+                            items: categories
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }).toList(),
+                            dropdownColor: myColor,
                           ),
-                          SizedBox(
-                            width: screenWidth - 160,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              goToAgregarObjectsGenerales(context);
-                            },
-                            icon: const Icon(
-                              Icons.add_circle_outline,
-                              size: 60,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                _objectList.isEmpty
-                    ? Center(
+              ),
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    if (_objectList.isEmpty)
+                      Center(
                         child: Container(
                           color: peach,
                         ),
                       )
-                    : SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            for (int i = 0; i < _objectList.length; i += 2)
-                              _buildObjectRow(
-                                  _objectList[i],
-                                  i + 1 < _objectList.length
-                                      ? _objectList[i + 1]
-                                      : null),
-                          ],
-                        ),
+                    else
+                      Column(
+                        children: <Widget>[
+                          for (int i = 0; i < _objectList.length; i += 2)
+                            _buildObjectRow(
+                                _objectList[i],
+                                i + 1 < _objectList.length
+                                    ? _objectList[i + 1]
+                                    : null),
+                        ],
                       ),
-              ],
-            ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -248,14 +250,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                           } else {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
-                              onTap: () {
-                                if (deleteActivated) {
-                                  _toggleSelection(object1);
-                                } else {
-                                  goToEditarObjetoGeneral(
-                                      context, imageUrl, imageUrl1);
-                                }
-                              },
+                              onTap: () {},
                               child: Stack(
                                 children: [
                                   CachedNetworkImage(
@@ -318,14 +313,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             } else {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
-                                onTap: () {
-                                  if (deleteActivated) {
-                                    _toggleSelection(object2!);
-                                  } else {
-                                    goToEditarObjetoGeneral(
-                                        context, imageUrl, imageUrl2);
-                                  }
-                                },
+                                onTap: () {},
                                 child: Stack(
                                   children: [
                                     CachedNetworkImage(
