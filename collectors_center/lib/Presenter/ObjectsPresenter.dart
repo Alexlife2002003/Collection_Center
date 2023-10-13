@@ -9,7 +9,7 @@ import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/Objects/AgregaObjetosGeneral.dart';
 import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/EditarObjetos.dart';
-import 'package:collectors_center/View/Objects/EditarObjetosGenerales.dart';
+import 'package:collectors_center/View/Objects/verObjetosIndividuales.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:flutter/material.dart';
@@ -167,12 +167,12 @@ Future<void> clearDescriptionByImageUrl(
 }
 
 // Te lleva a la pantalla de editar objeto desde la pantalla general de objetos
-void goToEditarObjetoGeneral(
+void goToVerObjetosIndividuales(
     BuildContext context, String url, String firebase) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => EditarObjetosGenerales(
+        builder: (context) => verObjetosIndividuales(
               url: url,
               firebaseURL: firebase,
             )),

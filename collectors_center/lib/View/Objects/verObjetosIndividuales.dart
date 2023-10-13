@@ -9,20 +9,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
-class EditarObjetosGenerales extends StatefulWidget {
+class verObjetosIndividuales extends StatefulWidget {
   final String url;
   final String firebaseURL;
-  const EditarObjetosGenerales(
+  const verObjetosIndividuales(
       {super.key, required this.url, required this.firebaseURL});
 
   @override
-  State<EditarObjetosGenerales> createState() => _EditarObjetosGeneralesState();
+  State<verObjetosIndividuales> createState() => _verObjetosIndividualesState();
 }
 
 @override
 void dispose() {}
 
-class _EditarObjetosGeneralesState extends State<EditarObjetosGenerales> {
+class _verObjetosIndividualesState extends State<verObjetosIndividuales> {
   String filepath = "";
   File? uploadImage;
   Map<String, String> imageInfo = {};
@@ -205,32 +205,6 @@ class _EditarObjetosGeneralesState extends State<EditarObjetosGenerales> {
                 ),
                 SizedBox(
                   height: (screenHeight / 33),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: screenWidth - 200,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red),
-                      ),
-                      onPressed: () {
-                        deleteByGeneral(context, widget.firebaseURL);
-                      },
-                      child: const Text('Eliminar'),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: screenWidth - 200,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                      ),
-                      onPressed: cancelar,
-                      child: const Text('Regresar'),
-                    ),
-                  ),
                 ),
               ],
             ),

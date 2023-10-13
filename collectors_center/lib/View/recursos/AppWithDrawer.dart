@@ -41,7 +41,7 @@ class AppWithDrawer extends StatelessWidget {
         backgroundColor: brown,
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 180,
               child: DrawerHeader(
                 decoration: BoxDecoration(
@@ -120,7 +120,7 @@ class AppWithDrawer extends StatelessWidget {
                 categorias();
               },
             ),
-            Spacer(), // Add Spacer to push "Cerrar sesión" to the bottom
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: GestureDetector(

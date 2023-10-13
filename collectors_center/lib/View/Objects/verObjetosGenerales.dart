@@ -35,7 +35,6 @@ class verObjetosGenerales extends StatefulWidget {
 class _verObjetosGeneralesState extends State<verObjetosGenerales> {
   final FirebaseStorage storage = FirebaseStorage.instance;
   List<MyObject> _objectList = [];
-  List<MyObject> _selectedObjects = [];
   List<String> categories = [];
   String selectedCategory = 'Default';
 
@@ -78,22 +77,6 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
     super.initState();
     fetchCategories();
     _fetchObjectscat();
-  }
-
-  Future<void> _fetchObjects() async {
-    try {
-      final List<Map<String, dynamic>> objects = await fetchAllObjects();
-
-      final List<MyObject> myObjects = objects.map((object) {
-        return MyObject.fromMap(object);
-      }).toList();
-
-      setState(() {
-        _objectList = myObjects;
-      });
-    } catch (error) {
-      print("Error fetching objects: $error");
-    }
   }
 
   Future<void> _fetchObjectscat() async {
@@ -249,7 +232,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
                               onTap: () {
-                                goToEditarObjetoGeneral(
+                                goToVerObjetosIndividuales(
                                     context, imageUrl, imageUrl1);
                               },
                               child: Stack(
@@ -306,7 +289,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
                                 onTap: () {
-                                  goToEditarObjetoGeneral(
+                                  goToVerObjetosIndividuales(
                                       context, imageUrl, imageUrl2);
                                 },
                                 child: Stack(
