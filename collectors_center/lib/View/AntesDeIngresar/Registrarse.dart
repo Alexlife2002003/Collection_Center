@@ -34,7 +34,7 @@ class _RegistrarseState extends State<Registrarse> {
           keyboardType: inputType,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: 1.0),
+              borderSide: const BorderSide(color: Colors.white, width: 1.0),
               borderRadius: BorderRadius.circular(12.0),
             ),
             focusedBorder: OutlineInputBorder(
@@ -52,7 +52,8 @@ class _RegistrarseState extends State<Registrarse> {
             filled: true,
             fillColor: Colors.grey.withOpacity(.8), // Background color
           ),
-          style: TextStyle(color: Colors.white), // Set the text color to white
+          style: const TextStyle(
+              color: Colors.white), // Set the text color to white
           textAlign: TextAlign.center,
         ),
       ),

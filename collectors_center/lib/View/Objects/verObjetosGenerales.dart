@@ -157,7 +157,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                 value: value,
                                 child: Text(
                                   value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
                                   ),
