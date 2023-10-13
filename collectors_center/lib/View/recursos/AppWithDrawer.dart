@@ -1,10 +1,5 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                         //
-//   Fecha:                              25/09/23                                                               //
-//   Descripción:                    Cajón de la iquierda de la pantalla y appbar                     //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
+import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/Bienvenido.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
@@ -19,6 +14,7 @@ class AppWithDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     void categorias() {
       goToVerCategorias(context);
     }
@@ -31,7 +27,6 @@ class AppWithDrawer extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // Navegar a la página del usuario cuando se presiona el icono
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const Perfil(),
@@ -44,12 +39,9 @@ class AppWithDrawer extends StatelessWidget {
       ),
       drawer: Drawer(
         backgroundColor: brown,
-        // Drawer content
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: <Widget>[
             Container(
-              // Aumenta la altura del DrawerHeader
               height: 180,
               child: DrawerHeader(
                 decoration: BoxDecoration(
@@ -57,7 +49,6 @@ class AppWithDrawer extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    // Navegar a la página 'Bienvenido' cuando se presiona 'Collectors Center'
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => Bienvenido(),
@@ -78,7 +69,6 @@ class AppWithDrawer extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       Divider(
-                        // Agrega una línea separadora debajo de 'Collectors Center'
                         color: Colors.white,
                       ),
                     ],
@@ -130,11 +120,42 @@ class AppWithDrawer extends StatelessWidget {
                 categorias();
               },
             ),
-            // Add more ListTile widgets for additional items
+            Spacer(), // Add Spacer to push "Cerrar sesión" to the bottom
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: GestureDetector(
+                onTap: () {
+                  cerrarSesion(context);
+                },
+                child: Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: screenWidth - 100,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: myColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(width: 2),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Cerrar sesión',
+                        style: TextStyle(
+                          color: Color(0xFF40342A),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
-      body: content, // Set the content here
+      body: content,
     );
   }
 }

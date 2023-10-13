@@ -88,7 +88,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: Text(
@@ -104,16 +104,22 @@ class _EditarObjetosState extends State<EditarObjetos> {
                 const SizedBox(
                   height: 25,
                 ),
-                Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: widget.url,
-                      width: 200,
-                      height: 200,
-                    ),
-                  ],
+                Center(
+                  child: Column(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: widget.url,
+                        width: 200,
+                        height: 200,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 25),
+                Text(
+                  "       Nombre:",
+                  style: TextStyle(color: brown, fontSize: 22),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
@@ -140,6 +146,10 @@ class _EditarObjetosState extends State<EditarObjetos> {
                 const SizedBox(
                   height: 10,
                 ),
+                Text(
+                  "       Descripción:",
+                  style: TextStyle(color: brown, fontSize: 22),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Row(
@@ -154,57 +164,67 @@ class _EditarObjetosState extends State<EditarObjetos> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(10),
-                            child: isEditing
-                                ? TextFormField(
-                                    controller: _descripcionController,
-                                    style:
-                                        TextStyle(color: brown, fontSize: 16),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : Text(
-                                    descripcion,
-                                    style:
-                                        TextStyle(color: brown, fontSize: 16),
-                                    textAlign: TextAlign.center,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
                                   ),
+                                  onPressed: () {
+                                    // Handle deleting the description here
+                                    setState(() {
+                                      descripcion = "";
+                                      isEditing = false;
+                                      _descripcionController.text = "";
+                                      clearDescriptionByImageUrl(
+                                          context, widget.firebaseURL, "");
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: isEditing
+                                      ? TextFormField(
+                                          keyboardType: TextInputType.multiline,
+                                          maxLines: null,
+                                          maxLength: 300,
+                                          controller: _descripcionController,
+                                          style: TextStyle(
+                                              color: brown, fontSize: 16),
+                                          textAlign: TextAlign.center,
+                                        )
+                                      : Text(
+                                          descripcion,
+                                          style: TextStyle(
+                                              color: brown, fontSize: 16),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    isEditing ? Icons.check : Icons.edit,
+                                    color: Colors.green,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (isEditing) {
+                                        descripcion =
+                                            _descripcionController.text;
+                                        editDescriptionByImageUrl(
+                                            context,
+                                            widget.firebaseURL,
+                                            _descripcionController.text);
+                                        // You can save the edited description here
+                                      }
+
+                                      isEditing = !isEditing;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          isEditing ? Icons.check : Icons.edit,
-                          color: Colors.green,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (isEditing) {
-                              descripcion = _descripcionController.text;
-                              editDescriptionByImageUrl(
-                                  context,
-                                  widget.firebaseURL,
-                                  _descripcionController.text);
-                              // You can save the edited description here
-                            }
-
-                            isEditing = !isEditing;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          // Handle deleting the description here
-                          setState(() {
-                            descripcion = "";
-                            isEditing = false;
-                            _descripcionController.text = "";
-                            clearDescriptionByImageUrl(
-                                context, widget.firebaseURL, "");
-                          });
-                        },
                       ),
                     ],
                   ),
@@ -212,26 +232,30 @@ class _EditarObjetosState extends State<EditarObjetos> {
                 SizedBox(
                   height: (screenHeight / 33),
                 ),
-                Container(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.red),
+                Center(
+                  child: Container(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.red),
+                      ),
+                      onPressed: () {
+                        deleteByCategory(context, widget.firebaseURL, category);
+                      },
+                      child: const Text('Eliminar'),
                     ),
-                    onPressed: () {
-                      deleteByCategory(context, widget.firebaseURL, category);
-                    },
-                    child: const Text('Eliminar'),
                   ),
                 ),
-                Container(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                Center(
+                  child: Container(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                      ),
+                      onPressed: cancelar,
+                      child: const Text('Regresar'),
                     ),
-                    onPressed: cancelar,
-                    child: const Text('Regresar'),
                   ),
                 ),
               ],

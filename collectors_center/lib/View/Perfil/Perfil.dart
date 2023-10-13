@@ -80,11 +80,6 @@ class _PerfilState extends State<Perfil> {
       regresarAnterior(context);
     }
 
-    ///Se comunica con el presentador para salir de las sesión
-    void logout() {
-      cerrarSesion(context);
-    }
-
     return Scaffold(
       body: Stack(
         children: [
@@ -136,38 +131,38 @@ class _PerfilState extends State<Perfil> {
                     //),
                     //buildInputField('Password', _passwordController, true,
                     //    TextInputType.text, screenWidth),
-                    //const SizedBox(
-                    //  height: 35,
-                    //),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: GestureDetector(
-                        onTap: logout,
-                        child: Material(
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            width: screenWidth - 100,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                color: red,
-                                borderRadius: BorderRadius.circular(12),
-                                border:
-                                    Border.all(color: Colors.white, width: 2)),
-                            child: const Center(
-                                child: Text(
-                              'Cerrar sesión',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            )),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
+                    // //const SizedBox(
+                    // //  height: 35,
+                    // //),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 25),
+                    //   child: GestureDetector(
+                    //     onTap: logout,
+                    //     child: Material(
+                    //       elevation: 5,
+                    //       borderRadius: BorderRadius.circular(12),
+                    //       child: Container(
+                    //         width: screenWidth - 100,
+                    //         height: 50,
+                    //         decoration: BoxDecoration(
+                    //             color: red,
+                    //             borderRadius: BorderRadius.circular(12),
+                    //             border:
+                    //                 Border.all(color: Colors.white, width: 2)),
+                    //         child: const Center(
+                    //             child: Text(
+                    //           'Cerrar sesión',
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontWeight: FontWeight.bold,
+                    //             fontSize: 20,
+                    //           ),
+                    //         )),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: GestureDetector(
