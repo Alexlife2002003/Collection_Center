@@ -57,7 +57,7 @@ class _InicioState extends State<Inicio> {
                       10), // Ajusta el valor para cambiar la cantidad de redondeo
                 ),
               ),
-              Container(
+              SizedBox(
                 width: screenWidth - 10,
                 child: Row(
                   children: [

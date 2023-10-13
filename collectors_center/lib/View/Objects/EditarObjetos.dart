@@ -234,7 +234,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                   height: (screenHeight / 33),
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth - 200,
                     child: ElevatedButton(
                       style: const ButtonStyle(
@@ -248,7 +248,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                   ),
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth - 200,
                     child: ElevatedButton(
                       style: const ButtonStyle(

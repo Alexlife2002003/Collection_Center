@@ -80,7 +80,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                         hintText: 'Nombre',
                         hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFFF503A27),
+                            color: Color(0xfff503a27),
                             fontSize: 20),
                       ),
                       textAlign: TextAlign.center,
@@ -91,7 +91,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
               SizedBox(
                 height: 2 * (screenheight / 3.6),
               ),
-              Container(
+              SizedBox(
                 width: screenWidth - 200,
                 child: ElevatedButton(
                   style: const ButtonStyle(
@@ -100,7 +100,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                   child: const Text('Guardar'),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: screenWidth - 200,
                 child: ElevatedButton(
                   style: const ButtonStyle(

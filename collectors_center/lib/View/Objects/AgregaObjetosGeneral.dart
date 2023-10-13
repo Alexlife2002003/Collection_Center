@@ -355,7 +355,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                 SizedBox(
                   height: (screenHeight / 33),
                 ),
-                Container(
+                SizedBox(
                   width: screenWidth - 200,
                   child: ElevatedButton(
                     style: const ButtonStyle(
@@ -364,7 +364,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                     child: const Text('Guardar'),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: screenWidth - 200,
                   child: ElevatedButton(
                     style: const ButtonStyle(
