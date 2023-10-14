@@ -25,6 +25,26 @@ Future<void> editDescriptionByImageUrl(
   if (internet == false) {
     return;
   }
+  final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(description);
+  if (internet == false) {
+    return;
+  }
+
+  if (description.length < 10 && description.length != 0) {
+    mostrarToast(
+        "Descripción debe contener mínimo 10 caracteres si no es vacia");
+    return;
+  }
+
+  if (description.length > 300) {
+    mostrarToast("No puede exceder la descripción los 300 carácteres");
+    return;
+  }
+
+  if (!containsLetter && description.isNotEmpty) {
+    mostrarToast("Descripción debe contener letras");
+    return;
+  }
   try {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -48,6 +68,7 @@ Future<void> editDescriptionByImageUrl(
         // Loop through the category documents
         for (final categoryDoc in categoriesQuerySnapshot.docs) {
           // Reference to the "Objects" subcollection within the category document
+
           CollectionReference objectsCollection =
               categoryDoc.reference.collection('Objects');
 
@@ -59,6 +80,16 @@ Future<void> editDescriptionByImageUrl(
             // Check if the image URL matches the desired URL
             if (objectDoc['Image_url'] == imageUrl) {
               // Update the "Description" field to be blank ("")
+              if (categoryDoc['Name'] == description) {
+                mostrarToast(
+                    "Descripción no puede ser igual al nombre de la categoría");
+                return;
+              }
+              if (objectDoc['Name'] == description) {
+                mostrarToast(
+                    "Descripción no puede ser igual al nombre del artículo");
+                return;
+              }
               await objectDoc.reference.update({'Description': description});
 
               // You can show a success message here if needed
@@ -227,19 +258,43 @@ String generateRandomFileName() {
 void agregarObjetoCategoria(
     String url, String name, String descripcion, String categoria) async {
   bool internet = await conexionInternt();
+  final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(descripcion);
   if (internet == false) {
     return;
   }
   if (name.trim() == "") {
-    Fluttertoast.showToast(
-      msg: "Ingrese un nombre",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    mostrarToast("El nombre del artículo no puede ir vacío");
+    return;
+  }
+  if (name.length > 20) {
+    mostrarToast("El nombre debe ser de máximo 20 carácteres");
+    return;
+  }
+  if (name == categoria) {
+    mostrarToast("No puede llevar el nombre de la categoría");
+    return;
+  }
+  if (descripcion == name) {
+    mostrarToast("Descripción no puede ser igual al nombre del artículo");
+    return;
+  }
+  if (descripcion == categoria) {
+    mostrarToast("Descripción no puede ser igual al nombre de la categoría");
+    return;
+  }
+  if (descripcion.length < 10 && descripcion.length != 0) {
+    mostrarToast(
+        "Descripción debe contener mínimo 10 caracteres si no es vacia");
+    return;
+  }
+
+  if (descripcion.length > 300) {
+    mostrarToast("No puede exceder la descripción los 300 carácteres");
+    return;
+  }
+
+  if (!containsLetter && descripcion.isNotEmpty) {
+    mostrarToast("Descripción debe contener letras");
     return;
   }
 

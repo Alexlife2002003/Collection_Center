@@ -74,6 +74,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: TextField(
+                      maxLength: 20,
                       controller: _nombreCategoriaController,
                       decoration: const InputDecoration(
                         border: InputBorder.none,

@@ -77,8 +77,16 @@ class AppWithDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text('Inicio',
-                  style: TextStyle(color: Colors.white, fontSize: 33)),
+              title: Row(
+                children: [
+                  Image.asset("lib/assets/images/home_icon.png"),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text('Inicio',
+                      style: TextStyle(color: Colors.white, fontSize: 33)),
+                ],
+              ),
               onTap: () {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -89,8 +97,16 @@ class AppWithDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('Ver artículos',
-                  style: TextStyle(color: Colors.white, fontSize: 33)),
+              title: Row(
+                children: [
+                  Image.asset("lib/assets/images/Articles_icon.png"),
+                  const SizedBox(
+                    width: 14,
+                  ),
+                  const Text('Artículos',
+                      style: TextStyle(color: Colors.white, fontSize: 33)),
+                ],
+              ),
               onTap: () {
                 if (fetchCategories() == []) {
                   Fluttertoast.showToast(
@@ -112,9 +128,17 @@ class AppWithDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text(
-                'Agregar artículos',
-                style: TextStyle(color: Colors.white, fontSize: 33),
+              title: Row(
+                children: [
+                  Image.asset("lib/assets/images/Categories_icon.png"),
+                  const SizedBox(
+                    width: 18,
+                  ),
+                  const Text(
+                    'Categorías',
+                    style: TextStyle(color: Colors.white, fontSize: 33),
+                  ),
+                ],
               ),
               onTap: () {
                 categorias();

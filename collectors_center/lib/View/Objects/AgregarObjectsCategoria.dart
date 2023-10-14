@@ -206,6 +206,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                       padding: const EdgeInsets.only(left: 20),
                       child: Center(
                         child: TextField(
+                          maxLength: 20,
                           controller: _nombreArticuloController,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
@@ -237,6 +238,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                       padding: const EdgeInsets.only(left: 20),
                       child: Center(
                         child: TextField(
+                          maxLength: 300,
                           controller: _descripcionController,
                           maxLines: null, // Permite múltiples líneas
                           keyboardType: TextInputType

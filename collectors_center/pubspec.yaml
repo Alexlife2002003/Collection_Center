@@ -75,6 +75,9 @@ flutter:
     - lib/assets/images/library-bg.png
     - lib/assets/images/Usuario.png
     - lib/assets/images/add_image.png
+    - lib/assets/images/Articles_icon.png
+    - lib/assets/images/Categories_icon.png
+    - lib/assets/images/home_icon.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

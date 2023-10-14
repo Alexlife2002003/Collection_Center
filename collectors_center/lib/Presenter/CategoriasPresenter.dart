@@ -134,6 +134,10 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
     );
     return;
   }
+  if (categoria.length > 20) {
+    mostrarToast("El nombre debe ser de máximo 20 carácteres");
+    return;
+  }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
