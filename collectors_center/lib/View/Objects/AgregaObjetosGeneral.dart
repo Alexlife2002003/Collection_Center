@@ -143,7 +143,9 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
-            selectedCategory); // Use selectedCategory
+            selectedCategory,
+            "Articulo agregado exitosamente",
+            "No se pudo agregar el articulo"); // Use selectedCategory
 
         // Close the progress dialog
         Navigator.of(context).pop();

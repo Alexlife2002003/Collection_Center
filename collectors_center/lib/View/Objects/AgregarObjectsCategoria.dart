@@ -101,7 +101,9 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
-            widget.categoria);
+            widget.categoria,
+            "Articulo agregado exitosamente",
+            "No se pudo agregar el articulo");
 
         // Close the progress dialog
         Navigator.of(context).pop();

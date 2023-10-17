@@ -255,8 +255,8 @@ String generateRandomFileName() {
 }
 
 //Funcionalidad de agregar objeto a categoría
-void agregarObjetoCategoria(
-    String url, String name, String descripcion, String categoria) async {
+void agregarObjetoCategoria(String url, String name, String descripcion,
+    String categoria, String mensajeExito, String mensajeError) async {
   bool internet = await conexionInternt();
   final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(descripcion);
   if (internet == false) {
@@ -326,7 +326,7 @@ void agregarObjetoCategoria(
         'timestamp': FieldValue.serverTimestamp(),
       });
       Fluttertoast.showToast(
-        msg: "Articulo agregado exitosamente",
+        msg: mensajeExito,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -336,7 +336,7 @@ void agregarObjetoCategoria(
       );
     } else {
       Fluttertoast.showToast(
-        msg: "No se pudo agregar el articulo",
+        msg: mensajeError,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

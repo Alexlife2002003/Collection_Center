@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
+import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image/image.dart' as img;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EditarObjetos extends StatefulWidget {
   final String url;
@@ -28,6 +33,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
   String name = "";
   String descripcion = "";
   String category = "";
+  PickedFile? _selectedImage;
 
   final _nombreArticuloController = TextEditingController();
   final _descripcionController = TextEditingController();
@@ -40,6 +46,16 @@ class _EditarObjetosState extends State<EditarObjetos> {
       MaterialPageRoute(
           builder: (context) => verObjectsCategoria(categoria: category)),
     );
+  }
+
+  void agregar() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
+    await _pickImage();
+    subirStorage();
+    deleteImageByImageUrlNoMessage(widget.firebaseURL);
   }
 
   void setImageInfo() async {
@@ -60,6 +76,97 @@ class _EditarObjetosState extends State<EditarObjetos> {
           ? imageInfo['imageCategory'].toString()
           : "";
     });
+  }
+
+  Future<void> _pickImage() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    Navigator.pop(context);
+    if (pickedFile != null) {
+      final File compressedImage = await _compressImage(File(pickedFile.path));
+      setState(() {
+        _selectedImage = PickedFile(compressedImage.path);
+        filepath = compressedImage.path;
+        uploadImage = compressedImage;
+      });
+    }
+  }
+
+  Future<File> _compressImage(File originalImage) async {
+    final img.Image image = img.decodeImage(await originalImage.readAsBytes())!;
+
+    // Define the maximum dimensions for the compressed image
+    const int maxWidth = 800;
+    const int maxHeight = 800;
+
+    // Resize the image while maintaining aspect ratio
+    img.Image resizedImage =
+        img.copyResize(image, width: maxWidth, height: maxHeight);
+
+    // Encode the resized image to JPEG format with a specified quality (adjust quality as needed)
+    final List<int> compressedImageData =
+        img.encodeJpg(resizedImage, quality: 80);
+
+    // Create a new File with the compressed image data
+    final File compressedFile = File(originalImage.path)
+      ..writeAsBytesSync(compressedImageData);
+
+    return compressedFile;
+  }
+
+  Future<void> subirStorage() async {
+    try {
+      // Show the progress dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+      String randomFileName = generateRandomFileName();
+      final storageReference =
+          FirebaseStorage.instance.ref().child('images/$randomFileName.jpg');
+
+      // Upload the image to Firebase Storage
+      final UploadTask uploadTask = storageReference.putFile(uploadImage!);
+
+      // Wait for the upload to complete
+      await uploadTask.whenComplete(() async {
+        agregarObjetoCategoria(
+            'images/$randomFileName.jpg',
+            name,
+            descripcion,
+            category,
+            "Imágen modificada correctamente",
+            "No se pudo modificar la imagen");
+
+        // Close the progress dialog
+        Navigator.of(context).pop();
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error al subir la imagen",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -107,11 +214,39 @@ class _EditarObjetosState extends State<EditarObjetos> {
                 Center(
                   child: Column(
                     children: [
-                      CachedNetworkImage(
-                        imageUrl: widget.url,
-                        width: 200,
-                        height: 200,
-                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            agregar();
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            if (_selectedImage != null)
+                              Image.file(
+                                File(_selectedImage!.path),
+                                width: 200,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              )
+                            else
+                              CachedNetworkImage(
+                                imageUrl: widget.url,
+                                width: 200,
+                                height: 200,
+                              ),
+                            Positioned(
+                              top: 50,
+                              right: 50,
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 100,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
