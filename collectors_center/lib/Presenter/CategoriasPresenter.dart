@@ -74,8 +74,6 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-
-        goToVerCategorias(context);
       } else {
         // Handle the case where no matching document was found
         Fluttertoast.showToast(

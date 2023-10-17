@@ -15,16 +15,21 @@ class verCategorias extends StatefulWidget {
 }
 
 class _verCategoriasState extends State<verCategorias> {
-  Future<List<String>> ver() async {
-    return fetchCategories();
-  }
-
   bool isEdit = false;
+  List<String> categories = [];
 
   @override
   void initState() {
     super.initState();
     conexionInternt();
+    loadCategories();
+  }
+
+  Future<void> loadCategories() async {
+    final loadedCategories = await fetchCategories();
+    setState(() {
+      categories = loadedCategories;
+    });
   }
 
   @override
@@ -34,12 +39,13 @@ class _verCategoriasState extends State<verCategorias> {
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      // Si el usuario no está autenticado, redirigirlo a la pantalla de inicio de sesión
+      // If the user is not authenticated, redirect them to the login screen
       return const Inicio();
     }
 
-    void borrar(String categoria) {
-      borrarCategorias(context, categoria.trim());
+    void borrar(String categoria) async {
+      await borrarCategorias(context, categoria.trim());
+      loadCategories(); // Reload categories after deletion
     }
 
     return WillPopScope(
@@ -102,72 +108,57 @@ class _verCategoriasState extends State<verCategorias> {
 
                   // List of Categories
                   Expanded(
-                    child: FutureBuilder<List<String>>(
-                      future: ver(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else {
-                          List<String> categories = snapshot.data ?? [];
-
-                          return ListView.builder(
-                            itemCount: categories.length,
-                            itemBuilder: (context, index) {
-                              final category = categories[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  if (isEdit) {
-                                    borrar(categories[index].toString());
-                                    setState(() {
-                                      isEdit = !isEdit;
-                                    });
-                                  } else {
-                                    goToVerObjectsCategorias(
-                                        context, categories[index].toString());
-                                  }
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: myColor,
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      ListTile(
-                                        title: Text(
-                                          category,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Icon(
-                                            isEdit ? Icons.delete : null,
-                                            color: Colors.black,
-                                            size: 40,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                    child: ListView.builder(
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        final category = categories[index];
+                        return GestureDetector(
+                          onTap: () {
+                            if (isEdit) {
+                              borrar(categories[index]);
+                              setState(() {
+                                isEdit = false;
+                              });
+                            } else {
+                              goToVerObjectsCategorias(
+                                  context, categories[index]);
+                            }
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: myColor,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Stack(
+                              children: [
+                                ListTile(
+                                  title: Text(
+                                    category,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                              );
-                            },
-                          );
-                        }
+                                if (isEdit)
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.black,
+                                        size: 40,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),

@@ -546,8 +546,6 @@ Future<void> deleteByCategory(
 Future<void> deleteByCategoryNoMessage(
     BuildContext context, String imageUrl, String category) async {
   await deleteImageByImageUrlNoMessage(imageUrl);
-
-  goToVerObjectsCategorias(context, category);
 }
 
 //PErmite borrar desde general
