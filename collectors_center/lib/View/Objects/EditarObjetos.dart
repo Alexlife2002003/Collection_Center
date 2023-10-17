@@ -48,6 +48,30 @@ class _EditarObjetosState extends State<EditarObjetos> {
     );
   }
 
+  void editDescription() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
+    if (isEditing) {
+      descripcion = _descripcionController.text;
+      editDescriptionByImageUrl(
+          context, widget.firebaseURL, _descripcionController.text);
+    }
+    isEditing = !isEditing;
+  }
+
+  void borrarDescripcion() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
+    descripcion = "";
+    isEditing = false;
+    _descripcionController.text = "";
+    clearDescriptionByImageUrl(context, widget.firebaseURL, "");
+  }
+
   void agregar() async {
     bool internet = await conexionInternt();
     if (internet == false) {
@@ -328,15 +352,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          if (isEditing) {
-                                            descripcion =
-                                                _descripcionController.text;
-                                            editDescriptionByImageUrl(
-                                                context,
-                                                widget.firebaseURL,
-                                                _descripcionController.text);
-                                          }
-                                          isEditing = !isEditing;
+                                          editDescription();
                                         });
                                       },
                                     ),
@@ -347,11 +363,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          descripcion = "";
-                                          isEditing = false;
-                                          _descripcionController.text = "";
-                                          clearDescriptionByImageUrl(
-                                              context, widget.firebaseURL, "");
+                                          borrarDescripcion();
                                         });
                                       },
                                     ),
