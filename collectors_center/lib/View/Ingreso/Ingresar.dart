@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Armando                                                               //
+//   Nombre:                          Tacos de Asada                                                               //
 //   Fecha:                           26/09/23                                                              //
 //   Descripción:                     Vista de inicio de sesión de usuarios ya registrados                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,6 @@ class _IngresarState extends State<Ingresar> {
               borderSide: BorderSide(color: myColor),
               borderRadius: BorderRadius.circular(12.0),
             ),
-
             labelText: hintText,
             hintStyle: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -48,10 +47,9 @@ class _IngresarState extends State<Ingresar> {
             ),
             labelStyle: TextStyle(color: peach),
             filled: true,
-            fillColor: Colors.grey.withOpacity(.8), // Background color
+            fillColor: Colors.grey.withOpacity(.8),
           ),
-          style: const TextStyle(
-              color: Colors.white), // Set the text color to white
+          style: const TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
         ),
       ),

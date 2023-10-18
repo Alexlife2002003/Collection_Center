@@ -1,9 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                        //
-//   Fecha:                              25/09/23                                                               //
-//   Descripción:                    Los colores que se van usar en las pantallas                     //
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Colors principales a utilizar                                         //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import 'package:flutter/material.dart';
 
 Color myColor = const Color(0xFFFEC794);

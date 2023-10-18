@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Cajon de la app                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/Bienvenido.dart';

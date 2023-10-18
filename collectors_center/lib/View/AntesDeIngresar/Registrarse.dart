@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
+//   Nombre:                          Tacos de Asada                                                                //
 //   Fecha:                              25/09/23                                                           //
 //   Descripción:                    Vista de registro de nuevos usuarios                                   //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,6 @@ class _RegistrarseState extends State<Registrarse> {
               borderSide: BorderSide(color: myColor),
               borderRadius: BorderRadius.circular(12.0),
             ),
-
             labelText: hintText,
             hintStyle: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -50,10 +49,9 @@ class _RegistrarseState extends State<Registrarse> {
             ),
             labelStyle: TextStyle(color: peach),
             filled: true,
-            fillColor: Colors.grey.withOpacity(.8), // Background color
+            fillColor: Colors.grey.withOpacity(.8),
           ),
-          style: const TextStyle(
-              color: Colors.white), // Set the text color to white
+          style: const TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
         ),
       ),

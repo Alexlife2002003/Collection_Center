@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Ver categorias                                        //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
@@ -45,7 +50,7 @@ class _verCategoriasState extends State<verCategorias> {
 
     void borrar(String categoria) async {
       await borrarCategorias(context, categoria.trim());
-      loadCategories(); // Reload categories after deletion
+      loadCategories();
     }
 
     return WillPopScope(
@@ -81,7 +86,7 @@ class _verCategoriasState extends State<verCategorias> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            isEdit = !isEdit; // Toggle edit mode
+                            isEdit = !isEdit;
                           });
                         },
                         icon: Icon(
@@ -115,13 +120,15 @@ class _verCategoriasState extends State<verCategorias> {
                         return GestureDetector(
                           onTap: () {
                             if (isEdit) {
-                              borrar(categories[index]);
+                              borrar(category);
                               setState(() {
                                 isEdit = false;
                               });
                             } else {
                               goToVerObjectsCategorias(
-                                  context, categories[index]);
+                                context,
+                                category,
+                              );
                             }
                           },
                           child: Container(
@@ -140,21 +147,22 @@ class _verCategoriasState extends State<verCategorias> {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                ),
-                                if (isEdit)
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: Colors.black,
-                                        size: 40,
-                                      ),
+                                  trailing: GestureDetector(
+                                    onTap: () {
+                                      if (isEdit) {
+                                        // Handle delete action
+                                        borrar(category);
+                                      } else {
+                                        // Handle edit action
+                                        goToEditarCategoria(context, category);
+                                      }
+                                    },
+                                    child: Icon(
+                                      isEdit ? Icons.delete : Icons.edit,
+                                      color: Colors.black,
                                     ),
                                   ),
+                                ),
                               ],
                             ),
                           ),

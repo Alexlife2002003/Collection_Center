@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Agregar objetos a categoria                                         //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'dart:io';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
@@ -217,6 +222,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFF503A27),
                                 fontSize: 20),
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -242,9 +249,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                         child: TextField(
                           maxLength: 300,
                           controller: _descripcionController,
-                          maxLines: null, // Permite múltiples líneas
-                          keyboardType: TextInputType
-                              .multiline, // Activa el teclado multilinea
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Descripción',
@@ -252,6 +258,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFF503A27),
                                 fontSize: 16),
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10),
                           ),
                           textAlign: TextAlign.center,
                         ),

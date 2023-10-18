@@ -1,3 +1,7 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Editar los objetos                                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'dart:io';
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
@@ -210,203 +214,213 @@ class _EditarObjetosState extends State<EditarObjetos> {
       return const Inicio();
     }
 
-    return AppWithDrawer(
-      content: Scaffold(
-        body: Container(
-          height: screenHeight,
-          width: screenWidth,
-          color: peach,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    'Editar\nartículo',
-                    style: TextStyle(
-                      fontSize: 42,
-                      color: brown,
-                      fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async {
+        goToVerObjectsCategorias(context, category);
+        return true;
+      },
+      child: AppWithDrawer(
+        content: Scaffold(
+          body: Container(
+            height: screenHeight,
+            width: screenWidth,
+            color: peach,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      'Editar\nartículo',
+                      style: TextStyle(
+                        fontSize: 42,
+                        color: brown,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Center(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            agregar();
-                          });
-                        },
-                        child: Stack(
-                          children: [
-                            if (_selectedImage != null)
-                              Image.file(
-                                File(_selectedImage!.path),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              )
-                            else
-                              CachedNetworkImage(
-                                imageUrl: widget.url,
-                                width: 200,
-                                height: 200,
-                              ),
-                            Positioned(
-                              top: 50,
-                              right: 50,
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 100,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                  const SizedBox(
+                    height: 25,
                   ),
-                ),
-                const SizedBox(height: 25),
-                Text(
-                  "       Nombre:",
-                  style: TextStyle(color: brown, fontSize: 22),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    width: screenWidth - 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: myColor,
-                      border: Border.all(color: Colors.white, width: .2),
-                      borderRadius: BorderRadius.circular(12),
+                  Center(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              agregar();
+                            });
+                          },
+                          child: Stack(
+                            children: [
+                              if (_selectedImage != null)
+                                Image.file(
+                                  File(_selectedImage!.path),
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                )
+                              else
+                                CachedNetworkImage(
+                                  imageUrl: widget.url,
+                                  width: 200,
+                                  height: 200,
+                                ),
+                              Positioned(
+                                top: 50,
+                                right: 50,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 100,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    child: Center(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          color: brown,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(height: 25),
+                  Text(
+                    "       Nombre:",
+                    style: TextStyle(color: brown, fontSize: 22),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                      width: screenWidth - 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: myColor,
+                        border: Border.all(color: Colors.white, width: .2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            color: brown,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "       Descripción:",
-                  style: TextStyle(color: brown, fontSize: 22),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: screenWidth - 50,
-                          decoration: BoxDecoration(
-                            color: myColor,
-                            border: Border.all(color: Colors.white, width: .2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: isEditing
-                                      ? TextFormField(
-                                          keyboardType: TextInputType.multiline,
-                                          maxLines: null,
-                                          maxLength: 300,
-                                          controller: _descripcionController,
-                                          style: TextStyle(
-                                              color: brown, fontSize: 16),
-                                          textAlign: TextAlign.center,
-                                        )
-                                      : Text(
-                                          descripcion,
-                                          style: TextStyle(
-                                              color: brown, fontSize: 16),
-                                          textAlign: TextAlign.center,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "       Descripción:",
+                    style: TextStyle(color: brown, fontSize: 22),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: screenWidth - 50,
+                            decoration: BoxDecoration(
+                              color: myColor,
+                              border:
+                                  Border.all(color: Colors.white, width: .2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: isEditing
+                                        ? TextFormField(
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            maxLines: null,
+                                            maxLength: 300,
+                                            controller: _descripcionController,
+                                            style: TextStyle(
+                                                color: brown, fontSize: 16),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : Text(
+                                            descripcion,
+                                            style: TextStyle(
+                                                color: brown, fontSize: 16),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                  ),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          isEditing ? Icons.check : Icons.edit,
+                                          color: Colors.green,
                                         ),
-                                ),
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        isEditing ? Icons.check : Icons.edit,
-                                        color: Colors.green,
+                                        onPressed: () {
+                                          setState(() {
+                                            editDescription();
+                                          });
+                                        },
                                       ),
-                                      onPressed: () {
-                                        setState(() {
-                                          editDescription();
-                                        });
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            borrarDescripcion();
+                                          });
+                                        },
                                       ),
-                                      onPressed: () {
-                                        setState(() {
-                                          borrarDescripcion();
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: (screenHeight / 33),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: screenWidth - 200,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red),
-                      ),
-                      onPressed: () {
-                        deleteByCategory(context, widget.firebaseURL, category);
-                      },
-                      child: const Text('Eliminar'),
+                      ],
                     ),
                   ),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: screenWidth - 200,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                  SizedBox(
+                    height: (screenHeight / 33),
+                  ),
+                  Center(
+                    child: SizedBox(
+                      width: screenWidth - 200,
+                      child: ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(Colors.red),
+                        ),
+                        onPressed: () {
+                          deleteByCategory(
+                              context, widget.firebaseURL, category);
+                        },
+                        child: const Text('Eliminar'),
                       ),
-                      onPressed: cancelar,
-                      child: const Text('Regresar'),
                     ),
                   ),
-                ),
-              ],
+                  Center(
+                    child: SizedBox(
+                      width: screenWidth - 200,
+                      child: ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blue),
+                        ),
+                        onPressed: cancelar,
+                        child: const Text('Regresar'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

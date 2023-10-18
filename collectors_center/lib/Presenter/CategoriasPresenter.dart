@@ -114,26 +114,44 @@ void agregarCategoria(BuildContext context) {
       MaterialPageRoute(builder: (context) => const agregarCategorias()));
 }
 
-//Permite agregar categorías
-void agregarCategoriaBase(BuildContext context, String categoria) async {
+//Permite agregar categorías con descripcion ademas de mostrar advertencias
+void agregarCategoriaBase(
+    BuildContext context, String categoria, String descripcion) async {
   bool internet = await conexionInternt();
-  if (internet == false) {
+  if (!internet) {
+    mostrarToast("No tienes conexión a Internet. Verifica tu conexión.");
     return;
   }
+
   if (categoria.trim() == "") {
-    Fluttertoast.showToast(
-      msg: "Ingrese un nombre",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    mostrarToast("Ingrese un nombre");
     return;
   }
+
   if (categoria.length > 20) {
-    mostrarToast("El nombre debe ser de máximo 20 carácteres");
+    mostrarToast("El nombre debe ser de máximo 20 caracteres");
+    return;
+  }
+
+  if (descripcion.trim().isEmpty) {
+    mostrarToast("Debe agregar una descripción");
+    return;
+  }
+
+  if (descripcion.length < 15 || !descripcion.contains(RegExp(r'[a-zA-Z]'))) {
+    mostrarToast(
+        "La descripción debe contener letras y tener al menos 15 caracteres");
+    return;
+  }
+
+  if (descripcion == categoria) {
+    mostrarToast(
+        "La descripción no puede ser igual al nombre de la categoría.");
+    return;
+  }
+
+  if (descripcion.length > 300) {
+    mostrarToast("La descripción no puede exceder los 300 caracteres");
     return;
   }
 
@@ -147,14 +165,13 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
     CollectionReference categoriasCollection =
         usersDoc.collection('Categories');
 
-    // Check if the category name already exists
     QuerySnapshot categoryQuery =
         await categoriasCollection.where('Name', isEqualTo: categoria).get();
 
     if (categoryQuery.docs.isEmpty) {
-      // Category name does not exist, so add it
       categoriasCollection.add({
         'Name': categoria,
+        'Description': descripcion,
         'timestamp': FieldValue.serverTimestamp(),
       });
       Fluttertoast.showToast(
@@ -162,33 +179,30 @@ void agregarCategoriaBase(BuildContext context, String categoria) async {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.green, // Cambiado a color verde para éxito
         textColor: Colors.white,
         fontSize: 16.0,
       );
       goToVerCategorias(context);
     } else {
-      Fluttertoast.showToast(
-        msg: "La categoria ya existe",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      mostrarToast("La categoría ya existe");
     }
   } else {
-    Fluttertoast.showToast(
-      msg: "No estas logeado",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    mostrarToast("No estás logeado");
   }
+}
+
+// Se encarga de mostrar mensajes flotantes segun un mensaje dado
+void mostrarToast(String mensaje) {
+  Fluttertoast.showToast(
+    msg: mensaje,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red, // Cambiado a color verde para éxito
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }
 
 // Te permite obtener las categorías
@@ -201,13 +215,14 @@ Future<List<String>> fetchCategories() async {
     if (user != null) {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
-          .doc(user.uid) // Assuming you have access to the user object
+          .doc(user.uid)
           .collection('Categories')
           .orderBy('timestamp', descending: false)
           .get();
 
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
         String categoryName = document['Name'] as String;
+
         categories.add(categoryName);
       }
     }
@@ -216,6 +231,37 @@ Future<List<String>> fetchCategories() async {
   }
 
   return categories;
+}
+
+Future<String> fetchDescriptions(String category) async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String uid = user.uid;
+      DocumentReference usersDoc = firestore.collection('Users').doc(uid);
+      CollectionReference categoriesCollection =
+          usersDoc.collection("Categories");
+
+      QuerySnapshot categoryQuery =
+          await categoriesCollection.where('Name', isEqualTo: category).get();
+
+      if (categoryQuery.docs.isNotEmpty) {
+        DocumentSnapshot categoryDoc = categoryQuery.docs.first;
+
+        return categoryDoc['Description'];
+      } else {
+        return "";
+      }
+    }
+  } catch (e) {
+    print('Error fetching categories: $e');
+  }
+
+  return "";
 }
 
 // Te permite obtener la información de la imágen en base a la Url de la imágen

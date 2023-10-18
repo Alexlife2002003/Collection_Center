@@ -6,6 +6,7 @@
 
 import 'dart:math';
 import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/View/Categorias/editarCategoria.dart';
 import 'package:collectors_center/View/Objects/AgregaObjetosGeneral.dart';
 import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/EditarObjetos.dart';
@@ -222,6 +223,19 @@ void goToEditarObjeto(BuildContext context, String url, String firebase) {
   );
 }
 
+void goToEditarCategoria(
+  BuildContext context,
+  String categoryName,
+) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => EditarCategoria(
+        categoryName: categoryName,
+      ),
+    ),
+  );
+}
+
 // Te lleva a ver los objetos desde adentro de su categoría
 void goToVerObjectsCategorias(BuildContext context, String name) {
   Navigator.push(
@@ -402,14 +416,14 @@ Future<List<Map<String, dynamic>>> fetchAllObjects() async {
         }
       }
 
-      return allObjects; // Return the list of objects as a Future
+      return allObjects;
     } else {
       // User not logged in
       throw Exception('User is not logged in.');
     }
   } catch (error) {
     print('Error fetching objects: $error');
-    throw error; // Rethrow the error for higher-level handling
+    throw error;
   }
 }
 

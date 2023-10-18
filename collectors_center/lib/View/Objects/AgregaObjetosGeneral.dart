@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Agregar objetos de forma general                                         //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'dart:io';
 
 import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
@@ -61,11 +66,9 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
     setState(() {
       categories = fetchedCategories;
       if (categories.isNotEmpty) {
-        selectedCategory =
-            categories[0]; // Initialize to the first category if available
+        selectedCategory = categories[0];
       } else {
-        selectedCategory =
-            'General'; // If no categories available, set it to 'General'
+        selectedCategory = 'General';
       }
     });
   }
@@ -145,13 +148,12 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
             _descripcionController.text,
             selectedCategory,
             "Articulo agregado exitosamente",
-            "No se pudo agregar el articulo"); // Use selectedCategory
+            "No se pudo agregar el articulo");
 
         // Close the progress dialog
         Navigator.of(context).pop();
 
-        goToVerObjectsCategorias(
-            context, selectedCategory); // Use selectedCategory
+        goToVerObjectsCategorias(context, selectedCategory);
       });
     } catch (e) {
       Fluttertoast.showToast(
@@ -290,9 +292,8 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                       child: Center(
                         child: TextField(
                           controller: _descripcionController,
-                          maxLines: null, // Permite múltiples líneas
-                          keyboardType: TextInputType
-                              .multiline, // Activa el teclado multilinea
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Descripción',
@@ -323,8 +324,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: DropdownButton<String>(
-                      isExpanded:
-                          true, // Hace que el DropdownButton se expanda para centrar el texto
+                      isExpanded: true,
                       value: selectedCategory,
                       onChanged: (String? newValue) {
                         setState(() {

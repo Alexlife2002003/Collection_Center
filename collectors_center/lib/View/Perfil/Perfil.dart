@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Armando                                                               //
+//   Nombre:                          Tacis de Asada                                                               //
 //   Fecha:                           26/09/23                                                              //
 //   Descripción:                     Vista de inicio de sesión de usuarios ya registrados                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,9 +52,10 @@ class _PerfilState extends State<Perfil> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  value ?? '', // Usar ?? '' para evitar un valor nulo
+                  // Usar ?? '' para evitar un valor nulo
+                  value ?? '',
                   style: TextStyle(color: brown, fontSize: 18),
-                  textAlign: TextAlign.left, // Alinea el texto a la izquierda
+                  textAlign: TextAlign.left,
                 ),
               ),
             ),
