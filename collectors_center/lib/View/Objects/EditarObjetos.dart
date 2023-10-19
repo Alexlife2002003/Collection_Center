@@ -57,8 +57,24 @@ class _EditarObjetosState extends State<EditarObjetos> {
     if (internet == false) {
       return;
     }
+    descripcion = _descripcionController.text;
+    final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(descripcion);
+    if (descripcion.length < 10 && descripcion.length != 0) {
+      mostrarToast(
+          "Descripción debe contener mínimo 10 caracteres si no es vacia");
+      return;
+    }
+
+    if (descripcion.length > 300) {
+      mostrarToast("No puede exceder la descripción los 300 carácteres");
+      return;
+    }
+
+    if (!containsLetter && descripcion.isNotEmpty) {
+      mostrarToast("Descripción debe contener letras");
+      return;
+    }
     if (isEditing) {
-      descripcion = _descripcionController.text;
       editDescriptionByImageUrl(
           context, widget.firebaseURL, _descripcionController.text);
     }
@@ -81,9 +97,13 @@ class _EditarObjetosState extends State<EditarObjetos> {
     if (internet == false) {
       return;
     }
-    await _pickImage();
-    subirStorage();
-    deleteImageByImageUrlNoMessage(widget.firebaseURL);
+    if (!isEditing) {
+      await _pickImage();
+    }
+    if (_selectedImage != null) {
+      await subirStorage();
+      deleteImageByImageUrlNoMessage(widget.firebaseURL);
+    }
   }
 
   void setImageInfo() async {
