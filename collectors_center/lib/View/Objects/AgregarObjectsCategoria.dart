@@ -163,7 +163,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: Text(
@@ -178,27 +178,49 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                 const SizedBox(
                   height: 25,
                 ),
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Column(
-                    children: [
-                      if (_selectedImage != null)
-                        Image.file(
-                          File(_selectedImage!.path),
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        )
-                      else
-                        Image.asset(
-                          'lib/assets/images/add_image.png',
-                          width: 200,
-                          height: 200,
-                        )
-                    ],
+                Center(
+                  child: GestureDetector(
+                    onTap: _pickImage,
+                    child: Column(
+                      children: [
+                        if (_selectedImage != null)
+                          Image.file(
+                            File(_selectedImage!.path),
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          )
+                        else
+                          Image.asset(
+                            'lib/assets/images/add_image.png',
+                            width: 200,
+                            height: 200,
+                          )
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 25),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "       Nombre:",
+                        style: TextStyle(
+                          color: brown,
+                          fontSize: 22,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "*",
+                        style: TextStyle(
+                          color: red,
+                          fontSize: 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
@@ -233,6 +255,10 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                 ),
                 const SizedBox(
                   height: 10,
+                ),
+                Text(
+                  "       Descripción:",
+                  style: TextStyle(color: brown, fontSize: 22),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -270,22 +296,28 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                 SizedBox(
                   height: (screenHeight / 33),
                 ),
-                SizedBox(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                    onPressed: agregar,
-                    child: const Text('Guardar'),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blue)),
+                      onPressed: agregar,
+                      child: const Text('Guardar'),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                    onPressed: cancelar,
-                    child: const Text('Cancelar'),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.red)),
+                      onPressed: cancelar,
+                      child: const Text('Cancelar'),
+                    ),
                   ),
                 ),
               ],

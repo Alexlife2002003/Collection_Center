@@ -52,6 +52,41 @@ class _EditarObjetosState extends State<EditarObjetos> {
     );
   }
 
+  void borrar() async {
+    // Mostrar un diálogo de confirmación
+    bool confirmacion = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: peach,
+          title: Text('Confirmar eliminación'),
+          content: Text('¿Está seguro de que desea eliminar el artículo?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); 
+              },
+              child: Text(
+                'Eliminar',
+                style: TextStyle(color: red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmacion == true) {
+      deleteByCategory(context, widget.firebaseURL, category);
+    }
+  }
+
   void editDescription() async {
     bool internet = await conexionInternt();
     if (internet == false) {
@@ -419,8 +454,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                           backgroundColor: MaterialStatePropertyAll(Colors.red),
                         ),
                         onPressed: () {
-                          deleteByCategory(
-                              context, widget.firebaseURL, category);
+                          borrar();
                         },
                         child: const Text('Eliminar'),
                       ),

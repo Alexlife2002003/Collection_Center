@@ -49,8 +49,40 @@ class _verCategoriasState extends State<verCategorias> {
     }
 
     void borrar(String categoria) async {
-      await borrarCategorias(context, categoria.trim());
-      loadCategories();
+      // Mostrar un diálogo de confirmación
+      bool confirmacion = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: peach,
+            title: Text('Confirmar eliminación'),
+            content: Text(
+                '¿Está seguro de que desea borrar la categoría "$categoria"?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); 
+                },
+                child: Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text(
+                  'Eliminar',
+                  style: TextStyle(color: red),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmacion == true) {
+        await borrarCategorias(context, categoria.trim());
+        loadCategories();
+      }
     }
 
     return WillPopScope(

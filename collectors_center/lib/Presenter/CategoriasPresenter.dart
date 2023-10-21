@@ -133,12 +133,8 @@ void agregarCategoriaBase(
     return;
   }
 
-  if (descripcion.trim().isEmpty) {
-    mostrarToast("Debe agregar una descripción");
-    return;
-  }
-
-  if (descripcion.length < 15 || !descripcion.contains(RegExp(r'[a-zA-Z]'))) {
+  if ((descripcion.length < 15 && descripcion.isNotEmpty) ||
+      (!descripcion.contains(RegExp(r'[a-zA-Z]')) && descripcion.isNotEmpty)) {
     mostrarToast(
         "La descripción debe contener letras y tener al menos 15 caracteres");
     return;

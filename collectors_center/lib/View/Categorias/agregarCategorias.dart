@@ -56,7 +56,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: Text(
@@ -71,6 +71,26 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                 ),
                 const SizedBox(
                   height: 25,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "       Nombre:",
+                        style: TextStyle(
+                          color: brown,
+                          fontSize: 22,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "*",
+                        style: TextStyle(
+                          color: red,
+                          fontSize: 22,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -104,6 +124,10 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                 ),
                 const SizedBox(
                   height: 10,
+                ),
+                Text(
+                  "       Descripción:",
+                  style: TextStyle(color: brown, fontSize: 22),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -139,24 +163,28 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                 SizedBox(
                   height: 2 * (screenheight / 14.6),
                 ),
-                SizedBox(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      ),
+                      onPressed: agregar,
+                      child: Text('Guardar'),
                     ),
-                    onPressed: agregar,
-                    child: Text('Guardar'),
                   ),
                 ),
-                SizedBox(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                      ),
+                      onPressed: cancelar,
+                      child: Text('Cancelar'),
                     ),
-                    onPressed: cancelar,
-                    child: Text('Cancelar'),
                   ),
                 ),
               ],

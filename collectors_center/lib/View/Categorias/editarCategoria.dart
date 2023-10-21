@@ -66,7 +66,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: Text(
@@ -81,6 +81,11 @@ class _EditarCategoriaState extends State<EditarCategoria> {
                 ),
                 const SizedBox(
                   height: 25,
+                ),
+                const SizedBox(height: 25),
+                Text(
+                  "       Nombre:",
+                  style: TextStyle(color: brown, fontSize: 22),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -124,6 +129,10 @@ class _EditarCategoriaState extends State<EditarCategoria> {
                 ),
                 const SizedBox(
                   height: 10,
+                ),
+                Text(
+                  "       Descripción:",
+                  style: TextStyle(color: brown, fontSize: 22),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -197,24 +206,28 @@ class _EditarCategoriaState extends State<EditarCategoria> {
                 SizedBox(
                   height: screenHeight / 3.6,
                 ),
-                SizedBox(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      ),
+                      onPressed: () {},
+                      child: Text('Guardar'),
                     ),
-                    onPressed: () {},
-                    child: Text('Guardar'),
                   ),
                 ),
-                SizedBox(
-                  width: screenWidth - 200,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 200,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                      ),
+                      onPressed: cancelar,
+                      child: Text('Cancelar'),
                     ),
-                    onPressed: cancelar,
-                    child: Text('Cancelar'),
                   ),
                 ),
               ],

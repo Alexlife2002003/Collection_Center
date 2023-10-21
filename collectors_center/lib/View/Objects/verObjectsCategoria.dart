@@ -78,6 +78,45 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     });
   }
 
+  void _deleteConfirmation() async {
+    // Mostrar un diálogo de confirmación
+    bool confirmacion = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: peach,
+          title: Text('Confirmar eliminación'),
+          content: Text(
+              '¿Está seguro de que desea borrar los artículos seleccionados?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+                setState(() {
+                  deleteActivated = !deleteActivated;
+                });
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(
+                'Eliminar',
+                style: TextStyle(color: red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmacion == true) {
+      _deleteSelectedObjects();
+    }
+  }
+
   void _deleteSelectedObjects() async {
     bool internet = await conexionInternt();
     if (internet == false) {
@@ -162,8 +201,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                               setState(() {
                                 deleteActivated = !deleteActivated;
                               });
-
-                              _deleteSelectedObjects();
+                              if (_selectedObjects.isNotEmpty) {
+                                _deleteConfirmation();
+                              }
                             } else {
                               setState(() {
                                 deleteActivated = !deleteActivated;
