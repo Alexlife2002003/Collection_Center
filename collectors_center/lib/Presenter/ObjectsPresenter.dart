@@ -97,7 +97,7 @@ Future<void> editDescriptionByImageUrl(
               Fluttertoast.showToast(
                 msg: "Se han guardado los cambios",
                 toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
+                gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.green,
                 textColor: Colors.white,
@@ -115,7 +115,7 @@ Future<void> editDescriptionByImageUrl(
     Fluttertoast.showToast(
       msg: "No es posible guardar los cambios",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
@@ -171,7 +171,7 @@ Future<void> clearDescriptionByImageUrl(
               Fluttertoast.showToast(
                 msg: "Descripción borrada exitosamente",
                 toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
+                gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.green,
                 textColor: Colors.white,
@@ -189,7 +189,7 @@ Future<void> clearDescriptionByImageUrl(
     Fluttertoast.showToast(
       msg: "La descripción no se ha eliminado",
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,

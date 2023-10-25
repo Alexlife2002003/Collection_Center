@@ -104,10 +104,14 @@ class _EditarCategoriaState extends State<EditarCategoria> {
   }
 
   void borrarDescripcion() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
     description = "";
     isEditing = false;
     _descripcionCategoriaController.text = "";
-    // clearCategoryDescription(widget.categoryName);
+    clearCategoryDescription(widget.categoryName);
   }
 
   @override

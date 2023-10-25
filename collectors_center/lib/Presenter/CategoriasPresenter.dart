@@ -7,6 +7,68 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+Future<void> clearCategoryDescription(String category) async {
+  bool internet = await conexionInternt();
+  if (!internet) {
+    return;
+  }
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Reference to the user's "Users" collection
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      // Query for the user's document
+      DocumentSnapshot userDocSnapshot =
+          await usersCollection.doc(user.uid).get();
+
+      if (userDocSnapshot.exists) {
+        // Reference to the "Categories" subcollection within the user's document
+        CollectionReference categoriesCollection =
+            userDocSnapshot.reference.collection('Categories');
+
+        // Query all category documents
+        QuerySnapshot categoriesQuerySnapshot =
+            await categoriesCollection.get();
+
+        // Loop through the category documents
+        for (final categoryDoc in categoriesQuerySnapshot.docs) {
+          // Check if the category name matches the desired category
+          if (categoryDoc['Name'] == category) {
+            // Update the "Description" field to be blank ("")
+            await categoryDoc.reference.update({'Description': ''});
+
+            // You can show a success message here if needed
+            Fluttertoast.showToast(
+              msg: "Descripción de la categoría eliminada exitosamente",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+
+            // Exit the function after successfully clearing the category description
+            return;
+          }
+        }
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "La descripción de la categoría no se ha eliminado",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+}
+
 //////////////////////////////////
 //  Navegacion dentro de la app encargado de categorias //
 //////////////////////////////////
