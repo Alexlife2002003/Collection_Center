@@ -209,6 +209,18 @@ void mostrarToast(String mensaje) {
   );
 }
 
+void mostrarToastCorrecto(String mensaje) {
+  Fluttertoast.showToast(
+    msg: mensaje,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.green,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
+}
+
 // Método encargado de cerrar la sesión del usuario
 Future<void> cerrarSesion(BuildContext context) async {
   bool internet = await conexionInternt();

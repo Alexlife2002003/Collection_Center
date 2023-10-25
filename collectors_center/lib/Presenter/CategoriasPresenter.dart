@@ -424,7 +424,7 @@ Future<void> editCategoryDescription(
           await categoryDocRef.update({'Description': description});
 
           // Show a success message
-          mostrarToast("Se han guardado los cambios");
+          mostrarToastCorrecto("Se han guardado los cambios");
 
           // You can exit the function here if needed
           return;
