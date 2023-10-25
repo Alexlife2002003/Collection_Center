@@ -188,19 +188,6 @@ void agregarCategoriaBase(
   }
 }
 
-// Se encarga de mostrar mensajes flotantes segun un mensaje dado
-void mostrarToast(String mensaje) {
-  Fluttertoast.showToast(
-    msg: mensaje,
-    toastLength: Toast.LENGTH_SHORT,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
-    backgroundColor: Colors.red, // Cambiado a color verde para éxito
-    textColor: Colors.white,
-    fontSize: 16.0,
-  );
-}
-
 // Te permite obtener las categorías
 Future<List<String>> fetchCategories() async {
   List<String> categories = [];
@@ -318,4 +305,79 @@ Future<Map<String, String>> getImageInfoByImageUrl(
     'imageName': '',
     'imageDescription': '',
   };
+}
+
+Future<void> editCategoryDescription(
+    String categoryName, String description) async {
+  bool internet = await conexionInternt();
+  if (internet == false) {
+    return;
+  }
+
+  final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(description);
+
+  if (description.length < 15 && description.isNotEmpty) {
+    mostrarToast(
+        "La descripción debe tener al menos 15 caracteres si no está vacía");
+    return;
+  }
+
+  if (description.length > 300) {
+    mostrarToast("La descripción no puede exceder los 300 caracteres");
+    return;
+  }
+
+  if (!containsLetter && description.isNotEmpty) {
+    mostrarToast("La descripción debe contener letras");
+    return;
+  }
+
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Reference to the user's "Users" collection
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      // Query for the user's document
+      DocumentSnapshot userDocSnapshot =
+          await usersCollection.doc(user.uid).get();
+
+      if (userDocSnapshot.exists) {
+        // Reference to the "Categories" subcollection within the user's document
+        CollectionReference categoriesCollection =
+            userDocSnapshot.reference.collection('Categories');
+
+        // Query for the category document with the specified name
+        QuerySnapshot categoryQuerySnapshot = await categoriesCollection
+            .where('Name', isEqualTo: categoryName)
+            .get();
+
+        if (categoryQuerySnapshot.docs.isNotEmpty) {
+          // Get the reference to the category document
+          DocumentReference categoryDocRef =
+              categoryQuerySnapshot.docs.first.reference;
+
+          // Update the category's description
+          await categoryDocRef.update({'Description': description});
+
+          // Show a success message
+          mostrarToast("Se han guardado los cambios");
+
+          // You can exit the function here if needed
+          return;
+        }
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "No es posible guardar los cambios",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 }

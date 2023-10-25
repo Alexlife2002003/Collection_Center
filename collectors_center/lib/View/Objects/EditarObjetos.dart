@@ -70,7 +70,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(true); 
+                Navigator.of(context).pop(true);
               },
               child: Text(
                 'Eliminar',
@@ -107,6 +107,16 @@ class _EditarObjetosState extends State<EditarObjetos> {
 
     if (!containsLetter && descripcion.isNotEmpty) {
       mostrarToast("Descripción debe contener letras");
+      return;
+    }
+    if (descripcion.trim() == category) {
+      mostrarToast(
+          "La descripcion no puede ser igual al nombre de la categoria"); //checar acentos
+      return;
+    }
+    if (descripcion.trim() == name) {
+      mostrarToast(
+          "La descripcion no puede ser igual al nombre del articulo"); //checar acentos
       return;
     }
     if (isEditing) {
