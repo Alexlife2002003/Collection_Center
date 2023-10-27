@@ -61,7 +61,7 @@ class _verCategoriasState extends State<verCategorias> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(false); 
+                  Navigator.of(context).pop(false);
                 },
                 child: Text('Cancelar'),
               ),
@@ -91,6 +91,7 @@ class _verCategoriasState extends State<verCategorias> {
         return true;
       },
       child: AppWithDrawer(
+        currentPage: "Categorias",
         content: Scaffold(
           backgroundColor: peach,
           body: Center(

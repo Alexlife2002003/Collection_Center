@@ -170,6 +170,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
         return true;
       },
       child: AppWithDrawer(
+        currentPage: "verObjetosCategoria",
         content: Scaffold(
           backgroundColor: peach,
           body: Column(

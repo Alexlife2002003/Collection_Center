@@ -155,6 +155,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
     }
 
     return AppWithDrawer(
+      currentPage: "agregarObjetosCategoria",
       content: Scaffold(
         body: Container(
           height: screenHeight,

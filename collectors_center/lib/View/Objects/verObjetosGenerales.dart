@@ -116,6 +116,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
         return true;
       },
       child: AppWithDrawer(
+        currentPage: "Objetos",
         content: Scaffold(
           backgroundColor: peach,
           body: Column(

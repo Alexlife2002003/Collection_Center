@@ -81,6 +81,7 @@ class _verObjetosIndividualesState extends State<verObjetosIndividuales> {
     }
 
     return AppWithDrawer(
+      currentPage: "objetosIndividuales",
       content: Scaffold(
         body: Container(
           height: screenHeight,

@@ -199,6 +199,7 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
     }
 
     return AppWithDrawer(
+      currentPage: "agregarObjetosGeneral",
       content: Scaffold(
         body: Container(
           height: screenHeight,

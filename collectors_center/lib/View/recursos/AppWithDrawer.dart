@@ -2,10 +2,10 @@
 //   Nombre:                          Equipo Tacos de asada                                                 //
 //   Descripción:                     Cajon de la app                                                       //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:collectors_center/Presenter/Presenter.dart';
 import 'package:collectors_center/View/Bienvenido.dart';
+import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -14,16 +14,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class AppWithDrawer extends StatelessWidget {
   final Widget content;
+  String currentPage;
 
-  const AppWithDrawer({required this.content});
+  AppWithDrawer({required this.content, required this.currentPage}) {}
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     void categorias() {
       goToVerCategorias(context);
     }
 
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: peach,
@@ -32,11 +33,13 @@ class AppWithDrawer extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const Perfil(),
-                ),
-              );
+              if (currentPage != "Perfil") {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const Perfil(),
+                  ),
+                );
+              }
             },
             icon: const Icon(Icons.person),
           ),
@@ -54,12 +57,14 @@ class AppWithDrawer extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => Bienvenido(),
-                      ),
-                      (route) => false,
-                    );
+                    if (currentPage != "Bienvenido") {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => Bienvenido(),
+                        ),
+                        (route) => false,
+                      );
+                    }
                   },
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -93,12 +98,15 @@ class AppWithDrawer extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => Bienvenido(),
-                  ),
-                  (route) => false,
-                );
+                if (currentPage != "Bienvenido") {
+                  currentPage = "Bienvenido";
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => Bienvenido(),
+                    ),
+                    (route) => false,
+                  );
+                }
               },
             ),
             ListTile(
@@ -113,22 +121,25 @@ class AppWithDrawer extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                if (fetchCategories() == []) {
-                  Fluttertoast.showToast(
-                    msg: "No se han creado categorías",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-                } else {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const verObjetosGenerales(),
-                    ),
-                  );
+                if (currentPage != "Objetos") {
+                  currentPage = "Objetos";
+                  if (fetchCategories() == []) {
+                    Fluttertoast.showToast(
+                      msg: "No se han creado categorías",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  } else {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const verObjetosGenerales(),
+                      ),
+                    );
+                  }
                 }
               },
             ),
@@ -146,7 +157,11 @@ class AppWithDrawer extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                categorias();
+                print(currentPage);
+                if (currentPage != "Categorias") {
+                  currentPage = "Categorias";
+                  categorias();
+                }
               },
             ),
             const Spacer(),

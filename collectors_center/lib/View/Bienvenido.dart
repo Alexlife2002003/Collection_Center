@@ -30,6 +30,7 @@ class Bienvenido extends StatelessWidget {
         return false;
       },
       child: AppWithDrawer(
+        currentPage: "Bienvenido",
         content: Container(
           color: peach,
           child: Column(

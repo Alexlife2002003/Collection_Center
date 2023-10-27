@@ -145,6 +145,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
         return true;
       },
       child: AppWithDrawer(
+        currentPage: "editarCategorias",
         content: Scaffold(
           body: Container(
             height: screenHeight,

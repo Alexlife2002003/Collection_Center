@@ -285,6 +285,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
         return true;
       },
       child: AppWithDrawer(
+        currentPage: "editarObjetos",
         content: Scaffold(
           body: Container(
             height: screenHeight,
