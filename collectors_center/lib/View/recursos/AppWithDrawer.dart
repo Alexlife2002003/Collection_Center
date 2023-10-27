@@ -64,6 +64,8 @@ class AppWithDrawer extends StatelessWidget {
                         ),
                         (route) => false,
                       );
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                   child: const Column(
@@ -106,6 +108,8 @@ class AppWithDrawer extends StatelessWidget {
                     ),
                     (route) => false,
                   );
+                } else {
+                  Navigator.pop(context);
                 }
               },
             ),
@@ -140,6 +144,8 @@ class AppWithDrawer extends StatelessWidget {
                       ),
                     );
                   }
+                } else {
+                  Navigator.pop(context);
                 }
               },
             ),
@@ -161,6 +167,8 @@ class AppWithDrawer extends StatelessWidget {
                 if (currentPage != "Categorias") {
                   currentPage = "Categorias";
                   categorias();
+                } else {
+                  Navigator.pop(context);
                 }
               },
             ),

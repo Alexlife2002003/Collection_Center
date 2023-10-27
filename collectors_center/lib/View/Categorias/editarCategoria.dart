@@ -9,9 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class EditarCategoria extends StatefulWidget {
-  final String categoryName;
-  const EditarCategoria({Key? key, required this.categoryName})
-      : super(key: key);
+  String categoryName;
+  EditarCategoria({Key? key, required this.categoryName}) : super(key: key);
 
   @override
   State<EditarCategoria> createState() => _EditarCategoriaState();
@@ -22,7 +21,10 @@ void dispose() {}
 
 class _EditarCategoriaState extends State<EditarCategoria> {
   final _descripcionCategoriaController = TextEditingController();
+  final _nombreCategoriaController = TextEditingController();
   bool isEditing = false;
+  bool isEditingNombre = false;
+  String nombre = "";
   String description = "";
 
   void cancelar() {
@@ -103,6 +105,31 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     isEditing = !isEditing;
   }
 
+  void editNombre() async {
+    bool internet = await conexionInternt();
+    if (internet == false) {
+      return;
+    }
+    nombre = _nombreCategoriaController.text.trim();
+    if ((nombre != widget.categoryName) && (await categoriesExist(nombre))) {
+      mostrarToast("El nombre de la categoria ya existe");
+      return;
+    }
+    if (nombre.isEmpty) {
+      mostrarToast("Ingrese un nombre");
+      return;
+    }
+    final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(nombre);
+
+    if (isEditingNombre) {
+      editCategoryName(widget.categoryName, _nombreCategoriaController.text);
+      setState(() {
+        widget.categoryName = _nombreCategoriaController.text;
+      });
+    }
+    isEditingNombre = !isEditingNombre;
+  }
+
   void borrarDescripcion() async {
     bool internet = await conexionInternt();
     if (internet == false) {
@@ -124,6 +151,8 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     final String categoryDescription =
         await fetchDescriptions(widget.categoryName);
     setState(() {
+      _nombreCategoriaController.text = widget.categoryName;
+      nombre = widget.categoryName;
       description = categoryDescription;
       _descripcionCategoriaController.text = categoryDescription;
     });
@@ -179,21 +208,59 @@ class _EditarCategoriaState extends State<EditarCategoria> {
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
                       width: screenWidth - 50,
-                      height: 50,
+                      height: 70,
                       decoration: BoxDecoration(
                         color: myColor,
                         border: Border.all(color: Colors.white, width: .2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Center(
-                        child: Text(
-                          widget.categoryName,
-                          style: TextStyle(
-                            color: brown,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: isEditingNombre
+                                    ? TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        maxLength: 20,
+                                        controller: _nombreCategoriaController,
+                                        style: TextStyle(
+                                            color: brown, fontSize: 16),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    : Text(
+                                        widget.categoryName,
+                                        style: TextStyle(
+                                          color: brown,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        isEditingNombre
+                                            ? Icons.check
+                                            : Icons.edit,
+                                        color: Colors.green,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          editNombre();
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),

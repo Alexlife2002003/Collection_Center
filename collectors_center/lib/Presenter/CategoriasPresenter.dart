@@ -278,6 +278,35 @@ Future<List<String>> fetchCategories() async {
   return categories;
 }
 
+Future<bool> categoriesExist(String category) async {
+  List<String> categories = [];
+
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Categories')
+          .orderBy('timestamp', descending: false)
+          .get();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        String categoryName = document['Name'] as String;
+
+        if (categoryName == category) {
+          return true;
+        }
+      }
+    }
+  } catch (e) {
+    print('Error fetching categories: $e');
+  }
+
+  return false;
+}
+
 Future<String> fetchDescriptions(String category) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -422,6 +451,64 @@ Future<void> editCategoryDescription(
 
           // Update the category's description
           await categoryDocRef.update({'Description': description});
+
+          // Show a success message
+          mostrarToastCorrecto("Se han guardado los cambios");
+
+          // You can exit the function here if needed
+          return;
+        }
+      }
+    }
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: "No es posible guardar los cambios",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+}
+
+Future<void> editCategoryName(String categoryName, String newName) async {
+  bool internet = await conexionInternt();
+  if (internet == false) {
+    return;
+  }
+
+  final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(newName);
+
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Reference to the user's "Users" collection
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      // Query for the user's document
+      DocumentSnapshot userDocSnapshot =
+          await usersCollection.doc(user.uid).get();
+
+      if (userDocSnapshot.exists) {
+        // Reference to the "Categories" subcollection within the user's document
+        CollectionReference categoriesCollection =
+            userDocSnapshot.reference.collection('Categories');
+
+        // Query for the category document with the specified name
+        QuerySnapshot categoryQuerySnapshot = await categoriesCollection
+            .where('Name', isEqualTo: categoryName)
+            .get();
+
+        if (categoryQuerySnapshot.docs.isNotEmpty) {
+          // Get the reference to the category document
+          DocumentReference categoryDocRef =
+              categoryQuerySnapshot.docs.first.reference;
+
+          // Update the category's description
+          await categoryDocRef.update({'Name': newName});
 
           // Show a success message
           mostrarToastCorrecto("Se han guardado los cambios");
