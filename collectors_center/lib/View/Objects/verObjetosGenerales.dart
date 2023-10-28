@@ -3,6 +3,7 @@
 //   Descripción:                     Ver objetos de forma general                                         //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -42,6 +43,11 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
   List<MyObject> _objectList = [];
   List<String> categories = [];
   String selectedCategory = 'Default';
+  String selectedDescription = "";
+
+  Future<void> fetchdescr() async {
+    selectedDescription = await fetchDescriptions(selectedCategory);
+  }
 
   Future<void> fetchCategories() async {
     List<String> fetchedCategories = [];
@@ -70,6 +76,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
       categories = fetchedCategories;
       if (categories.isNotEmpty) {
         selectedCategory = categories[0];
+        fetchdescr();
         _fetchObjectscat();
       } else {
         selectedCategory = 'Sin categorias';
@@ -82,6 +89,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
     super.initState();
     fetchCategories();
     _fetchObjectscat();
+    fetchdescr();
   }
 
   Future<void> _fetchObjectscat() async {
@@ -155,6 +163,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                               setState(() {
                                 selectedCategory = newValue!;
                                 _fetchObjectscat();
+                                fetchdescr();
                               });
                             },
                             items: categories
@@ -179,6 +188,37 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                   ),
                 ),
               ),
+              if (selectedDescription.isNotEmpty)
+                Text(
+                  "Descripción de categoría:",
+                  style: TextStyle(color: brown, fontSize: 22),
+                ),
+              if (selectedDescription.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: screenWidth - 50,
+                          decoration: BoxDecoration(
+                            color: myColor,
+                            border: Border.all(color: Colors.white, width: .2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                              selectedDescription,
+                              style: TextStyle(color: brown, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               Expanded(
                 child: ListView(
                   children: <Widget>[
