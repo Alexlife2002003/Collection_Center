@@ -189,11 +189,6 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                 ),
               ),
               if (selectedDescription.isNotEmpty)
-                Text(
-                  "Descripción de categoría:",
-                  style: TextStyle(color: brown, fontSize: 22),
-                ),
-              if (selectedDescription.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Row(
