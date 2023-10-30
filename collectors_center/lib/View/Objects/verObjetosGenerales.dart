@@ -4,6 +4,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
+import 'package:collectors_center/View/Bienvenido.dart';
+import 'package:collectors_center/View/Objects/verObjetosIndividuales.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -120,7 +123,12 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
 
     return WillPopScope(
       onWillPop: () async {
-        goToBienvenido(context);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => Bienvenido(),
+          ),
+          (route) => false,
+        );
         return true;
       },
       child: AppWithDrawer(

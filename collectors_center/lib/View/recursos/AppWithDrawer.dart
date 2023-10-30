@@ -9,6 +9,7 @@ import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -138,11 +139,10 @@ class AppWithDrawer extends StatelessWidget {
                       fontSize: 16.0,
                     );
                   } else {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const verObjetosGenerales(),
-                      ),
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => verObjetosGenerales())));
                   }
                 } else {
                   Navigator.pop(context);

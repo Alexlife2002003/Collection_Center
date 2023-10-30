@@ -30,7 +30,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
   void cancelar() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => verCategorias()),
+      MaterialPageRoute(builder: (context) => const verCategorias()),
     );
   }
 
@@ -41,20 +41,21 @@ class _EditarCategoriaState extends State<EditarCategoria> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: peach,
-          title: Text('Confirmar eliminación'),
-          content: Text('¿Está seguro de que desea eliminar la categoría?'),
+          title: const Text('Confirmar eliminación'),
+          content:
+              const Text('¿Está seguro de que desea eliminar la categoría?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text(
+              child: const Text(
                 'Eliminar',
                 style: TextStyle(color: Colors.red),
               ),

@@ -59,14 +59,15 @@ class _EditarObjetosState extends State<EditarObjetos> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: peach,
-          title: Text('Confirmar eliminación'),
-          content: Text('¿Está seguro de que desea eliminar el artículo?'),
+          title: const Text('Confirmar eliminación'),
+          content:
+              const Text('¿Está seguro de que desea eliminar el artículo?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
@@ -281,7 +282,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
 
     return WillPopScope(
       onWillPop: () async {
-        goToVerObjectsCategorias(context, category);
+        cancelar();
         return true;
       },
       child: AppWithDrawer(
@@ -334,7 +335,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                                   width: 200,
                                   height: 200,
                                 ),
-                              Positioned(
+                              const Positioned(
                                 top: 50,
                                 right: 50,
                                 child: Icon(

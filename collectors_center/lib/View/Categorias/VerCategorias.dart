@@ -55,7 +55,7 @@ class _verCategoriasState extends State<verCategorias> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: peach,
-            title: Text('Confirmar eliminación'),
+            title: const Text('Confirmar eliminación'),
             content: Text(
                 '¿Está seguro de que desea borrar la categoría "$categoria"?'),
             actions: <Widget>[
@@ -63,7 +63,7 @@ class _verCategoriasState extends State<verCategorias> {
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
-                child: Text('Cancelar'),
+                child: const Text('Cancelar'),
               ),
               TextButton(
                 onPressed: () {

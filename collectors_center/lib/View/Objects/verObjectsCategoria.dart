@@ -85,8 +85,8 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: peach,
-          title: Text('Confirmar eliminación'),
-          content: Text(
+          title: const Text('Confirmar eliminación'),
+          content: const Text(
               '¿Está seguro de que desea borrar los artículos seleccionados?'),
           actions: <Widget>[
             TextButton(
@@ -96,7 +96,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                   deleteActivated = !deleteActivated;
                 });
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
