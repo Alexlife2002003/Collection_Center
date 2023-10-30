@@ -147,8 +147,8 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
             selectedCategory,
-            "Articulo agregado exitosamente",
-            "No se pudo agregar el articulo");
+            "Artículo agregado exitosamente",
+            "No se pudo agregar el artículo");
 
         // Close the progress dialog
         Navigator.of(context).pop();

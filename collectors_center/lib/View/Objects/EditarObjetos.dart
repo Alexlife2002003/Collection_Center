@@ -102,7 +102,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
     }
 
     if (descripcion.length > 300) {
-      mostrarToast("No puede exceder la descripción los 300 carácteres");
+      mostrarToast("No puede exceder la descripción los 300 caracteres");
       return;
     }
 
@@ -112,12 +112,12 @@ class _EditarObjetosState extends State<EditarObjetos> {
     }
     if (descripcion.trim() == category) {
       mostrarToast(
-          "La descripcion no puede ser igual al nombre de la categoria"); //checar acentos
+          "La descripción no puede ser igual al nombre de la categoría"); //checar acentos
       return;
     }
     if (descripcion.trim() == name) {
       mostrarToast(
-          "La descripcion no puede ser igual al nombre del articulo"); //checar acentos
+          "La descripción no puede ser igual al nombre del artículo"); //checar acentos
       return;
     }
     if (isEditing) {
@@ -243,7 +243,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
             name,
             descripcion,
             category,
-            "Imágen modificada correctamente",
+            "Imagen modificada correctamente",
             "No se pudo modificar la imagen");
 
         // Close the progress dialog

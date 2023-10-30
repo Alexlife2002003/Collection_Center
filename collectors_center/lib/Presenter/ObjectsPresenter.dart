@@ -38,7 +38,7 @@ Future<void> editDescriptionByImageUrl(
   }
 
   if (description.length > 300) {
-    mostrarToast("No puede exceder la descripción los 300 carácteres");
+    mostrarToast("No puede exceder la descripción los 300 caracteres");
     return;
   }
 
@@ -303,7 +303,7 @@ void agregarObjetoCategoria(String url, String name, String descripcion,
   }
 
   if (descripcion.length > 300) {
-    mostrarToast("No puede exceder la descripción los 300 carácteres");
+    mostrarToast("No puede exceder la descripción los 300 caracteres");
     return;
   }
 

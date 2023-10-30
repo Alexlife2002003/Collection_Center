@@ -107,8 +107,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
             widget.categoria,
-            "Articulo agregado exitosamente",
-            "No se pudo agregar el articulo");
+            "Artículo agregado exitosamente",
+            "No se pudo agregar el artículo");
 
         // Close the progress dialog
         Navigator.of(context).pop();

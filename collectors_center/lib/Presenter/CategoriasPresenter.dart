@@ -70,7 +70,7 @@ Future<void> clearCategoryDescription(String category) async {
 }
 
 //////////////////////////////////
-//  Navegacion dentro de la app encargado de categorias //
+//  Navegacion dentro de la app encargado de categorías //
 //////////////////////////////////
 ///
 
@@ -170,7 +170,7 @@ void goToVerCategorias(BuildContext context) {
   );
 }
 
-// Te lleva a la pantalla de agregar Categorias
+// Te lleva a la pantalla de agregar Categorías
 void agregarCategoria(BuildContext context) {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const agregarCategorias()));
