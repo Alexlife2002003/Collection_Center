@@ -113,7 +113,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     }
     nombre = _nombreCategoriaController.text.trim();
     if ((nombre != widget.categoryName) && (await categoriesExist(nombre))) {
-      mostrarToast("El nombre de la categoria ya existe");
+      mostrarToast("El nombre de la categoría ya existe");
       return;
     }
     if (nombre.isEmpty) {
