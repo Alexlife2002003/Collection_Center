@@ -142,7 +142,8 @@ class AppWithDrawer extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => verObjetosGenerales())));
+                            builder: ((context) =>
+                                const verObjetosGenerales())));
                   }
                 } else {
                   Navigator.pop(context);

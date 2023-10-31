@@ -42,7 +42,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: peach,
-          title: Text(
+          title: const Text(
             "Seleccionar fuente de imagen ",
             style: TextStyle(
               fontSize: 18,
@@ -53,9 +53,9 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               _buildOption("Camera", ImageSource.camera, brown),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               _buildOption("Gallery", ImageSource.gallery, brown),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               _buildOption("Cancel", null, red),
             ],
           ),
@@ -67,7 +67,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
   Widget _buildOption(String text, ImageSource? source, Color color) {
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           border: Border.all(color: color),
           borderRadius: BorderRadius.circular(8),

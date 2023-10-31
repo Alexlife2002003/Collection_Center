@@ -108,7 +108,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                       child: TextField(
                         maxLength: 20,
                         controller: _nombreCategoriaController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Nombre',
                           hintStyle: TextStyle(
@@ -146,7 +146,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                         controller: _descripcionCategoriaController,
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Descripción',
                           hintStyle: TextStyle(
@@ -172,7 +172,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
                       ),
                       onPressed: agregar,
-                      child: Text('Guardar'),
+                      child: const Text('Guardar'),
                     ),
                   ),
                 ),
@@ -184,7 +184,7 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
                       onPressed: cancelar,
-                      child: Text('Cancelar'),
+                      child: const Text('Cancelar'),
                     ),
                   ),
                 ),
