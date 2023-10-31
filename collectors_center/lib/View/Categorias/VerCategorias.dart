@@ -81,12 +81,7 @@ class _verCategoriasState extends State<verCategorias> {
 
       if (confirmacion == true) {
         await borrarCategorias(context, categoria.trim());
-        setState(() {
-          loadCategories();
-          if (categories.isEmpty) {
-            isEdit = !isEdit;
-          }
-        });
+        loadCategories();
       }
     }
 
@@ -126,11 +121,15 @@ class _verCategoriasState extends State<verCategorias> {
                           setState(() {
                             if (categories.isNotEmpty) {
                               isEdit = !isEdit;
+                            } else {
+                              mostrarToast("No existen categorías");
                             }
                           });
                         },
                         icon: Icon(
-                          isEdit ? Icons.check_circle_outlined : Icons.delete,
+                          isEdit && categories.isNotEmpty
+                              ? Icons.check_circle_outlined
+                              : Icons.delete,
                           size: 60,
                         ),
                       ),
