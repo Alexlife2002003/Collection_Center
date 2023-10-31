@@ -34,7 +34,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     );
   }
 
-  void borrar() async {
+  void borrarCategoria() async {
     // Show a confirmation dialog
     bool confirmation = await showDialog(
       context: context,
@@ -66,7 +66,13 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     );
 
     if (confirmation == true) {
-      //deleteCategory(context, widget.categoryName);
+      await borrarCategorias(context, widget.categoryName);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const verCategorias(),
+        ),
+        (route) => false,
+      );
     }
   }
 
@@ -132,14 +138,52 @@ class _EditarCategoriaState extends State<EditarCategoria> {
   }
 
   void borrarDescripcion() async {
+    if (_descripcionCategoriaController.text.isEmpty) {
+      mostrarToast("La descripción se encuentra vacía");
+      return;
+    }
     bool internet = await conexionInternt();
     if (internet == false) {
       return;
     }
-    description = "";
-    isEditing = false;
-    _descripcionCategoriaController.text = "";
-    clearCategoryDescription(widget.categoryName);
+    // Show a confirmation dialog
+    bool confirmation = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: peach,
+          title: const Text('Confirmar eliminación'),
+          content:
+              const Text('¿Está seguro de que desea eliminar la descripción?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text(
+                'Eliminar',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmation == true) {
+      setState(() {
+        description = "";
+        isEditing = false;
+        _descripcionCategoriaController.text = "";
+        clearCategoryDescription(widget.categoryName);
+      });
+    }
   }
 
   @override
@@ -355,7 +399,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
                           backgroundColor: MaterialStatePropertyAll(Colors.red),
                         ),
                         onPressed: () {
-                          borrar();
+                          borrarCategoria();
                         },
                         child: const Text('Eliminar'),
                       ),

@@ -206,9 +206,11 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                 _deleteConfirmation();
                               }
                             } else {
-                              setState(() {
-                                deleteActivated = !deleteActivated;
-                              });
+                              if (_objectList.isNotEmpty) {
+                                setState(() {
+                                  deleteActivated = !deleteActivated;
+                                });
+                              }
                             }
                           },
                           icon: Icon(
@@ -245,13 +247,15 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                               color: myColor,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Text(
-                              widget.categoria,
-                              style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                            child: Center(
+                              child: Text(
+                                widget.categoria,
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),

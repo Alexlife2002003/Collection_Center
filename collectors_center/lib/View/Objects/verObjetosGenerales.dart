@@ -181,7 +181,7 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                                 child: Text(
                                   value,
                                   style: const TextStyle(
-                                    fontSize: 32,
+                                    fontSize: 22,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   textAlign: TextAlign.center,

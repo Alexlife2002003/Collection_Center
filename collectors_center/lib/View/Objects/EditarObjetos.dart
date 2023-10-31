@@ -52,7 +52,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
     );
   }
 
-  void borrar() async {
+  void borrarObjeto() async {
     // Mostrar un diálogo de confirmación
     bool confirmacion = await showDialog(
       context: context,
@@ -128,14 +128,52 @@ class _EditarObjetosState extends State<EditarObjetos> {
   }
 
   void borrarDescripcion() async {
+    if (_descripcionController.text.isEmpty) {
+      mostrarToast("La descripción se encuentra vacía");
+      return;
+    }
     bool internet = await conexionInternt();
     if (internet == false) {
       return;
     }
-    descripcion = "";
-    isEditing = false;
-    _descripcionController.text = "";
-    clearDescriptionByImageUrl(context, widget.firebaseURL, "");
+    // Mostrar un diálogo de confirmación
+    bool confirmacion = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: peach,
+          title: const Text('Confirmar eliminación'),
+          content:
+              const Text('¿Está seguro de que desea eliminar la descripción?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(
+                'Eliminar',
+                style: TextStyle(color: red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmacion == true) {
+      setState(() {
+        descripcion = "";
+        isEditing = false;
+        _descripcionController.text = "";
+        clearDescriptionByImageUrl(context, widget.firebaseURL, "");
+      });
+    }
   }
 
   void agregar() async {
@@ -466,7 +504,7 @@ class _EditarObjetosState extends State<EditarObjetos> {
                           backgroundColor: MaterialStatePropertyAll(Colors.red),
                         ),
                         onPressed: () {
-                          borrar();
+                          borrarObjeto();
                         },
                         child: const Text('Eliminar'),
                       ),

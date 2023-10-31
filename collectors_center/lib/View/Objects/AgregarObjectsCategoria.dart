@@ -39,6 +39,61 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
   Future<void> _pickImage() async {
     showDialog(
       context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: peach,
+          title: Text(
+            "Seleccionar fuente de imagen ",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _buildOption("Camera", ImageSource.camera, brown),
+              SizedBox(height: 8),
+              _buildOption("Gallery", ImageSource.gallery, brown),
+              SizedBox(height: 8),
+              _buildOption("Cancel", null, red),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildOption(String text, ImageSource? source, Color color) {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          border: Border.all(color: color),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              color: color,
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        Navigator.of(context).pop();
+        if (source != null) {
+          _pickImageFromSource(source);
+        }
+      },
+    );
+  }
+
+  Future<void> _pickImageFromSource(ImageSource source) async {
+    showDialog(
+      context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return const Center(
@@ -46,9 +101,15 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
         );
       },
     );
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+      maxHeight: 1000, // Set your desired max height
+      maxWidth: 1000, // Set your desired max width
+    );
+
     Navigator.pop(context);
+
     if (pickedFile != null) {
       final File compressedImage = await _compressImage(File(pickedFile.path));
       setState(() {

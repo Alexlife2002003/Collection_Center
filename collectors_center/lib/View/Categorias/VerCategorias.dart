@@ -81,7 +81,12 @@ class _verCategoriasState extends State<verCategorias> {
 
       if (confirmacion == true) {
         await borrarCategorias(context, categoria.trim());
-        loadCategories();
+        setState(() {
+          loadCategories();
+          if (categories.isEmpty) {
+            isEdit = !isEdit;
+          }
+        });
       }
     }
 
@@ -119,7 +124,9 @@ class _verCategoriasState extends State<verCategorias> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            isEdit = !isEdit;
+                            if (categories.isNotEmpty) {
+                              isEdit = !isEdit;
+                            }
                           });
                         },
                         icon: Icon(
@@ -176,6 +183,7 @@ class _verCategoriasState extends State<verCategorias> {
                                   title: Text(
                                     category,
                                     style: const TextStyle(
+                                      fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                     ),
                                     textAlign: TextAlign.center,
