@@ -214,7 +214,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                             }
                           },
                           icon: Icon(
-                            deleteActivated ? Icons.check : Icons.delete,
+                            deleteActivated
+                                ? Icons.check_circle_outlined
+                                : Icons.delete,
                             size: 60,
                           ),
                         ),

@@ -173,6 +173,12 @@ class _verCategoriasState extends State<verCategorias> {
                           child: Container(
                             margin: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 2,
+                                    offset: Offset(2, 2))
+                              ],
                               color: myColor,
                               borderRadius: BorderRadius.circular(16),
                             ),
