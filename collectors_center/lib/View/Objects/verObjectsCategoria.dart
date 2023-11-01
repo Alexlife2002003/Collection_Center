@@ -336,11 +336,19 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                               },
                               child: Stack(
                                 children: [
-                                  CachedNetworkImage(
-                                    imageUrl: imageUrl,
-                                    fit: BoxFit.cover,
-                                    width: 188,
-                                    height: 188,
+                                  Container(
+                                    decoration: const BoxDecoration(boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 2,
+                                          offset: Offset(2, 2))
+                                    ]),
+                                    child: CachedNetworkImage(
+                                      imageUrl: imageUrl,
+                                      fit: BoxFit.cover,
+                                      width: 188,
+                                      height: 188,
+                                    ),
                                   ),
                                   if (object1.isSelected)
                                     const Align(
@@ -406,11 +414,20 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                 },
                                 child: Stack(
                                   children: [
-                                    CachedNetworkImage(
-                                      imageUrl: imageUrl,
-                                      fit: BoxFit.cover,
-                                      width: 188,
-                                      height: 188,
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 2,
+                                                offset: Offset(2, 2))
+                                          ]),
+                                      child: CachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: 188,
+                                        height: 188,
+                                      ),
                                     ),
                                     if (object2!.isSelected)
                                       const Align(
