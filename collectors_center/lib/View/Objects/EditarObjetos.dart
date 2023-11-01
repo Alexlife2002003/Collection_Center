@@ -373,6 +373,12 @@ class _EditarObjetosState extends State<EditarObjetos> {
                                   width: 200,
                                   height: 200,
                                 ),
+                              Container(
+                                width: 200,
+                                height: 200,
+                                color: Colors.grey.withOpacity(
+                                    0.4), // Adjust the opacity as needed
+                              ),
                               const Positioned(
                                 top: 50,
                                 right: 50,
