@@ -33,7 +33,7 @@ class _InicioState extends State<Inicio> {
       body: Stack(
         children: [
           Image.asset(
-            'lib/assets/images/library-bg.png',
+            'lib/assets/images/library-bg.jpg',
             fit: BoxFit.cover,
             width: screenheight,
             height: screenheight,

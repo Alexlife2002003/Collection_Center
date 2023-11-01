@@ -83,7 +83,7 @@ class _IngresarState extends State<Ingresar> {
       body: Stack(
         children: [
           Image.asset(
-            'lib/assets/images/library-bg.png',
+            'lib/assets/images/library-bg.jpg',
             fit: BoxFit.cover,
             width: screenWidth,
             height: screenheight,

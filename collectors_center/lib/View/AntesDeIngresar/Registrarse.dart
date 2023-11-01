@@ -90,7 +90,7 @@ class _RegistrarseState extends State<Registrarse> {
       body: Stack(
         children: [
           Image.asset(
-            'lib/assets/images/library-bg.png',
+            'lib/assets/images/library-bg.jpg',
             fit: BoxFit.cover,
             width: screenWidth,
             height: screenheight,
