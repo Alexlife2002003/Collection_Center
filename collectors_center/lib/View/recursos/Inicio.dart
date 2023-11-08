@@ -4,7 +4,9 @@
 //   Descripción:                     Pantalla donde puedes decidir entre registrarte o iniciar sesión       //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import 'package:collectors_center/Presenter/Presenter.dart';
+
+import 'package:collectors_center/View/Cuentas/Ingresar.dart';
+import 'package:collectors_center/View/Cuentas/Registrarse.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +23,9 @@ class _InicioState extends State<Inicio> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
 
-    void navigateToAcceder() {
-      goToIngresar(context);
-    }
+   
 
-    void navigateToRegistrarse() {
-      goToRegistrarse(context);
-    }
+    
 
     return Scaffold(
       body: Stack(
@@ -64,7 +62,12 @@ class _InicioState extends State<Inicio> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: GestureDetector(
-                          onTap: navigateToAcceder,
+                          onTap: (){
+                             Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Ingresar()),
+  );
+                          },
                           child: Material(
                             elevation: 5,
                             borderRadius: BorderRadius.circular(12),
@@ -95,7 +98,12 @@ class _InicioState extends State<Inicio> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: GestureDetector(
-                          onTap: navigateToRegistrarse,
+                          onTap: (){
+                             Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Registrarse()),
+  );
+                          },
                           child: Material(
                             elevation: 5,
                             borderRadius: BorderRadius.circular(12),

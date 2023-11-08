@@ -1,8 +1,9 @@
-import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
-import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
+
+import 'package:collectors_center/Presenter/Cuentas.dart';
+import 'package:collectors_center/Presenter/Objects.dart';
+import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -166,7 +167,10 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
 
     return WillPopScope(
       onWillPop: () async {
-        goToVerCategorias(context);
+         Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const verCategorias()),
+  );
         return true;
       },
       child: AppWithDrawer(

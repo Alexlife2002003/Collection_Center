@@ -4,10 +4,10 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'dart:io';
-import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
+import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -200,10 +200,7 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
     subirStorage();
   }
 
-  void cancelar() {
-    regresarAnterior(context);
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -377,7 +374,9 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                       style: const ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.red)),
-                      onPressed: cancelar,
+                      onPressed: (){
+                         Navigator.pop(context);
+                      },
                       child: const Text('Cancelar'),
                     ),
                   ),

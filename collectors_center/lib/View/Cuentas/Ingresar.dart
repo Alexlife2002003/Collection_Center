@@ -4,9 +4,10 @@
 //   Descripción:                     Vista de inicio de sesión de usuarios ya registrados                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
+
 
 class Ingresar extends StatefulWidget {
   const Ingresar({super.key});
@@ -68,11 +69,7 @@ class _IngresarState extends State<Ingresar> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
-    //Se comunica con el presentador para regresar
-    void regresar() {
-      regresarAnterior(context);
-    }
-
+ 
     ///Se comunica con el presentador para ingresar a la aplicación
     void ingresar() {
       ingresarUsuario(
@@ -191,7 +188,9 @@ class _IngresarState extends State<Ingresar> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: regresar,
+                    onTap: (){
+                       Navigator.pop(context);
+                    },
                     child: Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(12),

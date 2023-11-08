@@ -1,4 +1,4 @@
-import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Categorias/agregarCategorias.dart';
 import 'package:flutter/material.dart';
@@ -161,15 +161,6 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
     );
   }
 }
-
-// Te lleva a la pantalla de mostrar las categorías
-void goToVerCategorias(BuildContext context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const verCategorias()),
-  );
-}
-
 // Te lleva a la pantalla de agregar Categorías
 void agregarCategoria(BuildContext context) {
   Navigator.push(context,
@@ -241,7 +232,10 @@ void agregarCategoriaBase(
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      goToVerCategorias(context);
+      Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const verCategorias()),
+  );
     } else {
       mostrarToast("La categoría ya existe");
     }

@@ -1,9 +1,10 @@
-import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
+
+import 'package:collectors_center/Presenter/Categorias.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -215,7 +216,10 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     }
     return WillPopScope(
       onWillPop: () async {
-        goToVerCategorias(context);
+         Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const verCategorias()),
+  );
         return true;
       },
       child: AppWithDrawer(

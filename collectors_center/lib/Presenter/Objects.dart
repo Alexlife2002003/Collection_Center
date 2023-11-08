@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'dart:math';
-import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/Categorias/editarCategoria.dart';
 import 'package:collectors_center/View/Objects/AgregaObjetosGeneral.dart';
 import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
@@ -199,17 +199,17 @@ Future<void> clearDescriptionByImageUrl(
 }
 
 // Te lleva a la pantalla de editar objeto desde la pantalla general de objetos
-void goToVerObjetosIndividuales(
-    BuildContext context, String url, String firebase) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-        builder: (context) => verObjetosIndividuales(
-              url: url,
-              firebaseURL: firebase,
-            )),
-  );
-}
+//void goToVerObjetosIndividuales(
+  //  BuildContext context, String url, String firebase) {
+ // Navigator.push(
+   // context,
+    //MaterialPageRoute(
+      //  builder: (context) => verObjetosIndividuales(
+        //      url: url,
+            //  firebaseURL: firebase,
+          //  )),
+  //);
+//}
 
 // Te lleva a la pantalla de editar objeto desde la pantalla general de objetos dentro de categorías
 void goToEditarObjeto(BuildContext context, String url, String firebase) {

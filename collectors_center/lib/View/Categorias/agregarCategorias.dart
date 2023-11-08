@@ -2,10 +2,10 @@
 //   Nombre:                          Equipo Tacos de asada                                                 //
 //   Descripción:                     Agregar categorias                                         //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
+import 'package:collectors_center/Presenter/Categorias.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,9 +26,6 @@ class _agregarCategoriasState extends State<agregarCategorias> {
         _descripcionCategoriaController.text.trim());
   }
 
-  void cancelar() {
-    regresarAnterior(context);
-  }
 
   @override
   void dispose() {
@@ -183,7 +180,9 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      onPressed: cancelar,
+                      onPressed: (){
+                         Navigator.pop(context);
+                      },
                       child: const Text('Cancelar'),
                     ),
                   ),

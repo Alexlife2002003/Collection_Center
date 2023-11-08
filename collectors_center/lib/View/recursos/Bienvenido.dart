@@ -4,9 +4,10 @@
 //   Descripción:                     Pantalla de bienvida despues de registrarse o iniciar sesión          //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
+
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';

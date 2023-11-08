@@ -4,11 +4,10 @@
 //   Descripción:                     Viene toda la logica de la app                                        //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Registrarse.dart';
-
-import 'package:collectors_center/View/Ingreso/Ingresar.dart';
-import 'package:collectors_center/View/Bienvenido.dart';
+import 'package:collectors_center/View/Cuentas/Ingresar.dart';
+import 'package:collectors_center/View/Cuentas/Registrarse.dart';
+import 'package:collectors_center/View/recursos/Bienvenido.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,34 +38,11 @@ Future<bool> conexionInternt() async {
   return true;
 }
 
-// Te lleva a la pantalla de registro
-void goToRegistrarse(BuildContext context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const Registrarse()),
-  );
-}
 
-// Te lleva a la pantalla de inicio de sesión
-void goToIngresar(BuildContext context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const Ingresar()),
-  );
-}
 
-// Te regresa a la pantalla anterior
-void regresarAnterior(BuildContext context) {
-  Navigator.pop(context);
-}
 
-// Te lleva a la pantalla de bienvenido
-void goToBienvenido(BuildContext context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Bienvenido()),
-  );
-}
+
+
 
 //////////////////////////////////////////////////////////////
 // Acciones de registro, inicio de sesión y fin de sesión   //
@@ -148,7 +124,10 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 
         // Create the user in Firestore
         createUserDatabase(userCredential.user!.uid, usuario, correo);
-        goToBienvenido(context);
+         Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Bienvenido()),
+  );
       }
     } else {
       mostrarToast('Las contraseñas no son iguales');
@@ -184,7 +163,10 @@ Future<void> ingresarUsuario(
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', true);
 
-    goToBienvenido(context);
+     Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Bienvenido()),
+  );
   } on FirebaseAuthException catch (e) {
     print(e.code);
     if (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
@@ -230,19 +212,16 @@ Future<void> cerrarSesion(BuildContext context) async {
   try {
     await FirebaseAuth.instance.signOut();
     // Llama a la función para ir a la pantalla de inicio
-    goToInicio(context);
+     Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (context) => const Inicio()),
+    (Route<dynamic> route) => false,
+  );
   } catch (e) {
     mostrarToast("Error al cerrar la sesión");
   }
 }
 
-// Método encargado de regresarte a la pantalla de incio
-void goToInicio(BuildContext context) {
-  Navigator.of(context).pushAndRemoveUntil(
-    MaterialPageRoute(builder: (context) => const Inicio()),
-    (Route<dynamic> route) => false,
-  );
-}
+
 
 //////////////////////////////////////
 // Operaciones de la base de datos  //

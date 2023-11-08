@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
 
 class Registrarse extends StatefulWidget {
   const Registrarse({super.key});
@@ -71,10 +71,7 @@ class _RegistrarseState extends State<Registrarse> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
-    //Se comunica con el presentador para regresar
-    void regresar() {
-      regresarAnterior(context);
-    }
+  
 
     ///Se comunica con el presentador para registrarse
     void registrarse() {
@@ -168,7 +165,9 @@ class _RegistrarseState extends State<Registrarse> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: regresar,
+                    onTap: (){
+                       Navigator.pop(context);
+                    },
                     child: Material(
                       elevation: 5,
                       borderRadius: BorderRadius.circular(12),

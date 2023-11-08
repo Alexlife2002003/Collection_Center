@@ -3,18 +3,17 @@
 //   Descripción:                     Ver objetos de forma general                                         //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
-import 'package:collectors_center/View/Bienvenido.dart';
+import 'package:collectors_center/Presenter/Categorias.dart';
+import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/Objects/verObjetosIndividuales.dart';
+import 'package:collectors_center/View/recursos/Bienvenido.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collectors_center/Presenter/ObjectsPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/AntesDeIngresar/Inicio.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 
@@ -281,8 +280,14 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                             final imageUrl = snapshot.data.toString();
                             return GestureDetector(
                               onTap: () {
-                                goToVerObjetosIndividuales(
-                                    context, imageUrl, imageUrl1);
+                                    Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => verObjetosIndividuales(
+              url: imageUrl,
+              firebaseURL: imageUrl1,
+            )),
+  );
                               },
                               child: Stack(
                                 children: [
@@ -346,8 +351,16 @@ class _verObjetosGeneralesState extends State<verObjetosGenerales> {
                               final imageUrl = snapshot.data.toString();
                               return GestureDetector(
                                 onTap: () {
-                                  goToVerObjetosIndividuales(
-                                      context, imageUrl, imageUrl2);
+                                
+
+                                      Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => verObjetosIndividuales(
+              url: imageUrl,
+              firebaseURL: imageUrl2,
+            )),
+  );
                                 },
                                 child: Stack(
                                   children: [

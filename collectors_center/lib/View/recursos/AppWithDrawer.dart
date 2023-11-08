@@ -2,12 +2,12 @@
 //   Nombre:                          Equipo Tacos de asada                                                 //
 //   Descripción:                     Cajon de la app                                                       //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-import 'package:collectors_center/Presenter/CategoriasPresenter.dart';
-import 'package:collectors_center/Presenter/Presenter.dart';
-import 'package:collectors_center/View/Bienvenido.dart';
+import 'package:collectors_center/Presenter/Categorias.dart';
+import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
+import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 
 import 'package:flutter/material.dart';
@@ -21,9 +21,7 @@ class AppWithDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void categorias() {
-      goToVerCategorias(context);
-    }
+    
 
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -167,7 +165,10 @@ class AppWithDrawer extends StatelessWidget {
                 print(currentPage);
                 if (currentPage != "Categorias") {
                   currentPage = "Categorias";
-                  categorias();
+                   Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const verCategorias()),
+  );
                 } else {
                   Navigator.pop(context);
                 }
