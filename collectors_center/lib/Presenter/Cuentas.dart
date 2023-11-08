@@ -8,35 +8,18 @@ import 'package:collectors_center/View/Cuentas/Ingresar.dart';
 import 'package:collectors_center/View/Cuentas/Registrarse.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:connectivity/connectivity.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 //////////////////////////////////
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
-//Revisa si se cuenta con una conexión a intenret
-Future<bool> conexionInternt() async {
-  var connectivityResult = await Connectivity().checkConnectivity();
 
-  if (connectivityResult == ConnectivityResult.none) {
-    // No internet connection
-    Fluttertoast.showToast(
-      msg: "Sin conexión a Internet",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-    return false;
-  }
-  return true;
-}
 
 
 
@@ -48,33 +31,9 @@ Future<bool> conexionInternt() async {
 // Acciones de registro, inicio de sesión y fin de sesión   //
 //////////////////////////////////////////////////////////////
 
-bool isStrongPassword(String password) {
-  // Check if the password has at least one letter
-  bool hasLetter = password.contains(RegExp(r'[a-zA-Z]'));
 
-  // Check if the password has at least one uppercase letter
-  bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
 
-  // Check if the password has at least one special symbol
-  bool hasSpecialSymbol =
-      password.contains(RegExp(r'[!@#\$%^&*()_+{}\[\]:;<>,.?~\\-]'));
 
-  return hasLetter && hasUppercase && hasSpecialSymbol;
-}
-
-bool isValidEmail(String email) {
-  // A more robust regular expression for validating email addresses.
-  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[a-z]{2,})$');
-
-  // Additional check to exclude email addresses like "5@5.5".
-  final validEmail = emailRegex.hasMatch(email);
-
-  // Check if the email has the "@uaz.edu.mx" or "@cetis113.edu.mx" domain.
-  final isUazEmail = email.endsWith("@uaz.edu.mx");
-  final isCetisEmail = email.endsWith("@cetis113.edu.mx");
-
-  return validEmail || isUazEmail || isCetisEmail;
-}
 
 Future<void> registrarUsuario(BuildContext context, String usuario,
     String correo, String password, String confirmPassword) async {

@@ -13,6 +13,7 @@ import 'package:collectors_center/View/Objects/EditarObjetos.dart';
 import 'package:collectors_center/View/Objects/verObjetosIndividuales.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -198,52 +199,7 @@ Future<void> clearDescriptionByImageUrl(
   }
 }
 
-// Te lleva a la pantalla de editar objeto desde la pantalla general de objetos
-//void goToVerObjetosIndividuales(
-  //  BuildContext context, String url, String firebase) {
- // Navigator.push(
-   // context,
-    //MaterialPageRoute(
-      //  builder: (context) => verObjetosIndividuales(
-        //      url: url,
-            //  firebaseURL: firebase,
-          //  )),
-  //);
-//}
 
-// Te lleva a la pantalla de editar objeto desde la pantalla general de objetos dentro de categorías
-void goToEditarObjeto(BuildContext context, String url, String firebase) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-        builder: (context) => EditarObjetos(
-              url: url,
-              firebaseURL: firebase,
-            )),
-  );
-}
-
-void goToEditarCategoria(
-  BuildContext context,
-  String categoryName,
-) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => EditarCategoria(
-        categoryName: categoryName,
-      ),
-    ),
-  );
-}
-
-// Te lleva a ver los objetos desde adentro de su categoría
-void goToVerObjectsCategorias(BuildContext context, String name) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-        builder: (context) => verObjectsCategoria(categoria: name)),
-  );
-}
 
 //Te permite agregar objetos desde adentro de categorías
 void goToAgregarObjectsCategorias(BuildContext context, String name) {
@@ -553,7 +509,12 @@ Future<void> deleteByCategory(
     BuildContext context, String imageUrl, String category) async {
   await deleteImageByImageUrl(imageUrl);
 
-  goToVerObjectsCategorias(context, category);
+ Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => verObjectsCategoria(categoria: category)),
+  );
+
 }
 
 //Se usa para borrar mas de un objeto

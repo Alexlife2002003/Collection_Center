@@ -8,6 +8,7 @@ import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:firebase_auth/firebase_auth.dart';

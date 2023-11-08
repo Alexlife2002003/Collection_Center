@@ -1,6 +1,7 @@
 import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/Categorias/VerCategorias.dart';
 import 'package:collectors_center/View/Categorias/agregarCategorias.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';

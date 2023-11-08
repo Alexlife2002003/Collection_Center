@@ -1,10 +1,11 @@
-
 import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/Categorias/VerCategorias.dart';
+import 'package:collectors_center/View/Objects/EditarObjetos.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -167,10 +168,10 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
 
     return WillPopScope(
       onWillPop: () async {
-         Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const verCategorias()),
-  );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const verCategorias()),
+        );
         return true;
       },
       child: AppWithDrawer(
@@ -334,8 +335,14 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                 if (deleteActivated) {
                                   _toggleSelection(object1);
                                 } else {
-                                  goToEditarObjeto(
-                                      context, imageUrl, imageUrl1);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditarObjetos(
+                                              url: imageUrl,
+                                              firebaseURL: imageUrl1,
+                                            )),
+                                  );
                                 }
                               },
                               child: Stack(
@@ -412,8 +419,14 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                                   if (deleteActivated) {
                                     _toggleSelection(object2!);
                                   } else {
-                                    goToEditarObjeto(
-                                        context, imageUrl, imageUrl2);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditarObjetos(
+                                                url: imageUrl,
+                                                firebaseURL: imageUrl2,
+                                              )),
+                                    );
                                   }
                                 },
                                 child: Stack(

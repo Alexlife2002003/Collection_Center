@@ -6,6 +6,8 @@
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/Presenter/Objects.dart';
+import 'package:collectors_center/View/Categorias/editarCategoria.dart';
+import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:flutter/material.dart';
@@ -88,10 +90,10 @@ class _verCategoriasState extends State<verCategorias> {
 
     return WillPopScope(
       onWillPop: () async {
-         Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Bienvenido()),
-  );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Bienvenido()),
+        );
         return true;
       },
       child: AppWithDrawer(
@@ -168,9 +170,11 @@ class _verCategoriasState extends State<verCategorias> {
                                 isEdit = false;
                               });
                             } else {
-                              goToVerObjectsCategorias(
+                              Navigator.push(
                                 context,
-                                category,
+                                MaterialPageRoute(
+                                    builder: (context) => verObjectsCategoria(
+                                        categoria: category)),
                               );
                             }
                           },
@@ -203,8 +207,14 @@ class _verCategoriasState extends State<verCategorias> {
                                         // Handle delete action
                                         borrar(category);
                                       } else {
-                                        // Handle edit action
-                                        goToEditarCategoria(context, category);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditarCategoria(
+                                              categoryName: category,
+                                            ),
+                                          ),
+                                        );
                                       }
                                     },
                                     child: Icon(

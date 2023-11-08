@@ -6,9 +6,11 @@
 import 'dart:io';
 import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/Presenter/Objects.dart';
+import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -174,7 +176,12 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
         // Close the progress dialog
         Navigator.of(context).pop();
 
-        goToVerObjectsCategorias(context, widget.categoria);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  verObjectsCategoria(categoria: widget.categoria)),
+        );
       });
 
       // Close the progress dialog if an error occurs
@@ -200,7 +207,6 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
     subirStorage();
   }
 
- 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -374,8 +380,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
                       style: const ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.red)),
-                      onPressed: (){
-                         Navigator.pop(context);
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                       child: const Text('Cancelar'),
                     ),
