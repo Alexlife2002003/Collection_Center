@@ -180,12 +180,7 @@ class _verCategoriasState extends State<verCategorias> {
                                     builder: (context) => EditarCategoria(
                                         categoryName: category)),
                               );
-                              //Navigator.push(
-                              //  context,
-                              //  MaterialPageRoute(
-                              //      builder: (context) => verObjectsCategoria(
-                              //          categoria: category)),
-                              //);
+                             
                             }
                           },
                           child: Container(
