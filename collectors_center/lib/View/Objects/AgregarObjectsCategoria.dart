@@ -4,17 +4,16 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'dart:io';
-import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image/image.dart' as img;
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -165,7 +164,8 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
 
       // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-        agregarObjetoCategoria(
+        agregarObjeto(
+            context,
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
@@ -186,21 +186,14 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
 
       // Close the progress dialog if an error occurs
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error al subir la imagen",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, "Error al subir la imagen", red);
+
       Navigator.of(context).pop();
     }
   }
 
   void agregar() async {
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }

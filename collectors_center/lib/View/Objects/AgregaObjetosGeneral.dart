@@ -4,21 +4,19 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'dart:io';
-import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image/image.dart' as img;
-import 'package:firebase_auth/firebase_auth.dart';
 
 class agregarObjectsGeneral extends StatefulWidget {
   final String categoria;
@@ -143,7 +141,8 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
       await uploadTask.whenComplete(() async {
         // Get the download URL of the uploaded image
 
-        agregarObjetoCategoria(
+        agregarObjeto(
+            context,
             'images/$randomFileName.jpg',
             _nombreArticuloController.text.trim(),
             _descripcionController.text,
@@ -162,21 +161,14 @@ class _agregarObjectsGeneralState extends State<agregarObjectsGeneral> {
         );
       });
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error al subir la imagen",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, "Error al subir la imagen", red);
+
       Navigator.of(context).pop();
     }
   }
 
   void agregar() async {
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }

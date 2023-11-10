@@ -4,40 +4,27 @@
 //   Descripción:                     Viene toda la logica de la app                                        //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import 'package:collectors_center/View/Cuentas/Ingresar.dart';
-import 'package:collectors_center/View/Cuentas/Registrarse.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 //////////////////////////////////
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
 
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////
 // Acciones de registro, inicio de sesión y fin de sesión   //
 //////////////////////////////////////////////////////////////
 
-
-
-
-
 Future<void> registrarUsuario(BuildContext context, String usuario,
     String correo, String password, String confirmPassword) async {
-  bool internet = await conexionInternt();
+  bool internet = await conexionInternt(context);
   if (internet == false) {
     return;
   }
@@ -46,12 +33,12 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
       usuario.isEmpty ||
       password.isEmpty ||
       confirmPassword.isEmpty) {
-    mostrarToast('Ingresa los datos faltantes.');
+    showSnackbar(context, 'Ingresa los datos faltantes.', red);
     return;
   }
 
   if (!isValidEmail(correo)) {
-    mostrarToast('Ingresa un correo válido');
+    showSnackbar(context, 'Ingresa un correo válido', red);
     return;
   }
 
@@ -64,16 +51,18 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 
     if (usernameCheck.docs.isNotEmpty) {
       // Username is already taken
-      mostrarToast('Usuario ya se encuentra en uso ');
+      showSnackbar(context, 'Usuario ya se encuentra en uso ', red);
       return;
     }
 
     if (password == confirmPassword) {
       if (password.length < 6) {
-        mostrarToast('Contraseña debe tener 6 caracteres o más');
+        showSnackbar(context, 'Contraseña debe tener 6 caracteres o más', red);
       } else if (!isStrongPassword(password)) {
-        mostrarToast(
-            'La contraseña debe contener al menos una letra, una mayúscula y un símbolo especial.');
+        showSnackbar(
+            context,
+            'La contraseña debe contener al menos una letra, una mayúscula y un símbolo especial.',
+            red);
       } else {
         final userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -83,17 +72,17 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 
         // Create the user in Firestore
         createUserDatabase(userCredential.user!.uid, usuario, correo);
-         Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Bienvenido()),
-  );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Bienvenido()),
+        );
       }
     } else {
-      mostrarToast('Las contraseñas no son iguales');
+      showSnackbar(context, 'Las contraseñas no son iguales', red);
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'email-already-in-use') {
-      mostrarToast('Correo ya se encuentra en uso');
+      showSnackbar(context, 'Correo ya se encuentra en uso', red);
     }
   }
 }
@@ -101,14 +90,15 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
 // Funcion encargada de ingresar a la sesión del usuario que ya creó anteriormente
 Future<void> ingresarUsuario(
     BuildContext context, String correo, String password) async {
-  bool internet = await conexionInternt();
+  bool internet = await conexionInternt(context);
   if (internet == false) {
-    mostrarToast('No tienes conexión a Internet. Verifica tu conexión.');
+    showSnackbar(
+        context, 'No tienes conexión a Internet. Verifica tu conexión.', red);
     return;
   }
 
   if (correo.isEmpty || password.isEmpty) {
-    mostrarToast('Ingresa tu correo electrónico y contraseña.');
+    showSnackbar(context, 'Ingresa tu correo electrónico y contraseña.', red);
     return;
   }
 
@@ -122,65 +112,38 @@ Future<void> ingresarUsuario(
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', true);
 
-     Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Bienvenido()),
-  );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Bienvenido()),
+    );
   } on FirebaseAuthException catch (e) {
-    print(e.code);
     if (e.code == 'INVALID_LOGIN_CREDENTIALS' ||
         e.code == 'user-not-found' ||
         e.code == 'wrong-password' ||
         e.code == 'invalid-email') {
-      mostrarToast('La contraseña o el correo electrónico son incorrectos');
+      showSnackbar(context,
+          'La contraseña o el correo electrónico son incorrectos', red);
     }
   }
 }
 
-// Función para mostrar el mensaje con Fluttertoast
-void mostrarToast(String mensaje) {
-  Fluttertoast.showToast(
-    msg: mensaje,
-    toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
-    backgroundColor: Colors.red,
-    textColor: Colors.white,
-    fontSize: 16.0,
-  );
-}
-
-void mostrarToastCorrecto(String mensaje) {
-  Fluttertoast.showToast(
-    msg: mensaje,
-    toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
-    backgroundColor: Colors.green,
-    textColor: Colors.white,
-    fontSize: 16.0,
-  );
-}
-
 // Método encargado de cerrar la sesión del usuario
 Future<void> cerrarSesion(BuildContext context) async {
-  bool internet = await conexionInternt();
+  bool internet = await conexionInternt(context);
   if (internet == false) {
     return;
   }
   try {
     await FirebaseAuth.instance.signOut();
     // Llama a la función para ir a la pantalla de inicio
-     Navigator.of(context).pushAndRemoveUntil(
-    MaterialPageRoute(builder: (context) => const Inicio()),
-    (Route<dynamic> route) => false,
-  );
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const Inicio()),
+      (Route<dynamic> route) => false,
+    );
   } catch (e) {
-    mostrarToast("Error al cerrar la sesión");
+    showSnackbar(context, "Error al cerrar la sesión", red);
   }
 }
-
-
 
 //////////////////////////////////////
 // Operaciones de la base de datos  //

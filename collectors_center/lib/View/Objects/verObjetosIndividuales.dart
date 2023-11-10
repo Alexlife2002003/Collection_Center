@@ -5,7 +5,6 @@
 
 import 'dart:io';
 import 'package:collectors_center/Presenter/Objects.dart';
-import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -41,7 +40,7 @@ class _verObjetosIndividualesState extends State<verObjetosIndividuales> {
   bool isEditing = false;
 
   void setImageInfo() async {
-    imageInfo = await getImageInfoByImageUrl(context, widget.firebaseURL);
+    imageInfo = await obtenerObjeto(context, widget.firebaseURL);
     setState(() {
       // Update the state with the fetched data
       name = imageInfo['imageName'] != null
@@ -78,10 +77,7 @@ class _verObjetosIndividualesState extends State<verObjetosIndividuales> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: ((context) => const verObjetosGenerales())));
+        Navigator.pop(context);
 
         return true;
       },

@@ -1,11 +1,9 @@
-
 import 'package:collectors_center/Presenter/Categorias.dart';
-import 'package:collectors_center/Presenter/Cuentas.dart';
-import 'package:collectors_center/View/Categorias/VerCategorias.dart';
-import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
+import 'package:collectors_center/View/Categorias/verCategorias.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -68,7 +66,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     );
 
     if (confirmation == true) {
-      await borrarCategorias(context, widget.categoryName);
+      await eliminarCategoria(context, widget.categoryName);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => const verCategorias(),
@@ -79,7 +77,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
   }
 
   void editDescription() async {
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }
@@ -87,51 +85,54 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(description);
 
     if (description.length < 15 && description.isNotEmpty) {
-      mostrarToast(
-          "La descripción debe tener al menos 15 caracteres si no está vacía");
+      showSnackbar(
+          context,
+          "La descripción debe tener al menos 15 caracteres si no está vacía",
+          red);
       return;
     }
 
     if (description.length > 300) {
-      mostrarToast("La descripción no puede exceder los 300 caracteres");
+      showSnackbar(
+          context, "La descripción no puede exceder los 300 caracteres", red);
       return;
     }
 
     if (!containsLetter && description.isNotEmpty) {
-      mostrarToast("La descripción debe contener letras");
+      showSnackbar(context, "La descripción debe contener letras", red);
       return;
     }
     if (description == widget.categoryName) {
-      mostrarToast(
-          "La descripción no puede ser igual al nombre de la categoría");
+      showSnackbar(context,
+          "La descripción no puede ser igual al nombre de la categoría", red);
       return;
     }
 
     if (isEditing) {
-      editCategoryDescription(
-          widget.categoryName, _descripcionCategoriaController.text);
+      editarDescripcion(
+          context, widget.categoryName, _descripcionCategoriaController.text);
     }
     isEditing = !isEditing;
   }
 
   void editNombre() async {
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }
     nombre = _nombreCategoriaController.text.trim();
     if ((nombre != widget.categoryName) && (await categoriesExist(nombre))) {
-      mostrarToast("El nombre de la categoría ya existe");
+      showSnackbar(context, "El nombre de la categoría ya existe", red);
       return;
     }
     if (nombre.isEmpty) {
-      mostrarToast("Ingrese un nombre");
+      showSnackbar(context, "Ingrese un nombre", red);
       return;
     }
-    final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(nombre);
 
     if (isEditingNombre) {
-      editCategoryName(widget.categoryName, _nombreCategoriaController.text);
+      editarNombre(
+          context, widget.categoryName, _nombreCategoriaController.text);
       setState(() {
         widget.categoryName = _nombreCategoriaController.text;
       });
@@ -141,10 +142,10 @@ class _EditarCategoriaState extends State<EditarCategoria> {
 
   void borrarDescripcion() async {
     if (_descripcionCategoriaController.text.isEmpty) {
-      mostrarToast("La descripción se encuentra vacía");
+      showSnackbar(context, "La descripción se encuentra vacía", red);
       return;
     }
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }
@@ -183,7 +184,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
         description = "";
         isEditing = false;
         _descripcionCategoriaController.text = "";
-        clearCategoryDescription(widget.categoryName);
+        eliminarDescripcion(context, widget.categoryName);
       });
     }
   }
@@ -217,10 +218,10 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     }
     return WillPopScope(
       onWillPop: () async {
-         Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const verCategorias()),
-  );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const verCategorias()),
+        );
         return true;
       },
       child: AppWithDrawer(

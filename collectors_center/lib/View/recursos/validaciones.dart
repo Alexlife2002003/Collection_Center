@@ -1,14 +1,16 @@
-import 'package:collectors_center/Presenter/Cuentas.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
+
 //Revisa si se cuenta con una conexión a intenret
-Future<bool> conexionInternt() async {
+Future<bool> conexionInternt(BuildContext context) async {
   var connectivityResult = await Connectivity().checkConnectivity();
 
   if (connectivityResult == ConnectivityResult.none) {
     // No internet connection
-    mostrarToast("Sin conexión a Internet");
-   
+    showSnackbar(context, "Sin conexión a Internet", red);
+
     return false;
   }
   return true;

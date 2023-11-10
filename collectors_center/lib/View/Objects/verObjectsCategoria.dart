@@ -1,16 +1,16 @@
-import 'package:collectors_center/Presenter/Cuentas.dart';
-import 'package:collectors_center/Presenter/Objects.dart';
-import 'package:collectors_center/View/Categorias/VerCategorias.dart';
+import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
 import 'package:collectors_center/View/Objects/EditarObjetos.dart';
-import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
-import 'package:collectors_center/View/recursos/Inicio.dart';
-import 'package:collectors_center/View/recursos/colors.dart';
-import 'package:collectors_center/View/recursos/validaciones.dart';
+import 'package:collectors_center/View/recursos/Bienvenido.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/Presenter/Objects.dart';
 
 String imageUrlKey = 'Image URL';
 
@@ -44,18 +44,54 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   List<MyObject> _objectList = [];
   List<MyObject> _selectedObjects = [];
   bool deleteActivated = false;
+  String selectedCategory = 'Default';
+  List<String> categories = [];
 
   @override
   void initState() {
     super.initState();
-    conexionInternt();
     _fetchObjects();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    List<String> fetchedCategories = [];
+
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .collection('Categories')
+            .orderBy('timestamp', descending: false)
+            .get();
+
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          String categoryName = document['Name'] as String;
+          fetchedCategories.add(categoryName);
+        }
+      }
+    } catch (e) {
+      showSnackbar(context, "Error al buscar categorías", red);
+    }
+
+    setState(() {
+      categories = fetchedCategories;
+      if (categories.isNotEmpty) {
+        selectedCategory = categories[0];
+        _fetchObjects();
+      } else {
+        selectedCategory = 'Sin categorias';
+      }
+    });
   }
 
   Future<void> _fetchObjects() async {
     try {
       final List<Map<String, dynamic>> objects =
-          await fetchObjectsByCategory(widget.categoria);
+          await fetchObjectsByCategory(selectedCategory);
 
       final List<MyObject> myObjects = objects.map((object) {
         return MyObject.fromMap(object);
@@ -65,7 +101,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
         _objectList = myObjects;
       });
     } catch (error) {
-      print("Error fetching objects: $error");
+      showSnackbar(context, "Error al obtener categorías", red);
     }
   }
 
@@ -81,7 +117,6 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   }
 
   void _deleteConfirmation() async {
-    // Mostrar un diálogo de confirmación
     bool confirmacion = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -120,36 +155,16 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   }
 
   void _deleteSelectedObjects() async {
-    bool internet = await conexionInternt();
-    if (internet == false) {
-      return;
-    }
     try {
       for (MyObject selectedObject in _selectedObjects) {
         if (_selectedObjects.isNotEmpty) {
-          deleteByCategoryNoMessage(
+          eliminarVariosObjetos(
               context, selectedObject.imageUrl, widget.categoria);
         }
-        Fluttertoast.showToast(
-          msg: "Los artículos han sido eliminados",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        showSnackbar(context, "Los artículos han sido eliminados", green);
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Los artículos no han sido eliminados",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, "Los artículos no han sido eliminados", red);
     }
     setState(() {
       _objectList.removeWhere((object) => object.isSelected);
@@ -170,12 +185,12 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const verCategorias()),
+          MaterialPageRoute(builder: (context) => Bienvenido()),
         );
         return true;
       },
       child: AppWithDrawer(
-        currentPage: "verObjetosCategoria",
+        currentPage: "Objetos",
         content: Scaffold(
           backgroundColor: peach,
           body: Column(
@@ -230,8 +245,12 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                         ),
                         IconButton(
                           onPressed: () {
-                            goToAgregarObjectsCategorias(
-                                context, widget.categoria);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        agregarObjectsCategoria(
+                                            categoria: selectedCategory))));
                           },
                           icon: const Icon(
                             Icons.add_circle_outline,
@@ -255,13 +274,29 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Center(
-                              child: Text(
-                                widget.categoria,
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
+                              child: DropdownButton<String>(
+                                value: selectedCategory,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedCategory = newValue!;
+                                    _fetchObjects();
+                                  });
+                                },
+                                items: categories.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  );
+                                }).toList(),
+                                dropdownColor: myColor,
                               ),
                             ),
                           ),

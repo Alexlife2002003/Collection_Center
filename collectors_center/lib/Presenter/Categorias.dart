@@ -1,15 +1,14 @@
-import 'package:collectors_center/Presenter/Cuentas.dart';
-import 'package:collectors_center/View/Categorias/VerCategorias.dart';
-import 'package:collectors_center/View/Categorias/agregarCategorias.dart';
+import 'package:collectors_center/View/Categorias/verCategorias.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-Future<void> clearCategoryDescription(String category) async {
-  bool internet = await conexionInternt();
+Future<void> eliminarDescripcion(BuildContext context, String category) async {
+  bool internet = await conexionInternt(context);
   if (!internet) {
     return;
   }
@@ -41,15 +40,8 @@ Future<void> clearCategoryDescription(String category) async {
             await categoryDoc.reference.update({'Description': ''});
 
             // You can show a success message here if needed
-            Fluttertoast.showToast(
-              msg: "Descripción de la categoría eliminada exitosamente",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
+            showSnackbar(context,
+                "Descripción de la categoría eliminada exitosamente", green);
 
             // Exit the function after successfully clearing the category description
             return;
@@ -58,15 +50,8 @@ Future<void> clearCategoryDescription(String category) async {
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "La descripción de la categoría no se ha eliminado",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(
+        context, "La descripción de la categoría no se ha eliminado", red);
   }
 }
 
@@ -76,7 +61,7 @@ Future<void> clearCategoryDescription(String category) async {
 ///
 
 //Se encarga de borrar categorías
-Future<void> borrarCategorias(BuildContext context, String categoria) async {
+Future<void> eliminarCategoria(BuildContext context, String categoria) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
     final storageRef = FirebaseStorage.instance.ref();
@@ -110,15 +95,7 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
             final categRef = storageRef.child(imageUrl);
             await categRef.delete();
           } catch (e) {
-            Fluttertoast.showToast(
-              msg: "La categoría no se ha eliminado",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
+            showSnackbar(context, "La categoría no se ha eliminado", red);
           }
 
           // Delete the object document
@@ -127,81 +104,56 @@ Future<void> borrarCategorias(BuildContext context, String categoria) async {
 
         // Delete the category document after deleting associated objects
         await categoryDoc.reference.delete();
-
-        Fluttertoast.showToast(
-          msg: "La categoría ha sido eliminada correctamente",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        showSnackbar(
+            context, "La categoría ha sido eliminada correctamente", green);
       } else {
         // Handle the case where no matching document was found
-        Fluttertoast.showToast(
-          msg: "La categoría no se ha eliminado",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        showSnackbar(context, "La categoría no se ha eliminado", red);
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "La categoría no se ha eliminado",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "La categoría no se ha eliminado", red);
   }
-}
-// Te lleva a la pantalla de agregar Categorías
-void agregarCategoria(BuildContext context) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const agregarCategorias()));
 }
 
 //Permite agregar categorías con descripcion ademas de mostrar advertencias
-void agregarCategoriaBase(
+void agregarCategoria(
     BuildContext context, String categoria, String descripcion) async {
-  bool internet = await conexionInternt();
+  bool internet = await conexionInternt(context);
   if (!internet) {
-    mostrarToast("No tienes conexión a Internet. Verifica tu conexión.");
+    showSnackbar(
+        context, "No tienes conexión a Internet. Verifica tu conexión.", red);
     return;
   }
 
   if (categoria.trim() == "") {
-    mostrarToast("Ingrese un nombre");
+    showSnackbar(context, "Ingrese un nombre", red);
     return;
   }
 
   if (categoria.length > 20) {
-    mostrarToast("El nombre debe ser de máximo 20 caracteres");
+    showSnackbar(context, "El nombre debe ser de máximo 20 caracteres", red);
     return;
   }
 
   if ((descripcion.length < 15 && descripcion.isNotEmpty) ||
       (!descripcion.contains(RegExp(r'[a-zA-Z]')) && descripcion.isNotEmpty)) {
-    mostrarToast(
-        "La descripción debe contener letras y tener al menos 15 caracteres");
+    showSnackbar(
+        context,
+        "La descripción debe contener letras y tener al menos 15 caracteres",
+        red);
     return;
   }
 
   if (descripcion == categoria) {
-    mostrarToast(
-        "La descripción no puede ser igual al nombre de la categoría.");
+    showSnackbar(context,
+        "La descripción no puede ser igual al nombre de la categoría.", red);
     return;
   }
 
   if (descripcion.length > 300) {
-    mostrarToast("La descripción no puede exceder los 300 caracteres");
+    showSnackbar(
+        context, "La descripción no puede exceder los 300 caracteres", red);
     return;
   }
 
@@ -224,24 +176,17 @@ void agregarCategoriaBase(
         'Description': descripcion,
         'timestamp': FieldValue.serverTimestamp(),
       });
-      Fluttertoast.showToast(
-        msg: "Categoría agregada exitosamente",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green, // Cambiado a color verde para éxito
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, "Categoría agregada exitosamente", green);
+
       Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const verCategorias()),
-  );
+        context,
+        MaterialPageRoute(builder: (context) => const verCategorias()),
+      );
     } else {
-      mostrarToast("La categoría ya existe");
+      showSnackbar(context, "La categoría ya existe", red);
     }
   } else {
-    mostrarToast("No estás logeado");
+    showSnackbar(context, "No estás logeado", red);
   }
 }
 
@@ -274,8 +219,6 @@ Future<List<String>> fetchCategories() async {
 }
 
 Future<bool> categoriesExist(String category) async {
-  List<String> categories = [];
-
   try {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -304,7 +247,6 @@ Future<bool> categoriesExist(String category) async {
 
 Future<String> fetchDescriptions(String category) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
 
   try {
     User? user = FirebaseAuth.instance.currentUser;
@@ -333,69 +275,9 @@ Future<String> fetchDescriptions(String category) async {
   return "";
 }
 
-// Te permite obtener la información de la imágen en base a la Url de la imágen
-Future<Map<String, String>> getImageInfoByImageUrl(
-    BuildContext context, String imageUrl) async {
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Reference to the user's "Categories" subcollection
-      CollectionReference categoriesCollection = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(user.uid)
-          .collection('Categories');
-
-      // Query all category documents
-      QuerySnapshot categoriesQuerySnapshot = await categoriesCollection.get();
-
-      // Loop through the category documents
-      for (final categoryDoc in categoriesQuerySnapshot.docs) {
-        // Reference to the "Objects" subcollection within the category document
-        CollectionReference objectsCollection =
-            categoryDoc.reference.collection('Objects');
-
-        // Query all documents within the "Objects" subcollection
-        QuerySnapshot objectsQuerySnapshot = await objectsCollection.get();
-
-        // Loop through the objects in the category
-        for (final objectDoc in objectsQuerySnapshot.docs) {
-          // Check if the image URL matches the desired URL
-          if (objectDoc['Image_url'] == imageUrl) {
-            // Extract image information (Name and Description)
-            final imageName = objectDoc['Name'];
-            final imageDescription = objectDoc['Description'];
-
-            // Return the image information as a Map
-            return {
-              'imageName': imageName,
-              'imageDescription': imageDescription,
-            };
-          }
-        }
-      }
-    }
-  } catch (e) {
-    Fluttertoast.showToast(
-      msg: "Error al buscar la imagen",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
-
-  // Return an empty Map if no matching image URL was found or there's an error
-  return {
-    'imageName': '',
-    'imageDescription': '',
-  };
-}
-
-Future<void> editCategoryDescription(
-    String categoryName, String description) async {
-  bool internet = await conexionInternt();
+Future<void> editarDescripcion(
+    BuildContext context, String categoryName, String description) async {
+  bool internet = await conexionInternt(context);
   if (internet == false) {
     return;
   }
@@ -403,18 +285,21 @@ Future<void> editCategoryDescription(
   final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(description);
 
   if (description.length < 15 && description.isNotEmpty) {
-    mostrarToast(
-        "La descripción debe tener al menos 15 caracteres si no está vacía");
+    showSnackbar(
+        context,
+        "La descripción debe tener al menos 15 caracteres si no está vacía",
+        red);
     return;
   }
 
   if (description.length > 300) {
-    mostrarToast("La descripción no puede exceder los 300 caracteres");
+    showSnackbar(
+        context, "La descripción no puede exceder los 300 caracteres", red);
     return;
   }
 
   if (!containsLetter && description.isNotEmpty) {
-    mostrarToast("La descripción debe contener letras");
+    showSnackbar(context, "La descripción debe contener letras", red);
     return;
   }
 
@@ -448,7 +333,7 @@ Future<void> editCategoryDescription(
           await categoryDocRef.update({'Description': description});
 
           // Show a success message
-          mostrarToastCorrecto("Se han guardado los cambios");
+          showSnackbar(context, "Se han guardado los cambios", green);
 
           // You can exit the function here if needed
           return;
@@ -456,25 +341,16 @@ Future<void> editCategoryDescription(
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "No es posible guardar los cambios",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "No es posible guardar los cambios", red);
   }
 }
 
-Future<void> editCategoryName(String categoryName, String newName) async {
-  bool internet = await conexionInternt();
+Future<void> editarNombre(
+    BuildContext context, String categoryName, String newName) async {
+  bool internet = await conexionInternt(context);
   if (internet == false) {
     return;
   }
-
-  final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(newName);
 
   try {
     User? user = FirebaseAuth.instance.currentUser;
@@ -506,7 +382,7 @@ Future<void> editCategoryName(String categoryName, String newName) async {
           await categoryDocRef.update({'Name': newName});
 
           // Show a success message
-          mostrarToastCorrecto("Se han guardado los cambios");
+          showSnackbar(context, "Se han guardado los cambios", green);
 
           // You can exit the function here if needed
           return;
@@ -514,14 +390,6 @@ Future<void> editCategoryName(String categoryName, String newName) async {
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "No es posible guardar los cambios",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "No es posible guardar los cambios", red);
   }
 }

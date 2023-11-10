@@ -3,27 +3,19 @@
 //   Fecha:                              29/09/23                                                           //
 //   Descripción:                    Permite hacer operaciones sobre los objetos                    //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-import 'dart:math';
-import 'package:collectors_center/Presenter/Cuentas.dart';
-import 'package:collectors_center/View/Categorias/editarCategoria.dart';
-import 'package:collectors_center/View/Objects/AgregaObjetosGeneral.dart';
-import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
-import 'package:collectors_center/View/Objects/EditarObjetos.dart';
-import 'package:collectors_center/View/Objects/verObjetosIndividuales.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
-import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
+import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // Método encargado de realizar la descripción del artículo.
-Future<void> editDescriptionByImageUrl(
+Future<void> editarDescripcion(
     BuildContext context, String imageUrl, String description) async {
-  bool internet = await conexionInternt();
+  bool internet = await conexionInternt(context);
   if (internet == false) {
     return;
   }
@@ -33,18 +25,19 @@ Future<void> editDescriptionByImageUrl(
   }
 
   if (description.length < 10 && description.length != 0) {
-    mostrarToast(
-        "Descripción debe contener mínimo 10 caracteres si no es vacia");
+    showSnackbar(context,
+        "Descripción debe contener mínimo 10 caracteres si no es vacia", red);
     return;
   }
 
   if (description.length > 300) {
-    mostrarToast("No puede exceder la descripción los 300 caracteres");
+    showSnackbar(
+        context, "No puede exceder la descripción los 300 caracteres", red);
     return;
   }
 
   if (!containsLetter && description.isNotEmpty) {
-    mostrarToast("Descripción debe contener letras");
+    showSnackbar(context, "Descripción debe contener letras", red);
     return;
   }
   try {
@@ -83,27 +76,23 @@ Future<void> editDescriptionByImageUrl(
             if (objectDoc['Image_url'] == imageUrl) {
               // Update the "Description" field to be blank ("")
               if (categoryDoc['Name'] == description) {
-                mostrarToast(
-                    "Descripción no puede ser igual al nombre de la categoría");
+                showSnackbar(
+                    context,
+                    "Descripción no puede ser igual al nombre de la categoría",
+                    red);
                 return;
               }
               if (objectDoc['Name'] == description) {
-                mostrarToast(
-                    "Descripción no puede ser igual al nombre del artículo");
+                showSnackbar(
+                    context,
+                    "Descripción no puede ser igual al nombre del artículo",
+                    red);
                 return;
               }
               await objectDoc.reference.update({'Description': description});
 
               // You can show a success message here if needed
-              Fluttertoast.showToast(
-                msg: "Se han guardado los cambios",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
+              showSnackbar(context, "Se han guardado los cambios", green);
 
               // Exit the function after successfully clearing the description
               return;
@@ -113,22 +102,14 @@ Future<void> editDescriptionByImageUrl(
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "No es posible guardar los cambios",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "No es posible guardar los cambios", red);
   }
 }
 
 // Método encargado de eliminar la descripción de un artículo y dejar vacío el campo de descripción
-Future<void> clearDescriptionByImageUrl(
+Future<void> eliminarDescripcion(
     BuildContext context, String imageUrl, String description) async {
-  bool internet = await conexionInternt();
+  bool internet = await conexionInternt(context);
   if (internet == false) {
     return;
   }
@@ -169,15 +150,7 @@ Future<void> clearDescriptionByImageUrl(
               await objectDoc.reference.update({'Description': description});
 
               // You can show a success message here if needed
-              Fluttertoast.showToast(
-                msg: "Descripción borrada exitosamente",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
+              showSnackbar(context, "Descripción borrada exitosamente", green);
 
               // Exit the function after successfully clearing the description
               return;
@@ -187,84 +160,60 @@ Future<void> clearDescriptionByImageUrl(
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "La descripción no se ha eliminado",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "La descripción no se ha eliminado", red);
   }
 }
 
-
-
-//Te permite agregar objetos desde adentro de categorías
-void goToAgregarObjectsCategorias(BuildContext context, String name) {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => agregarObjectsCategoria(categoria: name)));
-}
-
-//Permite agregar objetos desde objetos generales
-void goToAgregarObjectsGenerales(BuildContext context) {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => const agregarObjectsGeneral(categoria: "")));
-}
-
-//Crea un nombre random
-String generateRandomFileName() {
-  final random = Random.secure();
-  return DateTime.now().millisecondsSinceEpoch.toString() +
-      random.nextInt(999999).toString();
-}
-
 //Funcionalidad de agregar objeto a categoría
-void agregarObjetoCategoria(String url, String name, String descripcion,
-    String categoria, String mensajeExito, String mensajeError) async {
-  bool internet = await conexionInternt();
+void agregarObjeto(
+    BuildContext context,
+    String url,
+    String name,
+    String descripcion,
+    String categoria,
+    String mensajeExito,
+    String mensajeError) async {
+  bool internet = await conexionInternt(context);
   final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(descripcion);
   if (internet == false) {
     return;
   }
   if (name.trim() == "") {
-    mostrarToast("El nombre del artículo no puede ir vacío");
+    showSnackbar(context, "El nombre del artículo no puede ir vacío", red);
     return;
   }
   if (name.length > 20) {
-    mostrarToast("El nombre debe ser de máximo 20 carácteres");
+    showSnackbar(context, "El nombre debe ser de máximo 20 carácteres", red);
     return;
   }
   if (name == categoria) {
-    mostrarToast("No puede llevar el nombre de la categoría");
+    showSnackbar(context, "No puede llevar el nombre de la categoría", red);
     return;
   }
   if (descripcion == name) {
-    mostrarToast("Descripción no puede ser igual al nombre del artículo");
+    showSnackbar(
+        context, "Descripción no puede ser igual al nombre del artículo", red);
     return;
   }
   if (descripcion == categoria) {
-    mostrarToast("Descripción no puede ser igual al nombre de la categoría");
+    showSnackbar(context,
+        "Descripción no puede ser igual al nombre de la categoría", red);
     return;
   }
   if (descripcion.length < 10 && descripcion.length != 0) {
-    mostrarToast(
-        "Descripción debe contener mínimo 10 caracteres si no es vacia");
+    showSnackbar(context,
+        "Descripción debe contener mínimo 10 caracteres si no es vacia", red);
     return;
   }
 
   if (descripcion.length > 300) {
-    mostrarToast("No puede exceder la descripción los 300 caracteres");
+    showSnackbar(
+        context, "No puede exceder la descripción los 300 caracteres", red);
     return;
   }
 
   if (!containsLetter && descripcion.isNotEmpty) {
-    mostrarToast("Descripción debe contener letras");
+    showSnackbar(context, "Descripción debe contener letras", red);
     return;
   }
 
@@ -295,91 +244,12 @@ void agregarObjetoCategoria(String url, String name, String descripcion,
         'Description': descripcion,
         'timestamp': FieldValue.serverTimestamp(),
       });
-      Fluttertoast.showToast(
-        msg: mensajeExito,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, mensajeExito, green);
     } else {
-      Fluttertoast.showToast(
-        msg: mensajeError,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, mensajeError, red);
     }
   } else {
-    Fluttertoast.showToast(
-      msg: "No estas logeado",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
-}
-
-// Te permite obtener todos los objetos sin importar su categoría
-Future<List<Map<String, dynamic>>> fetchAllObjects() async {
-  try {
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
-    User? user = auth.currentUser;
-    if (user != null) {
-      String uid = user.uid;
-      DocumentReference usersDoc = firestore.collection('Users').doc(uid);
-      CollectionReference categoriasCollection =
-          usersDoc.collection('Categories');
-
-      // Query all categories
-      QuerySnapshot categoriesQuery = await categoriasCollection.get();
-
-      // List to store objects from all categories
-      List<Map<String, dynamic>> allObjects = [];
-
-      for (QueryDocumentSnapshot categoryDoc in categoriesQuery.docs) {
-        CollectionReference categoriaSubcollection =
-            categoriasCollection.doc(categoryDoc.id).collection('Objects');
-
-        // Query the objects in the subcollection for this category
-        QuerySnapshot objectsQuery = await categoriaSubcollection.get();
-
-        // Process the objects and add them to the list
-        for (QueryDocumentSnapshot doc in objectsQuery.docs) {
-          Map<String, dynamic> objectData = doc.data() as Map<String, dynamic>;
-          String name = objectData['Name'];
-          String imageUrl = objectData['Image_url'];
-          String description = objectData['Description'];
-
-          // Build a map representation of the object and add it to the list
-          Map<String, dynamic> objectInfo = {
-            'Category': categoryDoc['Name'],
-            'Name': name,
-            'Image URL': imageUrl,
-            'Description': description,
-          };
-          allObjects.add(objectInfo);
-        }
-      }
-
-      return allObjects;
-    } else {
-      // User not logged in
-      throw Exception('User is not logged in.');
-    }
-  } catch (error) {
-    print('Error fetching objects: $error');
-    throw error;
+    showSnackbar(context, "No estas logeado", red);
   }
 }
 
@@ -438,7 +308,7 @@ Future<List<Map<String, dynamic>>> fetchObjectsByCategory(
 }
 
 // Permite obtener informacion de la imagen a traves del url
-Future<Map<String, String>> getImageInfoByImageUrl(
+Future<Map<String, String>> obtenerObjeto(
     BuildContext context, String imageUrl) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
@@ -489,15 +359,7 @@ Future<Map<String, String>> getImageInfoByImageUrl(
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "Error al buscar la imagen",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "Error al buscar la imagen", red);
   }
 
   // Return an empty Map if no matching image URL was found or there's an error
@@ -505,50 +367,27 @@ Future<Map<String, String>> getImageInfoByImageUrl(
 }
 
 // Permite borrar los objetos por categoría
-Future<void> deleteByCategory(
+Future<void> eliminarObjeto(
     BuildContext context, String imageUrl, String category) async {
-  await deleteImageByImageUrl(imageUrl);
+  await deleteImageByImageUrl(context, imageUrl);
 
- Navigator.push(
+  Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) => verObjectsCategoria(categoria: category)),
   );
-
 }
 
 //Se usa para borrar mas de un objeto
-Future<void> deleteByCategoryNoMessage(
+Future<void> eliminarVariosObjetos(
     BuildContext context, String imageUrl, String category) async {
-  await deleteImageByImageUrlNoMessage(imageUrl);
-}
-
-//PErmite borrar desde general
-Future<void> deleteByGeneral(BuildContext context, String imageUrl) async {
-  await deleteImageByImageUrl(imageUrl);
-
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const verObjetosGenerales(),
-    ),
-  );
-}
-
-// permite borrar varios objetos del general
-Future<void> deleteByGeneralNoMessage(
-    BuildContext context, String imageUrl) async {
-  await deleteImageByImageUrlNoMessage(imageUrl);
-
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const verObjetosGenerales(),
-    ),
-  );
+  await deleteImageByImageUrlNoMessage(context, imageUrl);
 }
 
 //borra imagen en base a url
-Future<void> deleteImageByImageUrl(String imageUrl) async {
-  bool internet = await conexionInternt();
+Future<void> deleteImageByImageUrl(
+    BuildContext context, String imageUrl) async {
+  bool internet = await conexionInternt(context);
   final storageRef = FirebaseStorage.instance.ref();
   if (internet == false) {
     return;
@@ -592,15 +431,9 @@ Future<void> deleteImageByImageUrl(String imageUrl) async {
               final imageref = storageRef.child(imageUrl);
               await imageref.delete();
               // Return after deletion or handle as needed
-              Fluttertoast.showToast(
-                msg: "“El artículo ha sido eliminado correctamente",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
+              showSnackbar(context,
+                  "El artículo ha sido eliminado correctamente", green);
+
               return;
             }
           }
@@ -608,21 +441,14 @@ Future<void> deleteImageByImageUrl(String imageUrl) async {
       }
     }
   } catch (e) {
-    Fluttertoast.showToast(
-      msg: "“El artículo no se ha eliminado",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    showSnackbar(context, "El artículo no se ha eliminado", red);
   }
 }
 
 //borra varias imagenes en base a url
-Future<void> deleteImageByImageUrlNoMessage(String imageUrl) async {
-  bool internet = await conexionInternt();
+Future<void> deleteImageByImageUrlNoMessage(
+    BuildContext context, String imageUrl) async {
+  bool internet = await conexionInternt(context);
   final storageRef = FirebaseStorage.instance.ref();
   if (internet == false) {
     return;

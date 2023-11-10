@@ -4,12 +4,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/Presenter/Categorias.dart';
-import 'package:collectors_center/Presenter/Cuentas.dart';
-import 'package:collectors_center/Presenter/Objects.dart';
+import 'package:collectors_center/View/Categorias/agregarCategorias.dart';
 import 'package:collectors_center/View/Categorias/editarCategoria.dart';
-import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
@@ -30,7 +29,7 @@ class _verCategoriasState extends State<verCategorias> {
   @override
   void initState() {
     super.initState();
-    conexionInternt();
+    conexionInternt(context);
     loadCategories();
   }
 
@@ -44,7 +43,6 @@ class _verCategoriasState extends State<verCategorias> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -84,7 +82,7 @@ class _verCategoriasState extends State<verCategorias> {
       );
 
       if (confirmacion == true) {
-        await borrarCategorias(context, categoria.trim());
+        await eliminarCategoria(context, categoria.trim());
         loadCategories();
       }
     }
@@ -129,7 +127,8 @@ class _verCategoriasState extends State<verCategorias> {
                             if (categories.isNotEmpty) {
                               isEdit = !isEdit;
                             } else {
-                              mostrarToast("No existen categorías");
+                              showSnackbar(
+                                  context, "No existen categorías", red);
                             }
                           });
                         },
@@ -145,7 +144,11 @@ class _verCategoriasState extends State<verCategorias> {
                       ),
                       IconButton(
                         onPressed: () {
-                          agregarCategoria(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const agregarCategorias()));
                         },
                         icon: const Icon(
                           Icons.add_circle_outline,
@@ -174,9 +177,15 @@ class _verCategoriasState extends State<verCategorias> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => verObjectsCategoria(
-                                        categoria: category)),
+                                    builder: (context) => EditarCategoria(
+                                        categoryName: category)),
                               );
+                              //Navigator.push(
+                              //  context,
+                              //  MaterialPageRoute(
+                              //      builder: (context) => verObjectsCategoria(
+                              //          categoria: category)),
+                              //);
                             }
                           },
                           child: Container(

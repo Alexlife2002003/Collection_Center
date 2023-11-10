@@ -1,29 +1,41 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Equipo Tacos de asada                                                 //
-//   Descripción:                     Cajon de la app                                                       //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/Presenter/Cuentas.dart';
-import 'package:collectors_center/View/Categorias/VerCategorias.dart';
-import 'package:collectors_center/View/Objects/verObjetosGenerales.dart';
+import 'package:collectors_center/View/Categorias/verCategorias.dart';
+import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:collectors_center/View/Perfil/Perfil.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
-
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class AppWithDrawer extends StatelessWidget {
+class AppWithDrawer extends StatefulWidget {
   final Widget content;
   String currentPage;
 
-  AppWithDrawer({required this.content, required this.currentPage}) {}
+  AppWithDrawer({required this.content, required this.currentPage});
+
+  @override
+  _AppWithDrawerState createState() => _AppWithDrawerState();
+}
+
+class _AppWithDrawerState extends State<AppWithDrawer> {
+  late List<String> listCategories;
+
+  @override
+  void initState() {
+    super.initState();
+    listCategories = [];
+    getCategories();
+  }
+
+  Future<void> getCategories() async {
+    listCategories = await fetchCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
-    
-
     double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: peach,
@@ -32,7 +44,7 @@ class AppWithDrawer extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              if (currentPage != "Perfil") {
+              if (widget.currentPage != "Perfil") {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const Perfil(),
@@ -56,7 +68,7 @@ class AppWithDrawer extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    if (currentPage != "Bienvenido") {
+                    if (widget.currentPage != "Bienvenido") {
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => Bienvenido(),
@@ -98,9 +110,10 @@ class AppWithDrawer extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 33)),
                 ],
               ),
-              onTap: () {
-                if (currentPage != "Bienvenido") {
-                  currentPage = "Bienvenido";
+              onTap: () async {
+                await getCategories();
+                if (widget.currentPage != "Bienvenido") {
+                  widget.currentPage = "Bienvenido";
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => Bienvenido(),
@@ -123,27 +136,22 @@ class AppWithDrawer extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 33)),
                 ],
               ),
-              onTap: () {
-                if (currentPage != "Objetos") {
-                  currentPage = "Objetos";
-                  if (fetchCategories() == []) {
-                    Fluttertoast.showToast(
-                      msg: "No se han creado categorías",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                  } else {
+              onTap: () async {
+                await getCategories();
+                if (listCategories.isNotEmpty) {
+                  if (widget.currentPage != "Objetos") {
+                    widget.currentPage = "Objetos";
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) =>
-                                const verObjetosGenerales())));
+                            builder: ((context) => verObjectsCategoria(
+                                  categoria: "",
+                                ))));
+                  } else {
+                    Navigator.pop(context);
                   }
                 } else {
+                  showSnackbar(context, "No se han creado categorías", red);
                   Navigator.pop(context);
                 }
               },
@@ -161,14 +169,15 @@ class AppWithDrawer extends StatelessWidget {
                   ),
                 ],
               ),
-              onTap: () {
-                print(currentPage);
-                if (currentPage != "Categorias") {
-                  currentPage = "Categorias";
-                   Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const verCategorias()),
-  );
+              onTap: () async {
+                await getCategories();
+                if (widget.currentPage != "Categorias") {
+                  widget.currentPage = "Categorias";
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const verCategorias()),
+                  );
                 } else {
                   Navigator.pop(context);
                 }
@@ -209,7 +218,7 @@ class AppWithDrawer extends StatelessWidget {
           ],
         ),
       ),
-      body: content,
+      body: widget.content,
     );
   }
 }

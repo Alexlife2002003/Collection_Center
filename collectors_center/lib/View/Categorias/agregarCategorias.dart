@@ -3,7 +3,6 @@
 //   Descripción:                     Agregar categorias                                         //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/Presenter/Categorias.dart';
-import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -22,10 +21,9 @@ class _agregarCategoriasState extends State<agregarCategorias> {
   final _descripcionCategoriaController = TextEditingController();
 
   void agregar() {
-    agregarCategoriaBase(context, _nombreCategoriaController.text.trim(),
+    agregarCategoria(context, _nombreCategoriaController.text.trim(),
         _descripcionCategoriaController.text.trim());
   }
-
 
   @override
   void dispose() {
@@ -180,8 +178,8 @@ class _agregarCategoriasState extends State<agregarCategorias> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      onPressed: (){
-                         Navigator.pop(context);
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                       child: const Text('Cancelar'),
                     ),

@@ -3,18 +3,17 @@
 //   Descripción:                     Editar los objetos                                       //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'dart:io';
-import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/Presenter/Objects.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image/image.dart' as img;
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -85,44 +84,45 @@ class _EditarObjetosState extends State<EditarObjetos> {
     );
 
     if (confirmacion == true) {
-      deleteByCategory(context, widget.firebaseURL, category);
+      eliminarObjeto(context, widget.firebaseURL, category);
     }
   }
 
   void editDescription() async {
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }
     descripcion = _descripcionController.text;
     final containsLetter = RegExp(r'[a-zA-Z]').hasMatch(descripcion);
     if (descripcion.length < 10 && descripcion.length != 0) {
-      mostrarToast(
-          "Descripción debe contener mínimo 10 caracteres si no es vacia");
+      showSnackbar(context,
+          "Descripción debe contener mínimo 10 caracteres si no es vacia", red);
       return;
     }
 
     if (descripcion.length > 300) {
-      mostrarToast("No puede exceder la descripción los 300 caracteres");
+      showSnackbar(
+          context, "No puede exceder la descripción los 300 caracteres", red);
       return;
     }
 
     if (!containsLetter && descripcion.isNotEmpty) {
-      mostrarToast("Descripción debe contener letras");
+      showSnackbar(context, "Descripción debe contener letras", red);
       return;
     }
     if (descripcion.trim() == category) {
-      mostrarToast(
-          "La descripción no puede ser igual al nombre de la categoría"); //checar acentos
+      showSnackbar(context,
+          "La descripción no puede ser igual al nombre de la categoría", red);
       return;
     }
     if (descripcion.trim() == name) {
-      mostrarToast(
-          "La descripción no puede ser igual al nombre del artículo"); //checar acentos
+      showSnackbar(context,
+          "La descripción no puede ser igual al nombre del artículo", red);
       return;
     }
     if (isEditing) {
-      editDescriptionByImageUrl(
+      editarDescripcion(
           context, widget.firebaseURL, _descripcionController.text);
     }
     isEditing = !isEditing;
@@ -130,10 +130,10 @@ class _EditarObjetosState extends State<EditarObjetos> {
 
   void borrarDescripcion() async {
     if (_descripcionController.text.isEmpty) {
-      mostrarToast("La descripción se encuentra vacía");
+      showSnackbar(context, "La descripción se encuentra vacía", red);
       return;
     }
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }
@@ -172,13 +172,13 @@ class _EditarObjetosState extends State<EditarObjetos> {
         descripcion = "";
         isEditing = false;
         _descripcionController.text = "";
-        clearDescriptionByImageUrl(context, widget.firebaseURL, "");
+        eliminarDescripcion(context, widget.firebaseURL, "");
       });
     }
   }
 
   void agregar() async {
-    bool internet = await conexionInternt();
+    bool internet = await conexionInternt(context);
     if (internet == false) {
       return;
     }
@@ -187,12 +187,12 @@ class _EditarObjetosState extends State<EditarObjetos> {
     }
     if (_selectedImage != null) {
       await subirStorage();
-      deleteImageByImageUrlNoMessage(widget.firebaseURL);
+      deleteImageByImageUrlNoMessage(context, widget.firebaseURL);
     }
   }
 
   void setImageInfo() async {
-    imageInfo = await getImageInfoByImageUrl(context, widget.firebaseURL);
+    imageInfo = await obtenerObjeto(context, widget.firebaseURL);
 
     setState(() {
       // Update the state with the fetched data
@@ -277,7 +277,8 @@ class _EditarObjetosState extends State<EditarObjetos> {
 
       // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-        agregarObjetoCategoria(
+        agregarObjeto(
+            context,
             'images/$randomFileName.jpg',
             name,
             descripcion,
@@ -289,15 +290,8 @@ class _EditarObjetosState extends State<EditarObjetos> {
         Navigator.of(context).pop();
       });
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error al subir la imagen",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      showSnackbar(context, "Error al subir la imagen", red);
+
       Navigator.of(context).pop();
     }
   }
