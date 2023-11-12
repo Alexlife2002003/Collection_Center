@@ -3,7 +3,7 @@
 //   Fecha:                              29/09/23                                                           //
 //   Descripción:                    Permite hacer operaciones sobre los objetos                    //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
+import 'package:collectors_center/View/Objects/verObjetos.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
@@ -245,6 +245,11 @@ void agregarObjeto(
         'timestamp': FieldValue.serverTimestamp(),
       });
       showSnackbar(context, mensajeExito, green);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => verObjectsCategoria(categoria: categoria)),
+      );
     } else {
       showSnackbar(context, mensajeError, red);
     }

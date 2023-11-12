@@ -10,7 +10,7 @@ import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
-import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
+import 'package:collectors_center/View/Objects/verObjetos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -84,6 +84,16 @@ class _EditarObjetosState extends State<EditarObjetos> {
     );
 
     if (confirmacion == true) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
       eliminarObjeto(context, widget.firebaseURL, category);
     }
   }

@@ -82,8 +82,19 @@ class _verCategoriasState extends State<verCategorias> {
       );
 
       if (confirmacion == true) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: peach,
+              ),
+            );
+          },
+        );
         await eliminarCategoria(context, categoria.trim());
         loadCategories();
+        Navigator.pop(context);
       }
     }
 
@@ -180,7 +191,6 @@ class _verCategoriasState extends State<verCategorias> {
                                     builder: (context) => EditarCategoria(
                                         categoryName: category)),
                               );
-                             
                             }
                           },
                           child: Container(

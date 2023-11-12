@@ -8,7 +8,6 @@ import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 
-
 class Ingresar extends StatefulWidget {
   const Ingresar({super.key});
 
@@ -69,9 +68,19 @@ class _IngresarState extends State<Ingresar> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
- 
+
     ///Se comunica con el presentador para ingresar a la aplicación
     void ingresar() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
       ingresarUsuario(
           context, _emailController.text.trim(), _passwordController.text);
     }
@@ -188,8 +197,8 @@ class _IngresarState extends State<Ingresar> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: (){
-                       Navigator.pop(context);
+                    onTap: () {
+                      Navigator.pop(context);
                     },
                     child: Material(
                       elevation: 5,

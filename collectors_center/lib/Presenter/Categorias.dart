@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 Future<void> eliminarDescripcion(BuildContext context, String category) async {
   bool internet = await conexionInternt(context);
   if (!internet) {
+    Navigator.pop(context);
     return;
   }
   try {

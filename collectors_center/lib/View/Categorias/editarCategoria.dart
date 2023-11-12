@@ -66,6 +66,16 @@ class _EditarCategoriaState extends State<EditarCategoria> {
     );
 
     if (confirmation == true) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
       await eliminarCategoria(context, widget.categoryName);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(

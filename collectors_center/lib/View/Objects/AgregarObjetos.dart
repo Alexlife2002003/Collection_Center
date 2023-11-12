@@ -5,7 +5,7 @@
 
 import 'dart:io';
 import 'package:collectors_center/Presenter/Objects.dart';
-import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
+import 'package:collectors_center/View/Objects/verObjetos.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -97,8 +97,10 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: CircularProgressIndicator(
+            color: peach,
+          ),
         );
       },
     );
@@ -150,8 +152,10 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
           );
         },
       );
@@ -175,13 +179,6 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
 
         // Close the progress dialog
         Navigator.of(context).pop();
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  verObjectsCategoria(categoria: widget.categoria)),
-        );
       });
 
       // Close the progress dialog if an error occurs

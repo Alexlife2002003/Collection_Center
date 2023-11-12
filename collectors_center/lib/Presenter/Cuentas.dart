@@ -26,6 +26,7 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     String correo, String password, String confirmPassword) async {
   bool internet = await conexionInternt(context);
   if (internet == false) {
+    Navigator.pop(context);
     return;
   }
 
@@ -33,12 +34,14 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
       usuario.isEmpty ||
       password.isEmpty ||
       confirmPassword.isEmpty) {
+    Navigator.pop(context);
     showSnackbar(context, 'Ingresa los datos faltantes.', red);
     return;
   }
 
   if (!isValidEmail(correo)) {
     showSnackbar(context, 'Ingresa un correo válido', red);
+    Navigator.pop(context);
     return;
   }
 
@@ -52,17 +55,20 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
     if (usernameCheck.docs.isNotEmpty) {
       // Username is already taken
       showSnackbar(context, 'Usuario ya se encuentra en uso ', red);
+      Navigator.pop(context);
       return;
     }
 
     if (password == confirmPassword) {
       if (password.length < 6) {
         showSnackbar(context, 'Contraseña debe tener 6 caracteres o más', red);
+        Navigator.pop(context);
       } else if (!isStrongPassword(password)) {
         showSnackbar(
             context,
             'La contraseña debe contener al menos una letra, una mayúscula y un símbolo especial.',
             red);
+        Navigator.pop(context);
       } else {
         final userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -79,10 +85,12 @@ Future<void> registrarUsuario(BuildContext context, String usuario,
       }
     } else {
       showSnackbar(context, 'Las contraseñas no son iguales', red);
+      Navigator.pop(context);
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'email-already-in-use') {
       showSnackbar(context, 'Correo ya se encuentra en uso', red);
+      Navigator.pop(context);
     }
   }
 }
@@ -92,13 +100,13 @@ Future<void> ingresarUsuario(
     BuildContext context, String correo, String password) async {
   bool internet = await conexionInternt(context);
   if (internet == false) {
-    showSnackbar(
-        context, 'No tienes conexión a Internet. Verifica tu conexión.', red);
+    Navigator.pop(context);
     return;
   }
 
   if (correo.isEmpty || password.isEmpty) {
     showSnackbar(context, 'Ingresa tu correo electrónico y contraseña.', red);
+    Navigator.pop(context);
     return;
   }
 
@@ -123,6 +131,7 @@ Future<void> ingresarUsuario(
         e.code == 'invalid-email') {
       showSnackbar(context,
           'La contraseña o el correo electrónico son incorrectos', red);
+      Navigator.pop(context);
     }
   }
 }

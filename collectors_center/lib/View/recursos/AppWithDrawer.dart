@@ -1,10 +1,13 @@
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/Presenter/Cuentas.dart';
+import 'package:collectors_center/View/Amigos/verAmigos.dart';
+import 'package:collectors_center/View/Amigos/verSolicitudes.dart';
 import 'package:collectors_center/View/Categorias/verCategorias.dart';
-import 'package:collectors_center/View/Objects/verObjectsCategoria.dart';
-import 'package:collectors_center/View/Perfil/Perfil.dart';
+import 'package:collectors_center/View/Objects/verObjetos.dart';
+import 'package:collectors_center/View/Cuentas/Perfil.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/customBadge.dart';
 import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +15,7 @@ class AppWithDrawer extends StatefulWidget {
   final Widget content;
   String currentPage;
 
-  
   AppWithDrawer({required this.content, required this.currentPage});
-
 
   @override
   _AppWithDrawerState createState() => _AppWithDrawerState();
@@ -185,6 +186,56 @@ class _AppWithDrawerState extends State<AppWithDrawer> {
                 }
               },
             ),
+            ListTile(
+                title: Row(
+                  children: [
+                    CustomBadge(
+                      icon: Icon(
+                        Icons.person_add_alt_outlined,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      badgeValue: 0,
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    const Text(
+                      'Amigos',
+                      style: TextStyle(color: Colors.white, fontSize: 33),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: ((context) => verAmigos())));
+                }),
+            ListTile(
+                title: Row(
+                  children: [
+                    CustomBadge(
+                      icon: Icon(
+                        Icons.notifications_active,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      badgeValue: 0,
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    const Text(
+                      'Notificaciones',
+                      style: TextStyle(color: Colors.white, fontSize: 33),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => verSolicitudes())));
+                }),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),

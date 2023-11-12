@@ -71,10 +71,19 @@ class _RegistrarseState extends State<Registrarse> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
-  
 
     ///Se comunica con el presentador para registrarse
     void registrarse() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
       registrarUsuario(
           context,
           _nombreUsuarioController.text.trim(),
@@ -165,8 +174,8 @@ class _RegistrarseState extends State<Registrarse> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
-                    onTap: (){
-                       Navigator.pop(context);
+                    onTap: () {
+                      Navigator.pop(context);
                     },
                     child: Material(
                       elevation: 5,

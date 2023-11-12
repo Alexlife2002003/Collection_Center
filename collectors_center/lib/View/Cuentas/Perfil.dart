@@ -76,7 +76,7 @@ class _PerfilState extends State<Perfil> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.height;
     //Se comunica con el presentador para regresar
-    
+
     return Scaffold(
       body: Stack(
         children: [
@@ -163,8 +163,8 @@ class _PerfilState extends State<Perfil> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: GestureDetector(
-                        onTap: (){
-                           Navigator.pop(context);
+                        onTap: () {
+                          Navigator.pop(context);
                         },
                         child: Material(
                           elevation: 5,
@@ -173,15 +173,14 @@ class _PerfilState extends State<Perfil> {
                             width: screenWidth - 100,
                             height: 50,
                             decoration: BoxDecoration(
-                                color: brown,
-                                borderRadius: BorderRadius.circular(12),
-                                border:
-                                    Border.all(color: Colors.white, width: 2)),
+                              color: red,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             child: Center(
                                 child: Text(
-                              'Regresar',
+                              'Borrar cuenta',
                               style: TextStyle(
-                                color: myColor,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),

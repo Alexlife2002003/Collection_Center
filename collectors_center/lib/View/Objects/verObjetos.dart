@@ -1,4 +1,4 @@
-import 'package:collectors_center/View/Objects/AgregarObjectsCategoria.dart';
+import 'package:collectors_center/View/Objects/AgregarObjetos.dart';
 import 'package:collectors_center/View/Objects/EditarObjetos.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/utils.dart';
@@ -79,8 +79,11 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
 
     setState(() {
       categories = fetchedCategories;
-      if (categories.isNotEmpty) {
+      if (categories.isNotEmpty && widget.categoria.isEmpty) {
         selectedCategory = categories[0];
+        _fetchObjects();
+      } else if (widget.categoria.isNotEmpty) {
+        selectedCategory = widget.categoria;
         _fetchObjects();
       } else {
         selectedCategory = 'Sin categorias';
@@ -150,6 +153,16 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     );
 
     if (confirmacion == true) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
       _deleteSelectedObjects();
     }
   }
@@ -161,10 +174,12 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
           eliminarVariosObjetos(
               context, selectedObject.imageUrl, widget.categoria);
         }
-        showSnackbar(context, "Los artículos han sido eliminados", green);
       }
+      showSnackbar(context, "Los artículos han sido eliminados", green);
+      Navigator.pop(context);
     } catch (e) {
       showSnackbar(context, "Los artículos no han sido eliminados", red);
+      Navigator.pop(context);
     }
     setState(() {
       _objectList.removeWhere((object) => object.isSelected);
@@ -360,7 +375,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return CircularProgressIndicator(
+                              color: peach,
+                            );
                           } else if (snapshot.hasError) {
                             return const Text('Error loading image');
                           } else {
@@ -444,7 +461,9 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return CircularProgressIndicator(
+                                color: peach,
+                              );
                             } else if (snapshot.hasError) {
                               return const Text('Error loading image');
                             } else {
