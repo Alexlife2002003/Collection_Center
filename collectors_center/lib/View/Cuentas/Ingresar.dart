@@ -81,8 +81,8 @@ class _IngresarState extends State<Ingresar> {
           );
         },
       );
-      ingresarUsuario(
-          context, _emailController.text.trim(), _passwordController.text);
+      ingresarUsuario(context, _emailController.text.trim(),
+          _passwordController.text.trim());
     }
 
     return Scaffold(
