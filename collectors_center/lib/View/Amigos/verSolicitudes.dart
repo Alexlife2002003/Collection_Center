@@ -2,6 +2,7 @@ import 'package:collectors_center/Presenter/Amigos.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 
 class verSolicitudes extends StatefulWidget {
@@ -30,8 +31,10 @@ class _verSolicitudesState extends State<verSolicitudes> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    void aceptar(String solicitud) {
-      showDialog(
+    void aceptar(String solicitud) async {
+      bool internet=await conexionInternt(context);
+      if(internet){
+        showDialog(
         context: context,
         builder: (context) {
           return Center(
@@ -41,15 +44,17 @@ class _verSolicitudesState extends State<verSolicitudes> {
           );
         },
       );
-
       aceptarSolicitud(solicitud).then((_) {
         cargarSolicitudes();
         Navigator.pop(context);
       });
+      }
     }
 
-    void rechazar(String solicitud) {
-      showDialog(
+    void rechazar(String solicitud)async {
+      bool internet= await conexionInternt(context);
+      if(internet){
+         showDialog(
         context: context,
         builder: (context) {
           return Center(
@@ -63,6 +68,8 @@ class _verSolicitudesState extends State<verSolicitudes> {
         cargarSolicitudes();
         Navigator.pop(context);
       });
+      }
+     
     }
 
     return WillPopScope(
@@ -84,7 +91,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Title
+                  
                   Text(
                     'Notificaciones',
                     style: TextStyle(
@@ -95,7 +102,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                   ),
                   const SizedBox(height: 20),
 
-                  // List of Notifications
+            
                   Expanded(
                     child: ListView.builder(
                       itemCount: solicitudes.length,
@@ -103,7 +110,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                         final solicitud = solicitudes[index];
                         return GestureDetector(
                           onTap: () {
-                            // Handle notification tap if needed
+                    
                           },
                           child: Container(
                             margin: const EdgeInsets.all(12),
