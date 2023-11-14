@@ -30,12 +30,6 @@ Future<void> editarDescripcion(
     return;
   }
 
-  if (description.length > 300) {
-    showSnackbar(
-        context, "No puede exceder la descripción los 300 caracteres", red);
-    return;
-  }
-
   if (!containsLetter && description.isNotEmpty) {
     showSnackbar(context, "Descripción debe contener letras", red);
     return;
@@ -180,10 +174,6 @@ void agregarObjeto(
   }
   if (name.trim() == "") {
     showSnackbar(context, "El nombre del artículo no puede ir vacío", red);
-    return;
-  }
-  if (name.length > 20) {
-    showSnackbar(context, "El nombre debe ser de máximo 20 carácteres", red);
     return;
   }
   if (name == categoria) {

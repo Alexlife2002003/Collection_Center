@@ -132,11 +132,6 @@ void agregarCategoria(
     return;
   }
 
-  if (categoria.length > 20) {
-    showSnackbar(context, "El nombre debe ser de máximo 20 caracteres", red);
-    return;
-  }
-
   if ((descripcion.length < 15 && descripcion.isNotEmpty) ||
       (!descripcion.contains(RegExp(r'[a-zA-Z]')) && descripcion.isNotEmpty)) {
     showSnackbar(
@@ -290,12 +285,6 @@ Future<void> editarDescripcion(
         context,
         "La descripción debe tener al menos 15 caracteres si no está vacía",
         red);
-    return;
-  }
-
-  if (description.length > 300) {
-    showSnackbar(
-        context, "La descripción no puede exceder los 300 caracteres", red);
     return;
   }
 
