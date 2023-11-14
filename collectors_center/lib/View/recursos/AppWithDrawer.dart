@@ -1,3 +1,4 @@
+import 'package:collectors_center/Presenter/Amigos.dart';
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/Amigos/verAmigos.dart';
@@ -23,16 +24,27 @@ class AppWithDrawer extends StatefulWidget {
 
 class _AppWithDrawerState extends State<AppWithDrawer> {
   late List<String> listCategories;
+  late List<String> listSolicitudes;
+  int totalSolicitudes = 0;
 
   @override
   void initState() {
     super.initState();
     listCategories = [];
+    listSolicitudes = [];
     getCategories();
+    getSolicitudes();
   }
 
   Future<void> getCategories() async {
     listCategories = await fetchCategories();
+  }
+
+  Future<void> getSolicitudes() async {
+    listSolicitudes = await obtenerSolicitudes();
+    setState(() {
+      totalSolicitudes = listSolicitudes.length;
+    });
   }
 
   @override
@@ -189,14 +201,8 @@ class _AppWithDrawerState extends State<AppWithDrawer> {
             ListTile(
                 title: Row(
                   children: [
-                    CustomBadge(
-                      icon: Icon(
-                        Icons.person_add_alt_outlined,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      badgeValue: 0,
-                    ),
+                    Icon(Icons.person_add_alt_outlined,
+                        color: Colors.white, size: 30),
                     const SizedBox(
                       width: 12,
                     ),
@@ -208,7 +214,7 @@ class _AppWithDrawerState extends State<AppWithDrawer> {
                 ),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => verAmigos())));
+                      MaterialPageRoute(builder: ((context) => VerAmigos())));
                 }),
             ListTile(
                 title: Row(
@@ -219,7 +225,7 @@ class _AppWithDrawerState extends State<AppWithDrawer> {
                         color: Colors.white,
                         size: 30,
                       ),
-                      badgeValue: 0,
+                      badgeValue: totalSolicitudes,
                     ),
                     const SizedBox(
                       width: 12,
