@@ -30,6 +30,40 @@ class _verSolicitudesState extends State<verSolicitudes> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    void aceptar(String solicitud) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
+
+      aceptarSolicitud(solicitud).then((_) {
+        cargarSolicitudes();
+        Navigator.pop(context);
+      });
+    }
+
+    void rechazar(String solicitud) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
+      rechazarSolicitud(solicitud).then((_) {
+        cargarSolicitudes();
+        Navigator.pop(context);
+      });
+    }
 
     return WillPopScope(
       onWillPop: () async {
@@ -114,7 +148,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                                       children: [
                                         ElevatedButton(
                                           onPressed: () {
-                                            // Handle Accept action
+                                            aceptar(solicitud);
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: Colors.blue,
@@ -130,7 +164,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                            // Handle Reject action
+                                            rechazar(solicitud);
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: Colors.red,

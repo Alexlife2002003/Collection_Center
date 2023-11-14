@@ -4,12 +4,94 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+Future<bool> eliminarSolicitud(String usuario) async {
+  bool eliminada = false;
+
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentReference userDocument =
+          FirebaseFirestore.instance.collection('Users').doc(user.uid);
+
+      CollectionReference requestsCollection =
+          userDocument.collection('Requests');
+
+      QuerySnapshot querySnapshot = await requestsCollection
+          .where('user_request', isEqualTo: usuario)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        await requestsCollection.doc(querySnapshot.docs.first.id).delete();
+        eliminada = true;
+      }
+    } else {
+      eliminada = false;
+    }
+    return eliminada;
+  } catch (e) {
+    return eliminada;
+  }
+}
+
+Future<bool> aceptarSolicitud(String usuario) async {
+  bool aceptado = false;
+
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      QuerySnapshot userQuerySnapshot = await usersCollection
+          .where('User', isEqualTo: usuario)
+          .limit(1)
+          .get();
+
+      if (userQuerySnapshot.docs.isNotEmpty) {
+        DocumentReference currentUserDoc =
+            userQuerySnapshot.docs.first.reference;
+
+        CollectionReference requestsCollection =
+            currentUserDoc.collection('Accepted');
+
+        String actual = await obtenerUsuarioActual();
+        QuerySnapshot querySnapshotrequest = await requestsCollection
+            .where('user_accepted', isEqualTo: actual)
+            .get();
+
+        if (querySnapshotrequest.docs.isNotEmpty) {
+          return false;
+        }
+        if (actual == usuario) {
+          return false;
+        }
+
+        await requestsCollection.add({
+          'user_accepted': actual,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+        aceptado = true;
+        aceptado = await eliminarSolicitud(usuario);
+      }
+    }
+  } catch (e) {
+    print('Error sending request: $e');
+  }
+
+  return aceptado;
+}
+
+Future<bool> rechazarSolicitud(String usuario) async {
+  bool rechazado = false;
+  rechazado = await eliminarSolicitud(usuario);
+  return rechazado;
+}
+
 Future<String> obtenerUsuarioActual() async {
-  // Get the current user
   User? user = FirebaseAuth.instance.currentUser;
 
   if (user != null) {
-    // Use the UID to retrieve the user data from Firestore
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await FirebaseFirestore.instance
             .collection('Users')
@@ -17,10 +99,8 @@ Future<String> obtenerUsuarioActual() async {
             .get();
 
     if (documentSnapshot.exists) {
-      // Access user data
       Map<String, dynamic> userData = documentSnapshot.data()!;
-      String username = userData[
-          'User']; // Change 'username' to the actual field in your user document
+      String username = userData['User'];
       return username;
     } else {
       return "";
@@ -37,44 +117,48 @@ Future<bool> sendSolicitud(String usuario) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      // Get reference to the "Users" collection
       CollectionReference usersCollection =
           FirebaseFirestore.instance.collection('Users');
 
-      // Query the "Users" collection to find the document ID of the current user
       QuerySnapshot userQuerySnapshot = await usersCollection
           .where('User', isEqualTo: usuario)
           .limit(1)
           .get();
 
       if (userQuerySnapshot.docs.isNotEmpty) {
-        // Get the document reference for the current user
         DocumentReference currentUserDoc =
             userQuerySnapshot.docs.first.reference;
 
-        // Get reference to the "Requests" subcollection under the current user's document
         CollectionReference requestsCollection =
             currentUserDoc.collection('Requests');
+
+        CollectionReference acceptedCollection =
+            currentUserDoc.collection("Accepted");
 
         String actual = await obtenerUsuarioActual();
         QuerySnapshot querySnapshotrequest = await requestsCollection
             .where('user_request', isEqualTo: actual)
             .get();
 
+        QuerySnapshot querySnapshotaccepted = await acceptedCollection
+            .where('user_accepted', isEqualTo: actual)
+            .get();
+
         if (querySnapshotrequest.docs.isNotEmpty) {
+          return false;
+        }
+        if (querySnapshotaccepted.docs.isNotEmpty) {
           return false;
         }
         if (actual == usuario) {
           return false;
         }
-        // Add a document with the username to the "Requests" subcollection
+
         await requestsCollection.add({
           'user_request': actual,
           'timestamp': FieldValue.serverTimestamp(),
-          // Add any other relevant data you want to store in the request document
         });
 
-        // Set solicitudEnviada to true if the request is successfully added
         solicitudEnviada = true;
       }
     }

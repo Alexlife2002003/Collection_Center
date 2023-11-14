@@ -1,3 +1,4 @@
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/Presenter/Amigos.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
@@ -50,7 +51,7 @@ class _VerAmigosState extends State<VerAmigos> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red,
@@ -59,8 +60,8 @@ class _VerAmigosState extends State<VerAmigos> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    sendSolicitud(userInput).then((bool cumplido) {
-                      Navigator.of(context).pop(); // Close the dialog
+                    sendSolicitud(userInput.trim()).then((bool cumplido) {
+                      Navigator.of(context).pop();
 
                       showDialog(
                         context: context,
@@ -100,8 +101,7 @@ class _VerAmigosState extends State<VerAmigos> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     userInput = "";
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
+                                    Navigator.of(context).pop();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.blue,
@@ -175,8 +175,11 @@ class _VerAmigosState extends State<VerAmigos> {
                           width: screenWidth - 160,
                         ),
                         IconButton(
-                          onPressed: () {
-                            enviarSolicitud();
+                          onPressed: () async {
+                            bool internet = await conexionInternt(context);
+                            if (internet) {
+                              enviarSolicitud();
+                            }
                           },
                           icon: Icon(
                             Icons.person_add_alt_1_outlined,
