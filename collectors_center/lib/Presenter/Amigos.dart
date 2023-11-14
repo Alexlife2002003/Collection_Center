@@ -4,16 +4,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<bool> revisarSolicitudExistente() async {
-  bool existe = false;
-  User? user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-  } else {
-    return existe;
-  }
-  return existe;
-}
-
 Future<String> obtenerUsuarioActual() async {
   // Get the current user
   User? user = FirebaseAuth.instance.currentUser;
