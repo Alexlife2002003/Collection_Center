@@ -171,9 +171,10 @@ Future<int> sendSolicitud(String usuario) async {
           'user_request': actual,
           'timestamp': FieldValue.serverTimestamp(),
         });
+      } else {
+        //usuario no existe
+        return 4;
       }
-      //usuario no existe
-      return 4;
     }
     //solicitud enviada
     return 10;
