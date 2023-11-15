@@ -110,9 +110,7 @@ Future<String> obtenerUsuarioActual() async {
   }
 }
 
-Future<bool> sendSolicitud(String usuario) async {
-  bool solicitudEnviada = false;
-
+Future<int> sendSolicitud(String usuario) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -132,41 +130,58 @@ Future<bool> sendSolicitud(String usuario) async {
         CollectionReference requestsCollection =
             currentUserDoc.collection('Requests');
 
-        CollectionReference acceptedCollection =
-            currentUserDoc.collection("Accepted");
-
         String actual = await obtenerUsuarioActual();
         QuerySnapshot querySnapshotrequest = await requestsCollection
             .where('user_request', isEqualTo: actual)
             .get();
 
-        QuerySnapshot querySnapshotaccepted = await acceptedCollection
-            .where('user_accepted', isEqualTo: actual)
+        QuerySnapshot myuserQuerySnapshot = await usersCollection
+            .where('User', isEqualTo: actual)
+            .limit(1)
             .get();
 
+        if (myuserQuerySnapshot.docs.isNotEmpty) {
+          DocumentReference myUserDoc =
+              myuserQuerySnapshot.docs.first.reference;
+
+          CollectionReference myacceptedCollection =
+              myUserDoc.collection("Accepted");
+
+          QuerySnapshot querySnapshotaccepted = await myacceptedCollection
+              .where("user_accepted", isEqualTo: usuario)
+              .get();
+
+          if (querySnapshotaccepted.docs.isNotEmpty) {
+            //ya es tu amigo
+            return 0;
+          }
+        }
+
         if (querySnapshotrequest.docs.isNotEmpty) {
-          return false;
+          //ya enviaste solicitud
+          return 1;
         }
-        if (querySnapshotaccepted.docs.isNotEmpty) {
-          return false;
-        }
+
         if (actual == usuario) {
-          return false;
+          //no te puedes enviar solicitud tu mismo
+          return 2;
         }
 
         await requestsCollection.add({
           'user_request': actual,
           'timestamp': FieldValue.serverTimestamp(),
         });
-
-        solicitudEnviada = true;
       }
     }
+    //solicitud enviada
+    return 10;
   } catch (e) {
     print('Error sending request: $e');
+    //error al enviar la solicitud
+    return 3;
   }
-
-  return solicitudEnviada;
+  //error al enviar la solicitud
+  return 3;
 }
 
 Future<List<String>> obtenerSolicitudes() async {
@@ -183,6 +198,30 @@ Future<List<String>> obtenerSolicitudes() async {
 
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
         String userRequest = document['user_request'] as String;
+
+        solicitudes.add(userRequest);
+      }
+    }
+  } catch (e) {
+    print('Error fetching requests: $e');
+  }
+  return solicitudes;
+}
+
+Future<List<String>> obtenerAceptados() async {
+  List<String> solicitudes = [];
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Accepted')
+          .orderBy('timestamp', descending: false)
+          .get();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        String userRequest = document['user_accepted'] as String;
 
         solicitudes.add(userRequest);
       }

@@ -60,14 +60,31 @@ class _VerAmigosState extends State<VerAmigos> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    sendSolicitud(userInput.trim()).then((bool cumplido) {
+                    sendSolicitud(userInput.trim()).then((int cumplido) {
                       Navigator.of(context).pop();
-
+                      String message = "";
+                      switch (cumplido) {
+                        case 0:
+                          message =
+                              "No se puede enviar solicitud porque ya es tu amigo";
+                          break;
+                        case 1:
+                          message = "Ya le enviaste solicitud";
+                          break;
+                        case 2:
+                          message = "No te puedes enviar solicitud a ti mismo";
+                          break;
+                        case 3:
+                          message = "Error al enviar la solicitud";
+                        case 10:
+                          message = userInput;
+                          break;
+                      }
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            icon: cumplido
+                            icon: cumplido == 10
                                 ? Icon(
                                     Icons.check_circle_outline,
                                     color: green,
@@ -83,16 +100,14 @@ class _VerAmigosState extends State<VerAmigos> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             title: Text(
-                              cumplido ? 'Solicitud enviada a' : '',
+                              cumplido == 10 ? 'Solicitud enviada a' : message,
                               style: TextStyle(
-                                color: cumplido ? myColor : red,
+                                color: cumplido == 10 ? myColor : red,
                               ),
                               textAlign: TextAlign.center,
                             ),
                             content: Text(
-                              cumplido
-                                  ? userInput
-                                  : 'No se pudo enviar la solicitud',
+                              cumplido == 10 ? userInput : '',
                               style: TextStyle(color: peach),
                               textAlign: TextAlign.center,
                             ),

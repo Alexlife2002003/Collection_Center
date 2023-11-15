@@ -32,44 +32,43 @@ class _verSolicitudesState extends State<verSolicitudes> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     void aceptar(String solicitud) async {
-      bool internet=await conexionInternt(context);
-      if(internet){
+      bool internet = await conexionInternt(context);
+      if (internet) {
         showDialog(
-        context: context,
-        builder: (context) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: peach,
-            ),
-          );
-        },
-      );
-      aceptarSolicitud(solicitud).then((_) {
-        cargarSolicitudes();
-        Navigator.pop(context);
-      });
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: peach,
+              ),
+            );
+          },
+        );
+        aceptarSolicitud(solicitud).then((_) {
+          cargarSolicitudes();
+          Navigator.pop(context);
+        });
       }
     }
 
-    void rechazar(String solicitud)async {
-      bool internet= await conexionInternt(context);
-      if(internet){
-         showDialog(
-        context: context,
-        builder: (context) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: peach,
-            ),
-          );
-        },
-      );
-      rechazarSolicitud(solicitud).then((_) {
-        cargarSolicitudes();
-        Navigator.pop(context);
-      });
+    void rechazar(String solicitud) async {
+      bool internet = await conexionInternt(context);
+      if (internet) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: peach,
+              ),
+            );
+          },
+        );
+        rechazarSolicitud(solicitud).then((_) {
+          cargarSolicitudes();
+          Navigator.pop(context);
+        });
       }
-     
     }
 
     return WillPopScope(
@@ -91,7 +90,6 @@ class _verSolicitudesState extends State<verSolicitudes> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  
                   Text(
                     'Notificaciones',
                     style: TextStyle(
@@ -101,17 +99,13 @@ class _verSolicitudesState extends State<verSolicitudes> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-            
                   Expanded(
                     child: ListView.builder(
                       itemCount: solicitudes.length,
                       itemBuilder: (context, index) {
                         final solicitud = solicitudes[index];
                         return GestureDetector(
-                          onTap: () {
-                    
-                          },
+                          onTap: () {},
                           child: Container(
                             margin: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
