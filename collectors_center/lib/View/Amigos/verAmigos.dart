@@ -13,6 +13,7 @@ class VerAmigos extends StatefulWidget {
 }
 
 class _VerAmigosState extends State<VerAmigos> {
+  List<String> amigos = [];
   String userInput = '';
 
   void enviarSolicitud() {
@@ -144,6 +145,19 @@ class _VerAmigosState extends State<VerAmigos> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    cargarAmigos();
+  }
+
+  Future<void> cargarAmigos() async {
+    final cargaramigos = await obtenerAceptados();
+    setState(() {
+      amigos = cargaramigos;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(
@@ -202,10 +216,76 @@ class _VerAmigosState extends State<VerAmigos> {
                           ),
                         )
                       ],
-                    )
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                   ],
                 ),
-              )
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: amigos.length,
+                  itemBuilder: (context, index) {
+                    final solicitud = amigos[index];
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        margin: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                          color: myColor,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(width: 20),
+                            Icon(
+                              Icons.person,
+                              size: 50,
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  solicitud,
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text("\nColecciones"),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: screenWidth / 4,
+                            ),
+                            Icon(
+                              Icons.visibility_outlined,
+                              size: 40,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

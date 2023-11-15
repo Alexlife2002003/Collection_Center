@@ -224,6 +224,7 @@ Future<List<String>> obtenerAceptados() async {
         String userRequest = document['user_accepted'] as String;
 
         solicitudes.add(userRequest);
+        print("User $userRequest");
       }
     }
   } catch (e) {
