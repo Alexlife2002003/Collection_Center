@@ -172,6 +172,8 @@ Future<int> sendSolicitud(String usuario) async {
           'timestamp': FieldValue.serverTimestamp(),
         });
       }
+      //usuario no existe
+      return 4;
     }
     //solicitud enviada
     return 10;
