@@ -142,7 +142,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
-                                    Text("Quiere ser tu amigo.."),
+                                    Text("Quiere ver tus colecciones.."),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
