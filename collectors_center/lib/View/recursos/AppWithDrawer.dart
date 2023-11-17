@@ -199,28 +199,30 @@ class _AppWithDrawerState extends State<AppWithDrawer> {
               },
             ),
             ListTile(
-                title: Row(
+                title: const Row(
                   children: [
                     Icon(Icons.person_add_alt_outlined,
                         color: Colors.white, size: 30),
-                    const SizedBox(
+                    SizedBox(
                       width: 12,
                     ),
-                    const Text(
+                    Text(
                       'Amigos',
                       style: TextStyle(color: Colors.white, fontSize: 33),
                     ),
                   ],
                 ),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => VerAmigos())));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const VerAmigos())));
                 }),
             ListTile(
                 title: Row(
                   children: [
                     CustomBadge(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.notifications_active,
                         color: Colors.white,
                         size: 30,
@@ -240,7 +242,7 @@ class _AppWithDrawerState extends State<AppWithDrawer> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => verSolicitudes())));
+                          builder: ((context) => const verSolicitudes())));
                 }),
             const Spacer(),
             Padding(

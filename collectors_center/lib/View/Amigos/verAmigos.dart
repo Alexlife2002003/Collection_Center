@@ -1,3 +1,4 @@
+import 'package:collectors_center/View/Amigos/verColeccionesAmigos.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/Presenter/Amigos.dart';
@@ -16,7 +17,7 @@ class _VerAmigosState extends State<VerAmigos> {
   List<String> amigos = [];
   String userInput = '';
 
-void enviarSolicitud() {
+  void enviarSolicitud() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -57,7 +58,7 @@ void enviarSolicitud() {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red,
                   ),
-                  child: Text('Cancelar'),
+                  child: const Text('Cancelar'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -125,7 +126,7 @@ void enviarSolicitud() {
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.blue,
                                   ),
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                 ),
                               ),
                             ],
@@ -137,7 +138,7 @@ void enviarSolicitud() {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
                   ),
-                  child: Text('Enviar'),
+                  child: const Text('Enviar'),
                 ),
               ],
             ),
@@ -198,7 +199,7 @@ void enviarSolicitud() {
                       children: [
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete,
                             size: 60,
                           ),
@@ -213,7 +214,7 @@ void enviarSolicitud() {
                               enviarSolicitud();
                             }
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.person_add_alt_1_outlined,
                             size: 60,
                           ),
@@ -232,7 +233,13 @@ void enviarSolicitud() {
                   itemBuilder: (context, index) {
                     final solicitud = amigos[index];
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    verColeccionesAmigos(amigo: solicitud))));
+                      },
                       child: Container(
                         margin: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -249,16 +256,16 @@ void enviarSolicitud() {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(width: 20),
-                            Icon(
+                            const SizedBox(width: 20),
+                            const Icon(
                               Icons.person,
                               size: 50,
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
@@ -269,20 +276,20 @@ void enviarSolicitud() {
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
-                                Text("\nColecciones"),
-                                SizedBox(
+                                const Text("\nColecciones"),
+                                const SizedBox(
                                   height: 30,
                                 ),
                               ],
                             ),
-                            Expanded(
+                            const Expanded(
                               child: SizedBox(),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.visibility_outlined,
                               size: 40,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             )
                           ],

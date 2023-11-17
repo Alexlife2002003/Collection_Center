@@ -39,7 +39,6 @@ class _EditarObjetosState extends State<EditarObjetos> {
   String category = "";
   PickedFile? _selectedImage;
 
-  final _nombreArticuloController = TextEditingController();
   final _descripcionController = TextEditingController();
 
   bool isEditing = false;

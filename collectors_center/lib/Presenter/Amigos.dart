@@ -1,6 +1,3 @@
-import 'package:collectors_center/View/Amigos/verSolicitudes.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -179,12 +176,9 @@ Future<int> sendSolicitud(String usuario) async {
     //solicitud enviada
     return 10;
   } catch (e) {
-    print('Error sending request: $e');
     //error al enviar la solicitud
     return 3;
   }
-  //error al enviar la solicitud
-  return 3;
 }
 
 Future<List<String>> obtenerSolicitudes() async {
@@ -227,11 +221,112 @@ Future<List<String>> obtenerAceptados() async {
         String userRequest = document['user_accepted'] as String;
 
         solicitudes.add(userRequest);
-        print("User $userRequest");
       }
     }
   } catch (e) {
     print('Error fetching requests: $e');
   }
   return solicitudes;
+}
+
+Future<List<String>> obtenerCategoriasAmigos(String usuario) async {
+  List<String> categories = [];
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+
+      QuerySnapshot userQuerySnapshot = await usersCollection
+          .where('User', isEqualTo: usuario)
+          .limit(1)
+          .get();
+
+      if (userQuerySnapshot.docs.isNotEmpty) {
+        DocumentReference amigoDoc = userQuerySnapshot.docs.first.reference;
+
+        CollectionReference categoriasCollection =
+            amigoDoc.collection("Categories");
+
+        QuerySnapshot categoriasSnapshot = await categoriasCollection
+            .orderBy('timestamp', descending: false)
+            .get();
+
+        for (QueryDocumentSnapshot document in categoriasSnapshot.docs) {
+          String categoryName = document['Name'] as String;
+          categories.add(categoryName);
+        }
+      }
+    }
+  } catch (e) {
+    print("Error fetching categories: $e");
+  }
+  return categories;
+}
+
+Future<List<Map<String, dynamic>>> obtenerObjetosCategoriasAmigos(
+    String usuario, String categoryName) async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  User? user = auth.currentUser;
+  if (user != null) {
+    try {
+      CollectionReference usersCollection = firestore.collection('Users');
+      QuerySnapshot userQuerySnapshot = await usersCollection
+          .where('User', isEqualTo: usuario)
+          .limit(1)
+          .get();
+
+      if (userQuerySnapshot.docs.isNotEmpty) {
+        DocumentReference userDoc = userQuerySnapshot.docs.first.reference;
+        CollectionReference categoriasCollection =
+            userDoc.collection('Categories');
+
+        QuerySnapshot categoriasQuery = await categoriasCollection
+            .where('Name', isEqualTo: categoryName)
+            .get();
+
+        if (categoriasQuery.docs.isNotEmpty) {
+          DocumentReference categoriesDoc =
+              categoriasQuery.docs.first.reference;
+          CollectionReference objectsCollection =
+              categoriesDoc.collection("Objects");
+
+          QuerySnapshot objectsQuery = await objectsCollection.get();
+
+          List<Map<String, dynamic>> objectList = [];
+          for (QueryDocumentSnapshot doc in objectsQuery.docs) {
+            Map<String, dynamic> objectData =
+                doc.data() as Map<String, dynamic>;
+            String name = objectData['Name'];
+            String imageUrl = objectData['Image_url'];
+            String description = objectData['Description'];
+
+            Map<String, dynamic> objectInfo = {
+              'Name': name,
+              'Image URL': imageUrl,
+              'Description': description,
+            };
+            objectList.add(objectInfo);
+          }
+
+          return objectList;
+        } else {
+          // Category doesn't exist
+          return [];
+        }
+      }
+    } catch (e) {
+      print("error $e");
+    }
+  }
+
+  // User not logged in or other error
+  return [];
+}
+
+Future<List<Map<String, dynamic>>> obtenerInfoObjetoAmigo(
+    String usuario, String cateogoria, String url) async {
+  return [];
 }

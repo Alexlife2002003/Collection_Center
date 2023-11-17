@@ -176,7 +176,7 @@ class _PerfilState extends State<Perfil> {
                               color: red,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               'Borrar cuenta',
                               style: TextStyle(

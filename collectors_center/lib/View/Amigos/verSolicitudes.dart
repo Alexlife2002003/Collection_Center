@@ -30,7 +30,6 @@ class _verSolicitudesState extends State<verSolicitudes> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     void aceptar(String solicitud) async {
       bool internet = await conexionInternt(context);
       if (internet) {
@@ -122,16 +121,16 @@ class _verSolicitudesState extends State<verSolicitudes> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(width: 20),
-                                Icon(
+                                const SizedBox(width: 20),
+                                const Icon(
                                   Icons.person,
                                   size: 50,
                                 ),
-                                SizedBox(width: 20),
+                                const SizedBox(width: 20),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
@@ -142,7 +141,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
-                                    Text("Quiere ver tus colecciones.."),
+                                    const Text("Quiere ver tus colecciones.."),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -158,9 +157,9 @@ class _verSolicitudesState extends State<verSolicitudes> {
                                                   BorderRadius.circular(16),
                                             ),
                                           ),
-                                          child: Text("Aceptar"),
+                                          child: const Text("Aceptar"),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 25,
                                         ),
                                         ElevatedButton(
@@ -174,7 +173,7 @@ class _verSolicitudesState extends State<verSolicitudes> {
                                                   BorderRadius.circular(16),
                                             ),
                                           ),
-                                          child: Text("Rechazar"),
+                                          child: const Text("Rechazar"),
                                         ),
                                       ],
                                     ),

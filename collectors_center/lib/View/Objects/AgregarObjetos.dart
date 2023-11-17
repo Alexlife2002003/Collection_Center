@@ -5,7 +5,6 @@
 
 import 'dart:io';
 import 'package:collectors_center/Presenter/Objects.dart';
-import 'package:collectors_center/View/Objects/verObjetos.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';

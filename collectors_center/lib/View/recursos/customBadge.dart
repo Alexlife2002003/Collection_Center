@@ -20,19 +20,19 @@ class CustomBadge extends StatelessWidget {
               top: 0,
               right: 0,
               child: Container(
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 decoration: BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   minWidth: 12,
                   minHeight: 12,
                 ),
                 child: Center(
                   child: Text(
                     badgeValue > 99 ? '99+' : badgeValue.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
