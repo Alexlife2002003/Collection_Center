@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Alexia                                                                //
+//   Fecha:                           15/11/23                                                              //
+//   Descripción:                     Lógica detras del apartado de amigos como solicitudes y ver categorías//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
