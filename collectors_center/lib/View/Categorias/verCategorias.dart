@@ -92,7 +92,7 @@ class _verCategoriasState extends State<verCategorias> {
             );
           },
         );
-        await eliminarCategoria(context, categoria.trim());
+        await eliminarCategoria(context, categoria.trim(), true);
         loadCategories();
         Navigator.pop(context);
       }

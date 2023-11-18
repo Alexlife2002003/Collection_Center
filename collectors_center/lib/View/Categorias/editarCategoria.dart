@@ -76,7 +76,7 @@ class _EditarCategoriaState extends State<EditarCategoria> {
           );
         },
       );
-      await eliminarCategoria(context, widget.categoryName);
+      await eliminarCategoria(context, widget.categoryName, true);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => const verCategorias(),

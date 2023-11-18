@@ -4,6 +4,8 @@
 //   Descripción:                     Viene toda la logica de la app                                        //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/Presenter/Amigos.dart';
+import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -17,6 +19,102 @@ import 'package:shared_preferences/shared_preferences.dart';
 //////////////////////////////////
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
+
+Future<void> eliminarCuenta(BuildContext context) async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // Delete user categories
+      QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Categories')
+          .get();
+
+      for (QueryDocumentSnapshot document in categorySnapshot.docs) {
+        String categoryName = document['Name'] as String;
+        await eliminarCategoria(context, categoryName, false);
+      }
+
+      // Delete data from other users
+      String usuarioActual = await obtenerUsuarioActual();
+      QuerySnapshot otherUsers =
+          await FirebaseFirestore.instance.collection('Users').get();
+
+      for (QueryDocumentSnapshot document in otherUsers.docs) {
+        DocumentReference otherUser = document.reference;
+
+        // Delete documents in the "Accepted" collection
+        QuerySnapshot acceptedQuery = await otherUser
+            .collection('Accepted')
+            .where('user_accepted', isEqualTo: usuarioActual)
+            .get();
+
+        if (acceptedQuery.docs.isNotEmpty) {
+          print("entered accepted");
+          await acceptedQuery.docs.first.reference.delete();
+        }
+
+        // Delete documents in the "Requests" collection
+        QuerySnapshot requestQuery = await otherUser
+            .collection('Requests')
+            .where('user_request', isEqualTo: usuarioActual)
+            .get();
+        if (requestQuery.docs.isNotEmpty) {
+          await requestQuery.docs.first.reference.delete();
+        }
+      }
+
+      // Delete user document
+      QuerySnapshot finalquery = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Requests')
+          .get();
+
+      for (QueryDocumentSnapshot document in finalquery.docs) {
+        await document.reference.delete();
+      }
+
+      finalquery = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .collection('Accepted')
+          .get();
+
+      for (QueryDocumentSnapshot document in finalquery.docs) {
+        await document.reference.delete();
+      }
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .delete();
+
+      // Delete the user account
+      await user.delete();
+
+      // Show success message
+
+      showSnackbar(context, "Se ha borrado la cuenta", green);
+    }
+  } catch (e, stackTrace) {
+    print("Error: $e\nStack Trace: $stackTrace");
+    // Show an error message to the user
+    showSnackbar(context, "Error al eliminar la cuenta", red);
+  }
+}
+
+// Function to delete documents from a collection based on a field and value
+Future<void> deleteDocumentsInCollection(
+    CollectionReference collection, String field, String value) async {
+  QuerySnapshot querySnapshot =
+      await collection.where(field, isEqualTo: value).get();
+
+  for (QueryDocumentSnapshot document in querySnapshot.docs) {
+    await document.reference.delete();
+  }
+}
 
 //////////////////////////////////////////////////////////////
 // Acciones de registro, inicio de sesión y fin de sesión   //

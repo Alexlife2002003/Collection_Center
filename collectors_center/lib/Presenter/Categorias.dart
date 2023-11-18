@@ -62,7 +62,8 @@ Future<void> eliminarDescripcion(BuildContext context, String category) async {
 ///
 
 //Se encarga de borrar categorías
-Future<void> eliminarCategoria(BuildContext context, String categoria) async {
+Future<void> eliminarCategoria(
+    BuildContext context, String categoria, bool mensaje) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
     final storageRef = FirebaseStorage.instance.ref();
@@ -105,8 +106,10 @@ Future<void> eliminarCategoria(BuildContext context, String categoria) async {
 
         // Delete the category document after deleting associated objects
         await categoryDoc.reference.delete();
-        showSnackbar(
-            context, "La categoría ha sido eliminada correctamente", green);
+        if (mensaje) {
+          showSnackbar(
+              context, "La categoría ha sido eliminada correctamente", green);
+        }
       } else {
         // Handle the case where no matching document was found
         showSnackbar(context, "La categoría no se ha eliminado", red);

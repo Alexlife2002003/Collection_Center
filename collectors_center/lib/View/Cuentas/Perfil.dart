@@ -4,6 +4,8 @@
 //   Descripción:                     Vista de inicio de sesión de usuarios ya registrados                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import 'package:collectors_center/Presenter/Cuentas.dart';
+import 'package:collectors_center/View/recursos/Inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,6 +73,55 @@ class _PerfilState extends State<Perfil> {
     super.dispose();
   }
 
+  void borrar() async {
+    // Mostrar un diálogo de confirmación
+    bool confirmacion = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: peach,
+          title: const Text('Confirmar eliminación'),
+          content: Text('¿Está seguro de que desea borrar su cuenta ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(
+                'Eliminar',
+                style: TextStyle(color: red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmacion == true) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: peach,
+            ),
+          );
+        },
+      );
+      await eliminarCuenta(context);
+
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: ((context) => Inicio())));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -121,50 +172,11 @@ class _PerfilState extends State<Perfil> {
                     const SizedBox(
                       height: 45,
                     ),
-                    //buildInputField('ID: ', _idnumber, true, TextInputType.text,
-                    //    screenWidth),
-                    //const SizedBox(
-                    //  height: 15,
-                    //),
-                    //buildInputField('Password', _passwordController, true,
-                    //    TextInputType.text, screenWidth),
-                    // //const SizedBox(
-                    // //  height: 35,
-                    // //),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 25),
-                    //   child: GestureDetector(
-                    //     onTap: logout,
-                    //     child: Material(
-                    //       elevation: 5,
-                    //       borderRadius: BorderRadius.circular(12),
-                    //       child: Container(
-                    //         width: screenWidth - 100,
-                    //         height: 50,
-                    //         decoration: BoxDecoration(
-                    //             color: red,
-                    //             borderRadius: BorderRadius.circular(12),
-                    //             border:
-                    //                 Border.all(color: Colors.white, width: 2)),
-                    //         child: const Center(
-                    //             child: Text(
-                    //           'Cerrar sesión',
-                    //           style: TextStyle(
-                    //             color: Colors.white,
-                    //             fontWeight: FontWeight.bold,
-                    //             fontSize: 20,
-                    //           ),
-                    //         )),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          borrar();
                         },
                         child: Material(
                           elevation: 5,
