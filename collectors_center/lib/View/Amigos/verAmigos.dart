@@ -233,12 +233,15 @@ class _VerAmigosState extends State<VerAmigos> {
                   itemBuilder: (context, index) {
                     final solicitud = amigos[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    verColeccionesAmigos(amigo: solicitud))));
+                      onTap: () async {
+                        bool internet = await conexionInternt(context);
+                        if (internet) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      verColeccionesAmigos(amigo: solicitud))));
+                        }
                       },
                       child: Container(
                         margin: const EdgeInsets.all(12),
