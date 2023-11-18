@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Nombre:                          Alexia                                                                //
 //   Fecha:                           25/09/23                                                              //
-//   Descripción:                     Viene toda la logica de la app                                        //
+//   Descripción:                     Lógica de la aplicacion (Cuenta, navegacion, apartado primario)       //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/Presenter/Amigos.dart';
@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 //  Navegacion dentro de la app encargada de acciones de registro e inicio de sesion del usuarios//
 //////////////////////////////////
 
+// Función encargada de la eliminación de la cuenta
 Future<void> eliminarCuenta(BuildContext context) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
@@ -120,6 +121,7 @@ Future<void> deleteDocumentsInCollection(
 // Acciones de registro, inicio de sesión y fin de sesión   //
 //////////////////////////////////////////////////////////////
 
+// Función encargada de realizar el registro del usuario para su acceso en la aplicación
 Future<void> registrarUsuario(BuildContext context, String usuario,
     String correo, String password, String confirmPassword) async {
   bool internet = await conexionInternt(context);
