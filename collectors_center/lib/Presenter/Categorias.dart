@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Tacos de asada                                                        //
+//   Fecha:                           25/09/23                                                              //
+//   Descripción:                     Lógica detras de los procesos encargados de las categorías.           //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'package:collectors_center/View/Categorias/verCategorias.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:collectors_center/View/recursos/utils.dart';
