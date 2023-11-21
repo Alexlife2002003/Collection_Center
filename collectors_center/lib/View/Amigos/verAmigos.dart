@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Tacos de Asada                                                        //
+//   Fecha:                           19/11/23                                                              //
+//   Descripción:                     View de los amigos dentro de la aplicación                           //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/View/Amigos/verColeccionesAmigos.dart';
 import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
