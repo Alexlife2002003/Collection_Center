@@ -1,6 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Equipo Tacos de asada                                                 //
-//   Descripción:                     Ver objetos de forma individual                                        //
+//   Nombre:                          Tacos de Asada                                                        //
+//   Fecha:                           19/11/23                                                              //
+//   Descripción:                     View de los objetos de amigos dentro de la aplicación                 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
