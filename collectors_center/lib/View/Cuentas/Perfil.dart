@@ -6,6 +6,7 @@
 
 import 'package:collectors_center/Presenter/Cuentas.dart';
 import 'package:collectors_center/View/recursos/Inicio.dart';
+import 'package:collectors_center/View/recursos/validaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -117,8 +118,12 @@ class _PerfilState extends State<Perfil> {
       await eliminarCuenta(context);
 
       Navigator.pop(context);
-      Navigator.push(
-          context, MaterialPageRoute(builder: ((context) => Inicio())));
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => Inicio(),
+        ),
+        (route) => false,
+      );
     }
   }
 
@@ -175,8 +180,11 @@ class _PerfilState extends State<Perfil> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: GestureDetector(
-                        onTap: () {
-                          borrar();
+                        onTap: () async {
+                          bool internet = await conexionInternt(context);
+                          if (internet) {
+                            borrar();
+                          }
                         },
                         child: Material(
                           elevation: 5,
