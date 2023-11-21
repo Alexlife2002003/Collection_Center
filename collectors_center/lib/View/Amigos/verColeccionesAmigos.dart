@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Tacos de Asada                                                        //
+//   Fecha:                           16/11/23                                                              //
+//   Descripción:                     View de las colecciones de los amigos                                 //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/Presenter/Amigos.dart';
 import 'package:collectors_center/View/Amigos/verAmigos.dart';
 import 'package:collectors_center/View/Amigos/verObjetosAmigos.dart';
