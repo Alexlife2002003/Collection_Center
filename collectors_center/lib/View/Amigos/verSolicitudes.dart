@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Tacos de Asada                                                        //
+//   Fecha:                           19/11/23                                                              //
+//   Descripción:                     View para las solicitudes de amigos dentro de la aplicación           //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import 'package:collectors_center/Presenter/Amigos.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
