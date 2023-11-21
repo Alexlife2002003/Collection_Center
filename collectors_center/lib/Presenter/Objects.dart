@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Alexia                                                                //
+//   Nombre:                          Tacos De Asada                                                        //
 //   Fecha:                              29/09/23                                                           //
-//   Descripción:                    Permite hacer operaciones sobre los objetos                    //
+//   Descripción:                    Permite hacer operaciones sobre los objetos                            //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/View/Objects/verObjetos.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
