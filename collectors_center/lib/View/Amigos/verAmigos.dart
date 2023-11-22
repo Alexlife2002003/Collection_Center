@@ -202,12 +202,15 @@ class _VerAmigosState extends State<VerAmigos> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.delete,
-                            size: 60,
-                          ),
+                        // IconButton(
+                        //  onPressed: () {},
+                        //  icon: const Icon(
+                        //    Icons.delete,
+                        //    size: 60,
+                        //  ),
+                        //),
+                        const SizedBox(
+                          height: 60,
                         ),
                         SizedBox(
                           width: screenWidth - 160,

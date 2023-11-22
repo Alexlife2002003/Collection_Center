@@ -331,8 +331,3 @@ Future<List<Map<String, dynamic>>> obtenerObjetosCategoriasAmigos(
   // User not logged in or other error
   return [];
 }
-
-Future<List<Map<String, dynamic>>> obtenerInfoObjetoAmigo(
-    String usuario, String cateogoria, String url) async {
-  return [];
-}

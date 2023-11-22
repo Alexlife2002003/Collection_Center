@@ -74,7 +74,7 @@ class _PerfilState extends State<Perfil> {
     super.dispose();
   }
 
-  void borrar() async {
+  void eliminarPerfil() async {
     // Mostrar un diálogo de confirmación
     bool confirmacion = await showDialog(
       context: context,
@@ -183,7 +183,7 @@ class _PerfilState extends State<Perfil> {
                         onTap: () async {
                           bool internet = await conexionInternt(context);
                           if (internet) {
-                            borrar();
+                            eliminarPerfil();
                           }
                         },
                         child: Material(
