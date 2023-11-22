@@ -1,3 +1,4 @@
+import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/View/Objects/AgregarObjetos.dart';
 import 'package:collectors_center/View/Objects/EditarObjetos.dart';
 import 'package:collectors_center/View/recursos/Bienvenido.dart';
@@ -58,21 +59,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     List<String> fetchedCategories = [];
 
     try {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user.uid)
-            .collection('Categories')
-            .orderBy('timestamp', descending: false)
-            .get();
-
-        for (QueryDocumentSnapshot document in querySnapshot.docs) {
-          String categoryName = document['Name'] as String;
-          fetchedCategories.add(categoryName);
-        }
-      }
+      fetchedCategories = await fetchCategories();
     } catch (e) {
       showSnackbar(context, "Error al buscar categorías", red);
     }
