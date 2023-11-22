@@ -1,3 +1,7 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Interfaz para editar categorias                                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/View/Categorias/verCategorias.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Nombre:                          Equipo Tacos de asada                                                 //
-//   Descripción:                     Agregar categorias                                         //
+//   Descripción:                     Interfaz para gregar categorias                                       //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/View/recursos/AppWithDrawer.dart';
