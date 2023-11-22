@@ -202,15 +202,37 @@ class _VerAmigosState extends State<VerAmigos> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // IconButton(
-                        //  onPressed: () {},
-                        //  icon: const Icon(
-                        //    Icons.delete,
-                        //    size: 60,
-                        //  ),
-                        //),
-                        const SizedBox(
-                          height: 60,
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: peach,
+                                  title: Text(
+                                    'Aviso',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  content: Text(
+                                    'Esta funcionalidad se realizará a futuro, no forma parte de esta iteración.',
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            size: 60,
+                          ),
                         ),
                         SizedBox(
                           width: screenWidth - 160,
