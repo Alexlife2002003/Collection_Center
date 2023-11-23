@@ -1,3 +1,7 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Nombre:                          Equipo Tacos de asada                                                 //
+//   Descripción:                     Ver los objetos                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/Presenter/Categorias.dart';
 import 'package:collectors_center/View/Objects/AgregarObjetos.dart';
 import 'package:collectors_center/View/Objects/EditarObjetos.dart';
