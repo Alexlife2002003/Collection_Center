@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Nombre:                          Tacos De Asada                                                        //
-//   Fecha:                              29/09/23                                                           //
-//   Descripción:                    Permite hacer operaciones sobre los objetos                            //
+//   Fecha:                           29/09/23                                                              //
+//   Descripción:                     Permite hacer operaciones sobre los objetos                           //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import 'package:collectors_center/View/Objects/verObjetos.dart';
 import 'package:collectors_center/View/recursos/colors.dart';
@@ -56,8 +56,8 @@ Future<void> editarDescripcion(
 
         // Loop through the category documents
         for (final categoryDoc in categoriesQuerySnapshot.docs) {
+            
           // Reference to the "Objects" subcollection within the category document
-
           CollectionReference objectsCollection =
               categoryDoc.reference.collection('Objects');
 
