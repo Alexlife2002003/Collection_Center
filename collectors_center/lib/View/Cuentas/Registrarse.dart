@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Nombre:                          Tacos de Asada                                                                //
-//   Fecha:                              25/09/23                                                           //
-//   Descripción:                    Vista de registro de nuevos usuarios                                   //
+//   Nombre:                          Tacos de Asada                                                        //
+//   Fecha:                           25/09/23                                                              //
+//   Descripción:                     Vista de registro de nuevos usuarios                                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:flutter/material.dart';
