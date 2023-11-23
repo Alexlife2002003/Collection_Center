@@ -106,8 +106,10 @@ class _agregarObjectsCategoriaState extends State<agregarObjectsCategoria> {
 
     final pickedFile = await ImagePicker().pickImage(
       source: source,
-      maxHeight: 1000, // Set your desired max height
-      maxWidth: 1000, // Set your desired max width
+      // Set your desired max height
+      maxHeight: 1000, 
+      // Set your desired max width
+      maxWidth: 1000, 
     );
 
     Navigator.pop(context);
