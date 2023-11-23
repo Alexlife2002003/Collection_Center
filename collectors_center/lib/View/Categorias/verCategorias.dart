@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Nombre:                          Equipo Tacos de asada                                                 //
-//   Descripción:                     Ver categorias                                        //
+//   Descripción:                     Ver categorias                                                        //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import 'package:collectors_center/Presenter/Categorias.dart';
