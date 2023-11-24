@@ -51,6 +51,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
   bool deleteActivated = false;
   String selectedCategory = 'Default';
   List<String> categories = [];
+  String selectedDescription = "";
 
   @override
   void initState() {
@@ -86,6 +87,7 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
     try {
       final List<Map<String, dynamic>> objects =
           await fetchObjectsByCategory(selectedCategory);
+      selectedDescription = await fetchDescriptions(selectedCategory);
 
       final List<MyObject> myObjects = objects.map((object) {
         return MyObject.fromMap(object);
@@ -312,7 +314,32 @@ class _verObjectsCategoriaState extends State<verObjectsCategoria> {
                   ],
                 ),
               ),
-
+              if (selectedDescription.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: screenWidth - 50,
+                          decoration: BoxDecoration(
+                            color: myColor,
+                            border: Border.all(color: Colors.white, width: .2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                              selectedDescription,
+                              style: TextStyle(color: brown, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               // Object listing
               Expanded(
                 child: ListView(
