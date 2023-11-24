@@ -133,15 +133,18 @@ class _verCategoriasState extends State<verCategorias> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
-                        onPressed: () {
-                          setState(() {
-                            if (categories.isNotEmpty) {
-                              isEdit = !isEdit;
-                            } else {
-                              showSnackbar(
-                                  context, "No existen categorías", red);
-                            }
-                          });
+                        onPressed: () async {
+                          bool internet = await conexionInternt(context);
+                          if (internet) {
+                            setState(() {
+                              if (categories.isNotEmpty) {
+                                isEdit = !isEdit;
+                              } else {
+                                showSnackbar(
+                                    context, "No existen categorías", red);
+                              }
+                            });
+                          }
                         },
                         icon: Icon(
                           isEdit && categories.isNotEmpty
@@ -178,19 +181,22 @@ class _verCategoriasState extends State<verCategorias> {
                       itemBuilder: (context, index) {
                         final category = categories[index];
                         return GestureDetector(
-                          onTap: () {
-                            if (isEdit) {
-                              borrar(category);
-                              setState(() {
-                                isEdit = false;
-                              });
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditarCategoria(
-                                        categoryName: category)),
-                              );
+                          onTap: () async {
+                            bool internet = await conexionInternt(context);
+                            if (internet) {
+                              if (isEdit) {
+                                borrar(category);
+                                setState(() {
+                                  isEdit = false;
+                                });
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditarCategoria(
+                                          categoryName: category)),
+                                );
+                              }
                             }
                           },
                           child: Container(

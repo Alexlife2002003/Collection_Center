@@ -3,17 +3,46 @@ import 'package:collectors_center/View/recursos/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 
+import 'package:http/http.dart' as http;
+
 //Revisa si se cuenta con una conexión a intenret
 Future<bool> conexionInternt(BuildContext context) async {
   var connectivityResult = await Connectivity().checkConnectivity();
 
   if (connectivityResult == ConnectivityResult.none) {
     // No internet connection
-    showSnackbar(context, "Sin conexión a Internet", red);
-
+    showSnackbar(context, "Sin conexión a Internet", Colors.red);
     return false;
+  } else {
+    // Check Wi-Fi speed
+    double responseTime = await checkNetworkResponseTime();
+    print('Network Response Time: $responseTime milliseconds');
+
+    if (responseTime > 1500) {
+      // Slow connection
+      showSnackbar(context, "Slow Wi-Fi Connection", Colors.yellow);
+      return false;
+    } else {
+      return true;
+    }
   }
-  return true;
+}
+
+Future<double> checkNetworkResponseTime() async {
+  final startTime = DateTime.now();
+
+  try {
+    final response = await http.get(Uri.parse('https://www.google.com'));
+    if (response.statusCode == 200) {
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+      return duration.inMilliseconds.toDouble();
+    }
+  } catch (e) {
+    // Handle error
+  }
+
+  return double.infinity; // Return a large value for failed requests
 }
 
 bool isStrongPassword(String password) {
