@@ -20,6 +20,8 @@ class _RegistrarseState extends State<Registrarse> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
 
   //Crea todos los textfields para recibir los datos
   Widget buildInputField(String hintText, TextEditingController controller,
@@ -129,17 +131,102 @@ class _RegistrarseState extends State<Registrarse> {
                 const SizedBox(
                   height: 15,
                 ),
-                buildInputField('Contraseña', _passwordController, true,
-                    TextInputType.text, screenWidth),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: TextField(
+                      controller: _passwordController,
+                      obscureText: !_passwordVisible,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          color: _passwordVisible
+                              ? peach
+                              : const Color.fromARGB(255, 95, 95, 95),
+                          icon: Icon(_passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.white, width: 1.0),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: myColor),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        labelText: 'Contraseña',
+                        hintStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                        labelStyle: TextStyle(color: peach),
+                        filled: true,
+                        fillColor: Colors.grey.withOpacity(.8),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 15,
                 ),
-                buildInputField(
-                    'Confirmar contraseña',
-                    _confirmPasswordController,
-                    true,
-                    TextInputType.text,
-                    screenWidth),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: !_confirmPasswordVisible,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          color: _confirmPasswordVisible
+                              ? peach
+                              : const Color.fromARGB(255, 95, 95, 95),
+                          icon: Icon(_confirmPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _confirmPasswordVisible =
+                                  !_confirmPasswordVisible;
+                            });
+                          },
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.white, width: 1.0),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: myColor),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        labelText: 'Confirmar contraseña',
+                        hintStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                        labelStyle: TextStyle(color: peach),
+                        filled: true,
+                        fillColor: Colors.grey.withOpacity(.8),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 35,
                 ),

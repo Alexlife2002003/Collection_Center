@@ -18,7 +18,7 @@ Future<bool> conexionInternt(BuildContext context) async {
     double responseTime = await checkNetworkResponseTime();
     print('Network Response Time: $responseTime milliseconds');
 
-    if (responseTime > 1500) {
+    if (responseTime > 3000) {
       // Slow connection
       showSnackbar(context, "Slow Wi-Fi Connection", Colors.yellow);
       return false;
