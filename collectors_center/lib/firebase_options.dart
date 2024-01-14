@@ -3,6 +3,20 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String apiKeyWeb = dotenv.env['API_KEY_WEB'] ?? "NO-API";
+String appIdWeb = dotenv.env['APP_ID_WEB'] ?? "INVALID";
+String messagingSenderId = dotenv.env['MESSAGING_SENDER_ID'] ?? "Invalid";
+String projectId = dotenv.env['PROJECT_ID'] ?? "Invalid";
+String authDomain = dotenv.env['AUTH_DOMAIN'] ?? "Invalid";
+String storageBucket = dotenv.env['STORAGE_BUCKET'] ?? "Invalid";
+String measurementId = dotenv.env['MEASUREMENT_ID'] ?? "Invalid";
+String apiKeyAndroid = dotenv.env['API_KEY_ANDROID'] ?? "Invalid";
+String appIdAndroid = dotenv.env['APP_ID_ANDROID'] ?? "Invalid";
+String apiKeyIosWebos = dotenv.env['API_KEY_IOS_WEBOS'] ?? "Invalid";
+String appIdIos = dotenv.env['APP_ID_IOS'] ?? "Invalid";
+String appIdMacos = dotenv.env['APP_ID_MACOS'] ?? "Invalid";
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -43,39 +57,38 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBZ5j0DMcPwOl7MZEFeqzmoR06g1VnV3so',
-    appId: '1:1052709621623:web:3acb9aca8012902fd59b72',
-    messagingSenderId: '1052709621623',
-    projectId: 'collectioncenter-c9abe',
-    authDomain: 'collectioncenter-c9abe.firebaseapp.com',
-    storageBucket: 'collectioncenter-c9abe.appspot.com',
-    measurementId: 'G-D9E3SPQN20',
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: apiKeyWeb,
+    appId: appIdWeb,
+    messagingSenderId: messagingSenderId,
+    projectId: projectId,
+    authDomain: authDomain,
+    storageBucket: storageBucket,
+    measurementId: measurementId,
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCIPcMGfEGkJKL_1IW9QJ9W2K0jTIivuuM',
-    appId: '1:1052709621623:android:d8d044e2d96b1118d59b72',
-    messagingSenderId: '1052709621623',
-    projectId: 'collectioncenter-c9abe',
-    storageBucket: 'collectioncenter-c9abe.appspot.com',
-  );
+  static FirebaseOptions android = FirebaseOptions(
+      apiKey: apiKeyAndroid,
+      appId: appIdAndroid,
+      messagingSenderId: messagingSenderId,
+      projectId: projectId,
+      storageBucket: storageBucket);
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB_K_Dj8oXL5ATjFymuZejp9vuZbKCrngc',
-    appId: '1:1052709621623:ios:f6753bebe10886bad59b72',
-    messagingSenderId: '1052709621623',
-    projectId: 'collectioncenter-c9abe',
-    storageBucket: 'collectioncenter-c9abe.appspot.com',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: apiKeyIosWebos,
+    appId: appIdIos,
+    messagingSenderId: messagingSenderId,
+    projectId: projectId,
+    storageBucket: storageBucket,
     iosBundleId: 'com.example.collectorsCenter',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB_K_Dj8oXL5ATjFymuZejp9vuZbKCrngc',
-    appId: '1:1052709621623:ios:57627a2064bd0d8ed59b72',
-    messagingSenderId: '1052709621623',
-    projectId: 'collectioncenter-c9abe',
-    storageBucket: 'collectioncenter-c9abe.appspot.com',
+  static FirebaseOptions macos = FirebaseOptions(
+    apiKey: apiKeyIosWebos,
+    appId: appIdMacos,
+    messagingSenderId: messagingSenderId,
+    projectId: projectId,
+    storageBucket: storageBucket,
     iosBundleId: 'com.example.collectorsCenter.RunnerTests',
   );
 }
