@@ -5,12 +5,12 @@ Nuestra aplicación móvil ayuda a los coleccionistas de 16 a 25 años a presumi
 ## Download link
 🔗[You can download here](https://alexlife2002003.github.io/CollectionCenter/)
 ## 📸 Screenshots
-[Articulos]: screenshots/Articulos 'articulos'
+[Articulos]: screenshots/Articulos.png 'articulos'
 [Agregar_categorias]: screenshots/Categorias.png 'agregar_categorias'
 [Lista_categorias]: screenshots/CategoriasLista.png 'lista_categorias'
 [Inicio]: screenshots/Inicio.png 'inicio'
 [Menu]: screenshots/Menu.png 'menu'
-[Nuevo_articulo]: screenshots/Nuevo_Articulo.png 'nuevo_articulo'
+[Nuevo_articulo]: screenshots/Nueva_Articulo.png 'nuevo_articulo'
 [Registro]: screenshots/Registro.png 'registro'
 
 <!-- Table -->
